@@ -5,7 +5,14 @@ using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_name(name) {}
+Scene::Scene(const std::string& name) 
+	: m_Name(name)
+	, m_GameTime{}
+{
+	// Initialize the timer in the scene
+	m_GameTime.Reset();
+	m_GameTime.Stop();
+}
 
 Scene::~Scene() = default;
 

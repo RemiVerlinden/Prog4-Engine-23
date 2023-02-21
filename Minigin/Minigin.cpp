@@ -10,6 +10,10 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
+#include "GameTime.h" 
+#include "TextObject.h"
+#include "scene.h"
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -75,6 +79,8 @@ dae::Minigin::~Minigin()
 	SDL_Quit();
 }
 
+
+
 void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
@@ -83,12 +89,19 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
+
+
+
 	// todo: this update loop could use some work.
+
+
 	bool doContinue = true;
 	while (doContinue)
 	{
+
 		doContinue = input.ProcessInput();
 		sceneManager.Update();
 		renderer.Render();
+
 	}
 }
