@@ -7,6 +7,14 @@ dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update(){}
 
+void dae::GameObject::LateUpdate()
+{
+}
+
+void dae::GameObject::FixedUpdate()
+{
+}
+
 void dae::GameObject::Render() const
 {
 	const auto& pos = m_transform.GetPosition();

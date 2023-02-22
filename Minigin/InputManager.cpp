@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include "InputManager.h"
 #include "SceneManager.h"
+#include <iostream>
 
 bool dae::InputManager::ProcessInput()
 {
@@ -11,11 +12,19 @@ bool dae::InputManager::ProcessInput()
 		}
 		if (e.type == SDL_KEYDOWN) {
 		}
-	if (e.type == SDL_KEYUP) {
-		SceneManager::GetInstance().NextScene();
-	}
+		if (e.type == SDL_KEYUP) {
+			switch (e.key.keysym.sym)
+			{
+				case SDLK_PAGEUP:
+					SceneManager::GetInstance().NextScene();
+					break;
+				case SDLK_PAGEDOWN:
+					SceneManager::GetInstance().PreviousScene();
+					break;
+			}
+		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
-			
+
 		}
 		// etc...
 	}

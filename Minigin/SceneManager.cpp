@@ -2,24 +2,17 @@
 #include "Scene.h"
 void dae::SceneManager::Update()
 {
+	if (m_pActiveScene != nullptr) m_pActiveScene->Update();
+}
 
-	if (m_pNewActiveScene != nullptr)
-	{
-		//Deactivate the current active scene
-		if (m_pActiveScene != nullptr)
-			m_pActiveScene->OnSceneDeactivated();
+void dae::SceneManager::LateUpdate()
+{
+	if (m_pActiveScene != nullptr) m_pActiveScene->Update();
+}
 
-		//Set New Scene
-		m_pActiveScene = m_pNewActiveScene;
-		m_pNewActiveScene = nullptr;
-
-		//Active the new scene and reset SceneTimer
-		m_pActiveScene->OnSceneActivated();
-	}
-
-	if (m_pActiveScene != nullptr)
-		m_pActiveScene->Update();
-
+void dae::SceneManager::FixedUpdate()
+{
+	if (m_pActiveScene != nullptr) m_pActiveScene->FixedUpdate();
 }
 
 void dae::SceneManager::Render()
@@ -67,6 +60,23 @@ void dae::SceneManager::SetActiveGameScene(const std::string& name)
 	if (it != m_Scenes.end())
 	{
 		m_pNewActiveScene = *it;
+	}
+}
+
+void dae::SceneManager::CheckNewActiveGameScene()
+{
+	if (m_pNewActiveScene != nullptr)
+	{
+		//Deactivate the current active scene
+		if (m_pActiveScene != nullptr)
+			m_pActiveScene->OnSceneDeactivated();
+
+		//Set New Scene
+		m_pActiveScene = m_pNewActiveScene;
+		m_pNewActiveScene = nullptr;
+
+		//Active the new scene and reset SceneTimer
+		m_pActiveScene->OnSceneActivated();
 	}
 }
 

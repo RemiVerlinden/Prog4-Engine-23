@@ -36,19 +36,19 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 
 	SDL_TTF_VERSION(&version)
-	printf("We compiled against SDL_ttf version %u.%u.%u ...\n",
-		version.major, version.minor, version.patch);
+		printf("We compiled against SDL_ttf version %u.%u.%u ...\n",
+			version.major, version.minor, version.patch);
 
 	version = *TTF_Linked_Version();
 	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+dae::Minigin::Minigin(const std::string& dataPath)
 {
 	PrintSDLVersion();
-	
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
@@ -61,7 +61,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		480,
 		SDL_WINDOW_OPENGL
 	);
-	if (g_window == nullptr) 
+	if (g_window == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
@@ -89,19 +89,42 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-
-
-
 	// todo: this update loop could use some work.
 
+
+	//=============TIMER================
+	GameTime time;
+	time.Reset();
+	float elapsedFixedTimestep = 0.f; // time since last fixed timestep
+	//==================================
 
 	bool doContinue = true;
 	while (doContinue)
 	{
+		elapsedFixedTimestep += time.GetElapsed();
 
+		//============INPUT=================
 		doContinue = input.ProcessInput();
+		//==================================
+
+
+		//=============UPDATE===============
+		sceneManager.CheckNewActiveGameScene();
+
+		if (elapsedFixedTimestep >= time.GetFixedTimeStep())
+		{
+			sceneManager.FixedUpdate();
+			elapsedFixedTimestep -= time.GetFixedTimeStep();
+		}
+
 		sceneManager.Update();
+		sceneManager.LateUpdate();
+		//==================================
+
+
+		//============RENDER================
 		renderer.Render();
+		//==================================
 
 	}
 }

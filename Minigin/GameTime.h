@@ -18,6 +18,7 @@ public:
 	void Update();
 
 	float GetElapsed() const { return  m_ElapsedGameTime; }
+	float GetFixedTimeStep() const { return  m_FixedTimeStep; }
 	float GetTotal() const { return m_TotalGameTime; }
 	int GetFPS() const { return m_FPS; }
 	void ForceElapsedUpperbound(bool force, float upperBound = 0.03f) { m_ForceElapsedUpperBound = force; m_ElapsedUpperBound = upperBound; }
@@ -33,6 +34,7 @@ private:
 
 	bool m_ForceElapsedUpperBound{};
 	float m_ElapsedUpperBound{0.03f};
+	float m_FixedTimeStep{ 0.02f };
 
 	std::chrono::high_resolution_clock::time_point m_BaseTime{};
 	std::chrono::high_resolution_clock::time_point m_StopTime{};

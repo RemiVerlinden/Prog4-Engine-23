@@ -17,10 +17,14 @@ namespace dae
 		const std::shared_ptr<Scene> GetGameScene(const std::string& name);
 		void RemoveGameScene(const std::string& name);
 		void SetActiveGameScene(const std::string& name);
+		void CheckNewActiveGameScene();
+
 		void NextScene();
 		void PreviousScene();
-		//=========================================================
 
+		void LateUpdate();
+		void FixedUpdate();
+		//=========================================================
 		void Update();
 		void Render();
 	private:
