@@ -14,11 +14,12 @@ namespace dae
 		void RemoveAll();
 
 		void Update();
-		void LateUpdate();
-		void FixedUpdate();
 		void Render() const;
 
 		//========================================================
+		void LateUpdate();
+		void FixedUpdate();
+		void Initialize();
 
 		std::string GetName() { return m_Name; };
 		void OnSceneActivated() { m_GameTime.Start(); }

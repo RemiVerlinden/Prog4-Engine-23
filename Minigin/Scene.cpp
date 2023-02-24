@@ -33,9 +33,11 @@ void Scene::RemoveAll()
 
 void Scene::Update()
 {
+	m_GameTime.Update();
+
 	for(auto& object : m_objects)
 	{
-		object->Update();
+		object->Update(m_GameTime.GetElapsed());
 	}
 }
 
@@ -43,7 +45,7 @@ void dae::Scene::LateUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->LateUpdate();
+		object->LateUpdate(m_GameTime.GetElapsed());
 	}
 }
 
@@ -51,7 +53,14 @@ void dae::Scene::FixedUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->FixedUpdate();
+		object->FixedUpdate(m_GameTime.GetElapsed());
+	}
+}
+void dae::Scene::Initialize()
+{
+	for (auto& object : m_objects)
+	{
+		object->Initialize(&m_GameTime);
 	}
 }
 

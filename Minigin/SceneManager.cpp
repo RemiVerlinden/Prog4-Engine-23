@@ -19,6 +19,13 @@ void dae::SceneManager::Render()
 {
 	if (m_pActiveScene) m_pActiveScene->Render();
 }
+void dae::SceneManager::Initialize()
+{
+	for (std::shared_ptr<Scene> pScene : m_Scenes)
+	{
+		pScene->Initialize();
+	}
+}
 
 const std::shared_ptr<dae::Scene> dae::SceneManager::AddGameScene(const std::string& name)
 {

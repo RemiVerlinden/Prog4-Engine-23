@@ -24,6 +24,7 @@ namespace dae
 
 		void LateUpdate();
 		void FixedUpdate();
+		void Initialize();
 		//=========================================================
 		void Update();
 		void Render();

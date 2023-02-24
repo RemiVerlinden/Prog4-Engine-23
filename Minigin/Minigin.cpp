@@ -98,6 +98,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	float elapsedFixedTimestep = 0.f; // time since last fixed timestep
 	//==================================
 
+	sceneManager.Initialize(); // IMPORTANT
+
 	bool doContinue = true;
 	while (doContinue)
 	{
@@ -109,14 +111,13 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 
 		//=============UPDATE===============
-		sceneManager.CheckNewActiveGameScene();
+		sceneManager.CheckNewActiveGameScene(); // before we start to update the active scene, check if we have a new one
 
 		if (elapsedFixedTimestep >= time.GetFixedTimeStep())
 		{
 			sceneManager.FixedUpdate();
 			elapsedFixedTimestep -= time.GetFixedTimeStep();
 		}
-
 		sceneManager.Update();
 		sceneManager.LateUpdate();
 		//==================================

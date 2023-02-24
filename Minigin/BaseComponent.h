@@ -1,17 +1,20 @@
 #pragma once
 #include <string>
+
 namespace dae {
+	class GameObject;
+	class GameTime;
 	class BaseComponent
 	{
 	public:
-		BaseComponent() = default;
-		~BaseComponent();
+		BaseComponent();
+		~BaseComponent() = default;
 
-		virtual void Initialize() = 0;
-		virtual void Update() = 0;
+		virtual void Initialize(GameTime* time) = 0;
+		virtual void Update(float ts) = 0;
 		virtual void Draw() = 0;
-		virtual void LateUpdate() = 0;
-		virtual void FixedUpdate() = 0;
+		virtual void LateUpdate(float ts) = 0;
+		virtual void FixedUpdate(float ts) = 0;
 
 
 		BaseComponent(const BaseComponent& other) = delete;
@@ -20,13 +23,14 @@ namespace dae {
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 	private:
-		virtual void RootInitialize();
-		virtual void RootUpdate();
+		friend GameObject;
+
+		virtual void RootInitialize(GameObject* go, GameTime* time);
+		virtual void RootUpdate(float ts);
 		virtual void RootDraw();
-		virtual void RootFixedUpdate();
-		virtual void RootLateUpdate();
+		virtual void RootFixedUpdate(float ts);
+		virtual void RootLateUpdate(float ts);
 
-		std::string m_Name;
-
+		GameObject* m_GameObject;
 	};
 }

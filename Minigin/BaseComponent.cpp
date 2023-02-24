@@ -1,13 +1,21 @@
 #include "BaseComponent.h"
+#include "GameObject.h"
+#include "GameTime.h"
 
-void dae::BaseComponent::RootInitialize()
+dae::BaseComponent::BaseComponent()
 {
-	Initialize();
+
 }
 
-void dae::BaseComponent::RootUpdate()
+void dae::BaseComponent::RootInitialize(GameObject* go, GameTime* time)
 {
-	Update();
+	m_GameObject = go;
+	Initialize(time);
+}
+
+void dae::BaseComponent::RootUpdate(float ts)
+{
+	Update(ts);
 }
 
 void dae::BaseComponent::RootDraw()
@@ -15,12 +23,12 @@ void dae::BaseComponent::RootDraw()
 	Draw();
 }
 
-void dae::BaseComponent::RootFixedUpdate()
+void dae::BaseComponent::RootFixedUpdate(float ts)
 {
-	FixedUpdate();
+	FixedUpdate(ts);
 }
 
-void dae::BaseComponent::RootLateUpdate()
+void dae::BaseComponent::RootLateUpdate(float ts)
 {
-	LateUpdate();
+	LateUpdate(ts);
 }
