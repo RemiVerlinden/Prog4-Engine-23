@@ -22,8 +22,7 @@ namespace dae {
 		virtual void FixedUpdate(float ts) override;
 
 		void SetPosition(const float x, const float y);
-
-
+		void SetColor(int r, int g, int b, int a);
 		FpsComponent(const FpsComponent& other) = delete;
 		FpsComponent(FpsComponent&& other) = delete;
 		FpsComponent& operator=(const FpsComponent& other) = delete;

@@ -5,6 +5,10 @@
 #include "BaseComponent.h"
 #include "GameTime.h"
 
+dae::GameObject::GameObject(const std::string& tag) : m_Tag(tag)
+{
+};
+
 dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update([[maybe_unused]]float ts)

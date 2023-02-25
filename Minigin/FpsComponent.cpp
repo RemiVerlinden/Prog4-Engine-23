@@ -47,3 +47,9 @@ void dae::FpsComponent::SetPosition(const float x, const float y)
 {
 	m_TextComponent->SetPosition(x, y);
 }
+
+void dae::FpsComponent::SetColor(int r, int g, int b, int a)
+{
+	m_TextComponent->SetColor(r, g, b, a);
+}
+

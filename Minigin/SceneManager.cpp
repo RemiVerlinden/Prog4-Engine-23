@@ -37,7 +37,7 @@ const std::shared_ptr<dae::Scene> dae::SceneManager::AddGameScene(const std::str
 
 const std::shared_ptr<dae::Scene> dae::SceneManager::GetGameScene(const std::string& sceneName)
 {
-	auto checkMatchingName = [sceneName](std::shared_ptr<Scene>& scene) { return scene->GetName() == sceneName; };
+	auto checkMatchingName = [sceneName](std::shared_ptr<Scene>& scene) { return scene->GetTag() == sceneName; };
 	auto it = find_if(m_Scenes.begin(), m_Scenes.end(), checkMatchingName);
 
 	if (it != m_Scenes.end())
@@ -50,7 +50,7 @@ const std::shared_ptr<dae::Scene> dae::SceneManager::GetGameScene(const std::str
 
 void dae::SceneManager::RemoveGameScene(const std::string& name)
 {
-	auto checkMatchingName = [name](std::shared_ptr<Scene>& scene){ return scene->GetName() == name; };
+	auto checkMatchingName = [name](std::shared_ptr<Scene>& scene){ return scene->GetTag() == name; };
 	auto it = find_if(m_Scenes.begin(), m_Scenes.end(), checkMatchingName);
 
 	if (it != m_Scenes.end())
@@ -61,7 +61,7 @@ void dae::SceneManager::RemoveGameScene(const std::string& name)
 
 void dae::SceneManager::SetActiveGameScene(const std::string& name)
 {
-	auto checkMatchingName = [name](std::shared_ptr<Scene>& scene) { return scene->GetName() == name; };
+	auto checkMatchingName = [name](std::shared_ptr<Scene>& scene) { return scene->GetTag() == name; };
 	auto it = find_if(m_Scenes.begin(), m_Scenes.end(), checkMatchingName);
 
 	if (it != m_Scenes.end())

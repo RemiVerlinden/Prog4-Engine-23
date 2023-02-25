@@ -2,6 +2,7 @@
 #include "BaseComponent.h"
 #include <memory>
 #include "Transform.h"
+#include <SDL_ttf.h>
 
 namespace dae{
 
@@ -23,6 +24,7 @@ namespace dae{
 
 		void SetText(const std::string& text);
 		void SetPosition(const float x, const float y);
+		void SetColor(int r, int g, int b, int a);
 
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -32,6 +34,7 @@ namespace dae{
 	private:
 		bool m_needsUpdate;
 		std::string m_text;
+		SDL_Color m_FontColor;
 		Transform m_transform{};
 		std::shared_ptr<Font> m_font;
 		std::shared_ptr<Texture2D> m_textTexture;

@@ -21,7 +21,7 @@ namespace dae
 		void FixedUpdate();
 		void Initialize();
 
-		std::string GetName() { return m_Name; };
+		std::string GetTag() { return m_Tag; };
 		void OnSceneActivated() { m_GameTime.Start(); }
 		void OnSceneDeactivated() { m_GameTime.Stop(); }
 
@@ -36,7 +36,7 @@ namespace dae
 	private: 
 		explicit Scene(const std::string& name);
 
-		std::string m_Name;
+		std::string m_Tag;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
 
 		static unsigned int m_idCounter; 

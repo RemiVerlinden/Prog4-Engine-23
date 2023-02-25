@@ -5,8 +5,8 @@ using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) 
-	: m_Name(name)
+Scene::Scene(const std::string& tag) 
+	: m_Tag(tag)
 	, m_GameTime{}
 {
 	// Initialize the timer in the scene

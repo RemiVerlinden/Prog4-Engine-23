@@ -46,18 +46,20 @@ void dae::SceneFactory::InitDefaultScene()
 	// text comp 2
 	go = std::make_shared<dae::GameObject>();
 
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 30);
+	font = dae::ResourceManager::GetInstance().LoadFont("lowres.ttf", 36);
 	textComponent = go->AddComponent<TextComponent>("Press [PAGE UP|DOWN] to change scene", font);
 	textComponent.lock()->SetPosition(60, 420);
+	textComponent.lock()->SetColor(255,160,100,255);
+	
 	pScene->Add(go);
 
 	// fps comp
 	go = std::make_shared<dae::GameObject>();
 
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 42);
+	font = dae::ResourceManager::GetInstance().LoadFont("raju-bold.otf", 42);
 	std::weak_ptr<FpsComponent> fpsComponent = go->AddComponent<FpsComponent>(font);
 	fpsComponent.lock()->SetPosition(250, 300);
-
+	fpsComponent.lock()->SetColor(255, 255, 255, 255);
 	pScene->Add(go);
 }
 
@@ -65,12 +67,13 @@ void dae::SceneFactory::InitTextDemoScene()
 {
 	auto pScene = dae::SceneManager::GetInstance().AddGameScene("Demo2");
 
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("raju-bold.otf", 72);
 	std::shared_ptr<dae::GameObject> fpsGO = std::make_shared<dae::GameObject>();
 
 
 	std::weak_ptr<FpsComponent> fpsComponent = fpsGO->AddComponent<FpsComponent>(font);
-	fpsComponent.lock()->SetPosition(250, 400);
+	fpsComponent.lock()->SetPosition(200, 180);
+	fpsComponent.lock()->SetColor(200,255,200,255);
 
 
 	pScene->Add(fpsGO);
