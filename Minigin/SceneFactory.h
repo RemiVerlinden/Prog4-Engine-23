@@ -13,7 +13,8 @@ namespace dae
 		void CreateScenes();
 
 		void InitDefaultScene();
-		void InitTextDemoScene();
+		void InitFpsDemoScene();
+		void InitBonusScene();
 	}
 }
 

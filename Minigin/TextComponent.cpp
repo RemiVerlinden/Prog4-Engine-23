@@ -30,7 +30,7 @@ void dae::TextComponent::Initialize([[maybe_unused]] GameTime* time)
 
 }
 
-void dae::TextComponent::Update([[maybe_unused]] float ts)
+void dae::TextComponent::Update()
 {
 	if (m_needsUpdate)
 	{
@@ -59,12 +59,12 @@ void dae::TextComponent::Draw()
 	}
 }
 
-void dae::TextComponent::LateUpdate([[maybe_unused]] float ts)
+void dae::TextComponent::LateUpdate()
 {
 
 }
 
-void dae::TextComponent::FixedUpdate([[maybe_unused]] float ts)
+void dae::TextComponent::FixedUpdate()
 {
 
 }

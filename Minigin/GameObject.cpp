@@ -11,27 +11,27 @@ dae::GameObject::GameObject(const std::string& tag) : m_Tag(tag)
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update([[maybe_unused]]float ts)
+void dae::GameObject::Update()
 {
 	for (std::shared_ptr<BaseComponent> component : m_Components)
 	{
-		component->RootUpdate(ts);
+		component->RootUpdate();
 	}
 }
 
-void dae::GameObject::LateUpdate([[maybe_unused]] float ts)
+void dae::GameObject::LateUpdate()
 {
 	for (std::shared_ptr<BaseComponent> component : m_Components)
 	{
-		component->RootLateUpdate(ts);
+		component->RootLateUpdate();
 	}
 }
 
-void dae::GameObject::FixedUpdate([[maybe_unused]] float ts)
+void dae::GameObject::FixedUpdate()
 {
 	for (std::shared_ptr<BaseComponent> component : m_Components)
 	{
-		component->RootFixedUpdate(ts);
+		component->RootFixedUpdate();
 	}
 }
 

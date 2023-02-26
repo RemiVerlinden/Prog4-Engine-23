@@ -11,10 +11,10 @@ namespace dae {
 		~BaseComponent() = default;
 
 		virtual void Initialize(GameTime* time) = 0;
-		virtual void Update(float ts) = 0;
+		virtual void Update() = 0;
 		virtual void Draw() = 0;
-		virtual void LateUpdate(float ts) = 0;
-		virtual void FixedUpdate(float ts) = 0;
+		virtual void LateUpdate() = 0;
+		virtual void FixedUpdate() = 0;
 
 
 		BaseComponent(const BaseComponent& other) = delete;
@@ -26,10 +26,10 @@ namespace dae {
 		friend GameObject;
 
 		virtual void RootInitialize(GameObject* go, GameTime* time);
-		virtual void RootUpdate(float ts);
+		virtual void RootUpdate();
 		virtual void RootDraw();
-		virtual void RootFixedUpdate(float ts);
-		virtual void RootLateUpdate(float ts);
+		virtual void RootFixedUpdate();
+		virtual void RootLateUpdate();
 
 		GameObject* m_GameObject;
 	};

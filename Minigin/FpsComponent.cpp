@@ -21,11 +21,11 @@ void dae::FpsComponent::Initialize([[maybe_unused]] GameTime* time)
 	m_Time = time;
 }
 
-void dae::FpsComponent::Update([[maybe_unused]] float ts)
+void dae::FpsComponent::Update()
 {
 	
 	m_TextComponent->SetText(std::format("{} FPS", m_Time->GetFPS()));
-	m_TextComponent->Update(ts);
+	m_TextComponent->Update();
 }
 
 void dae::FpsComponent::Draw()
@@ -33,14 +33,14 @@ void dae::FpsComponent::Draw()
 	m_TextComponent->Draw();
 }
 
-void dae::FpsComponent::LateUpdate([[maybe_unused]] float ts)
+void dae::FpsComponent::LateUpdate()
 {
-	m_TextComponent->LateUpdate(ts);
+	m_TextComponent->LateUpdate();
 }
 
-void dae::FpsComponent::FixedUpdate([[maybe_unused]] float ts)
+void dae::FpsComponent::FixedUpdate()
 {
-	m_TextComponent->FixedUpdate(ts);
+	m_TextComponent->FixedUpdate();
 }
 
 void dae::FpsComponent::SetPosition(const float x, const float y)

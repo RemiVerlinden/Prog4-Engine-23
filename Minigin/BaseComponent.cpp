@@ -13,9 +13,9 @@ void dae::BaseComponent::RootInitialize(GameObject* go, GameTime* time)
 	Initialize(time);
 }
 
-void dae::BaseComponent::RootUpdate(float ts)
+void dae::BaseComponent::RootUpdate()
 {
-	Update(ts);
+	Update();
 }
 
 void dae::BaseComponent::RootDraw()
@@ -23,12 +23,12 @@ void dae::BaseComponent::RootDraw()
 	Draw();
 }
 
-void dae::BaseComponent::RootFixedUpdate(float ts)
+void dae::BaseComponent::RootFixedUpdate()
 {
-	FixedUpdate(ts);
+	FixedUpdate();
 }
 
-void dae::BaseComponent::RootLateUpdate(float ts)
+void dae::BaseComponent::RootLateUpdate()
 {
-	LateUpdate(ts);
+	LateUpdate();
 }

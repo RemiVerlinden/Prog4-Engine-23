@@ -37,7 +37,7 @@ void Scene::Update()
 
 	for(auto& object : m_objects)
 	{
-		object->Update(m_GameTime.GetElapsed());
+		object->Update();
 	}
 }
 
@@ -45,7 +45,7 @@ void dae::Scene::LateUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->LateUpdate(m_GameTime.GetElapsed());
+		object->LateUpdate();
 	}
 }
 
@@ -53,7 +53,7 @@ void dae::Scene::FixedUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->FixedUpdate(m_GameTime.GetElapsed());
+		object->FixedUpdate();
 	}
 }
 void dae::Scene::Initialize()

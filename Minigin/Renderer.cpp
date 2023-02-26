@@ -20,6 +20,7 @@ int GetOpenGLDriverIndex()
 void dae::Renderer::Init(SDL_Window* window)
 {
 	m_window = window;
+	SDL_GetWindowSize(window, &m_Width, &m_Height);
 	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
 	if (m_renderer == nullptr) 
 	{
@@ -65,5 +66,16 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
+
+void dae::Renderer::RenderTextureBackground(const Texture2D& texture) const
+{
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(0);
+	dst.y = static_cast<int>(0);
+	dst.w = static_cast<int>(m_Width);
+	dst.h = static_cast<int>(m_Height);
+	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+
 
 inline SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

@@ -16,10 +16,10 @@ namespace dae {
 		~FpsComponent() = default;
 
 		virtual void Initialize(GameTime* time) override;
-		virtual void Update(float ts) override;
+		virtual void Update() override;
 		virtual void Draw() override;
-		virtual void LateUpdate(float ts) override;
-		virtual void FixedUpdate(float ts) override;
+		virtual void LateUpdate() override;
+		virtual void FixedUpdate() override;
 
 		void SetPosition(const float x, const float y);
 		void SetColor(int r, int g, int b, int a);

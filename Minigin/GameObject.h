@@ -12,9 +12,9 @@ namespace dae
 	class GameObject final
 	{
 	public:
-		void Update(float ts);
-		void LateUpdate(float ts);
-		void FixedUpdate(float ts);
+		void Update();
+		void LateUpdate();
+		void FixedUpdate();
 		void Render() const;
 		void Initialize(GameTime* time);
 

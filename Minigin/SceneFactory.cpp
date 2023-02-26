@@ -1,6 +1,7 @@
 #include "SceneFactory.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "Renderer.h"
 #include "Scene.h"
 #include "TextComponent.h"
 #include "FpsComponent.h"
@@ -12,7 +13,8 @@ using namespace dae;
 void dae::SceneFactory::CreateScenes()
 {
 	InitDefaultScene();
-	InitTextDemoScene();
+	InitFpsDemoScene();
+	InitBonusScene();
 }
 
 void dae::SceneFactory::InitDefaultScene()
@@ -63,7 +65,7 @@ void dae::SceneFactory::InitDefaultScene()
 	pScene->Add(go);
 }
 
-void dae::SceneFactory::InitTextDemoScene()
+void dae::SceneFactory::InitFpsDemoScene()
 {
 	auto pScene = dae::SceneManager::GetInstance().AddGameScene("Demo2");
 
@@ -73,8 +75,28 @@ void dae::SceneFactory::InitTextDemoScene()
 
 	std::weak_ptr<FpsComponent> fpsComponent = fpsGO->AddComponent<FpsComponent>(font);
 	fpsComponent.lock()->SetPosition(200, 180);
-	fpsComponent.lock()->SetColor(200,255,200,255);
+	fpsComponent.lock()->SetColor(200,255,255,170);
+
+	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>();
+	std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
+	textureComponent.lock()->SetTexture("colorbars.png");
+	textureComponent.lock()->SetDrawStyle(dae::Render2DComponent::DrawStyle::background);
+	pScene->Add(go);
 
 
 	pScene->Add(fpsGO);
+}
+
+void dae::SceneFactory::InitBonusScene()
+{
+	auto pScene = dae::SceneManager::GetInstance().AddGameScene("Bonus");
+
+	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>();
+	std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
+	textureComponent.lock()->SetTexture("backdrop_trees.png");
+	textureComponent.lock()->SetPosition(-80,0);
+	textureComponent.lock()->SetResolution(800,600);
+	textureComponent.lock()->SetDrawStyle(dae::Render2DComponent::DrawStyle::positionScale);
+	Renderer::GetInstance().SetBackgroundColor(SDL_Color{100,140,230,255});
+	pScene->Add(go);
 }
