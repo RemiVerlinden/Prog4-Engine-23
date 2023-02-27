@@ -93,7 +93,6 @@ void dae::SceneFactory::InitBonusScene()
 
 	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>();
 	std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
-	 textureComponent = go->AddComponent<Render2DComponent>();
 	textureComponent.lock()->SetTexture("backdrop_trees.png");
 	textureComponent.lock()->SetPosition(-80,0);
 	textureComponent.lock()->SetResolution(800,600);
