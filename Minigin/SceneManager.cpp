@@ -7,7 +7,7 @@ void dae::SceneManager::Update()
 
 void dae::SceneManager::LateUpdate()
 {
-	if (m_pActiveScene != nullptr) m_pActiveScene->Update();
+	if (m_pActiveScene != nullptr) m_pActiveScene->LateUpdate();
 }
 
 void dae::SceneManager::FixedUpdate()
