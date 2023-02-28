@@ -13,6 +13,7 @@
 #include "GameTime.h" 
 #include "TextObject.h"
 #include "scene.h"
+#include <thread>
 
 SDL_Window* g_window{};
 
@@ -127,5 +128,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		//============RENDER================
 		renderer.Render();
 		//==================================
+		
+		//std::this_thread::sleep_for(0);
 	}
 }

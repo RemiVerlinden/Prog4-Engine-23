@@ -8,7 +8,6 @@ namespace dae{
 
 	class Font;
 	class Texture2D;
-	class GameTime;
 	class TextComponent final : public BaseComponent
 	{
 	public:
@@ -35,7 +34,7 @@ namespace dae{
 		bool m_needsUpdate;
 		std::string m_text;
 		SDL_Color m_FontColor;
-		Transform m_transform{};
+		std::weak_ptr<TransformComponent> m_transform;
 		std::shared_ptr<Font> m_font;
 		std::shared_ptr<Texture2D> m_textTexture;
 	};

@@ -19,16 +19,16 @@ void dae::SceneFactory::CreateScenes()
 
 void dae::SceneFactory::InitDefaultScene()
 {
-	auto& pScene = dae::SceneManager::GetInstance().AddGameScene("Demo");
+	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Demo").get();
 	dae::SceneManager::GetInstance().SetActiveGameScene("Demo");
 
-	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>();
+	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>(pScene);
 	std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
 	textureComponent.lock()->SetTexture("background.tga");
 	pScene->Add(go);
 
 
-	go = std::make_shared<dae::GameObject>();
+	go = std::make_shared<dae::GameObject>(pScene);
 	textureComponent = go->AddComponent<Render2DComponent>();
 	textureComponent.lock()->SetTexture("logo.tga");
 	textureComponent.lock()->SetPosition(216, 180);
@@ -37,16 +37,16 @@ void dae::SceneFactory::InitDefaultScene()
 
 	// text comp 1
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go = std::make_shared<dae::GameObject>();
+	go = std::make_shared<dae::GameObject>(pScene);
 	
 	auto textComponent = go->AddComponent<TextComponent>("Programming 4 Assignment", font);
 	textComponent.lock()->SetPosition(80, 20);
 	pScene->Add(go);
 
-	go = std::make_shared<dae::GameObject>();
+	go = std::make_shared<dae::GameObject>(pScene);
 
 	// text comp 2
-	go = std::make_shared<dae::GameObject>();
+	go = std::make_shared<dae::GameObject>(pScene);
 
 	font = dae::ResourceManager::GetInstance().LoadFont("lowres.ttf", 36);
 	textComponent = go->AddComponent<TextComponent>("Press [PAGE UP|DOWN] to change scene", font);
@@ -56,7 +56,7 @@ void dae::SceneFactory::InitDefaultScene()
 	pScene->Add(go);
 
 	// fps comp
-	go = std::make_shared<dae::GameObject>();
+	go = std::make_shared<dae::GameObject>(pScene);
 
 	font = dae::ResourceManager::GetInstance().LoadFont("raju-bold.otf", 42);
 	std::weak_ptr<FpsComponent> fpsComponent = go->AddComponent<FpsComponent>(font);
@@ -67,17 +67,17 @@ void dae::SceneFactory::InitDefaultScene()
 
 void dae::SceneFactory::InitFpsDemoScene()
 {
-	auto pScene = dae::SceneManager::GetInstance().AddGameScene("Demo2");
+	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Demo2").get();
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("raju-bold.otf", 72);
-	std::shared_ptr<dae::GameObject> fpsGO = std::make_shared<dae::GameObject>();
+	std::shared_ptr<dae::GameObject> fpsGO = std::make_shared<dae::GameObject>(pScene);
 
 
 	std::weak_ptr<FpsComponent> fpsComponent = fpsGO->AddComponent<FpsComponent>(font);
 	fpsComponent.lock()->SetPosition(200, 180);
 	fpsComponent.lock()->SetColor(200,255,255,170);
 
-	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>();
+	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>(pScene);
 	std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
 	textureComponent.lock()->SetTexture("colorbars.png");
 	textureComponent.lock()->SetDrawStyle(dae::Render2DComponent::DrawStyle::background);
@@ -89,9 +89,9 @@ void dae::SceneFactory::InitFpsDemoScene()
 
 void dae::SceneFactory::InitBonusScene()
 {
-	auto pScene = dae::SceneManager::GetInstance().AddGameScene("Bonus");
+	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Bonus").get();
 
-	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>();
+	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>(pScene);
 	std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
 	textureComponent.lock()->SetTexture("backdrop_trees.png");
 	textureComponent.lock()->SetPosition(-80,0);

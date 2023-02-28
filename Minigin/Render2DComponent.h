@@ -37,7 +37,7 @@ namespace dae {
 
 	private:
 		DrawStyle m_DrawStyle;
-		Transform m_transform{};
+		std::weak_ptr<TransformComponent> m_transform{};
 		glm::ivec2 m_TextureResolution;
 		std::shared_ptr<Texture2D> m_Texture;
 

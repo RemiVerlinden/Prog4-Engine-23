@@ -19,12 +19,12 @@ namespace dae
 		//========================================================
 		void LateUpdate();
 		void FixedUpdate();
-		void Initialize();
 
 		std::string GetTag() { return m_Tag; };
 		void OnSceneActivated() { m_GameTime.Start(); }
 		void OnSceneDeactivated() { m_GameTime.Stop(); }
 
+		GameTime* GetGameTime();
 		//========================================================
 
 		~Scene();
@@ -33,8 +33,11 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
+
+
 	private: 
 		explicit Scene(const std::string& name);
+
 
 		std::string m_Tag;
 		std::vector < std::shared_ptr<GameObject>> m_objects{};
@@ -42,9 +45,13 @@ namespace dae
 		static unsigned int m_idCounter; 
 
 		//========================================================
+
 		GameTime m_GameTime;
+
 
 		//========================================================
 	};
 
 }
+
+

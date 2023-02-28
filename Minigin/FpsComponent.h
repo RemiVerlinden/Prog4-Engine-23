@@ -29,7 +29,8 @@ namespace dae {
 		FpsComponent& operator=(FpsComponent&& other) = delete;
 
 	private:
-		std::shared_ptr<TextComponent> m_TextComponent;
-		GameTime* m_Time;;
+		std::weak_ptr<TextComponent> m_TextComponent;
+		std::weak_ptr<Font> m_Font;
+		GameTime* m_Time;
 	};
 }

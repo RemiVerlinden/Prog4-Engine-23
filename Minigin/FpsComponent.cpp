@@ -7,49 +7,49 @@
 #include <iostream>
 #include "TextComponent.h"
 #include <format>
-
+#include "GameObject.h"
 #include "GameTime.h"
 
 dae::FpsComponent::FpsComponent( std::shared_ptr<Font> font)
 {
-	m_TextComponent = std::make_shared<TextComponent>(font);
+	m_Font = font;
 }
 
 void dae::FpsComponent::Initialize([[maybe_unused]] GameTime* time)
 {
-	m_TextComponent->Initialize(time);
+	m_TextComponent = m_GameObject->AddComponent<TextComponent>(m_Font.lock());
 	m_Time = time;
 }
 
 void dae::FpsComponent::Update()
 {
-	
-	m_TextComponent->SetText(std::format("{} FPS", m_Time->GetFPS()));
-	m_TextComponent->Update();
+	auto textComponent = m_TextComponent.lock();
+	textComponent->SetText(std::format("{} FPS", m_Time->GetFPS()));
+	textComponent->Update();
 }
 
 void dae::FpsComponent::Draw()
 {
-	m_TextComponent->Draw();
+	m_TextComponent.lock()->Draw();
 }
 
 void dae::FpsComponent::LateUpdate()
 {
-	m_TextComponent->LateUpdate();
+	m_TextComponent.lock()->LateUpdate();
 }
 
 void dae::FpsComponent::FixedUpdate()
 {
-	m_TextComponent->FixedUpdate();
+	m_TextComponent.lock()->FixedUpdate();
 }
 
 void dae::FpsComponent::SetPosition(const float x, const float y)
 {
-	m_TextComponent->SetPosition(x, y);
+	m_TextComponent.lock()->SetPosition(x, y);
 }
 
 void dae::FpsComponent::SetColor(int r, int g, int b, int a)
 {
-	m_TextComponent->SetColor(r, g, b, a);
+	m_TextComponent.lock()->SetColor(r, g, b, a);
 }
 

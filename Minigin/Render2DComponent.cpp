@@ -17,6 +17,7 @@ dae::Render2DComponent::Render2DComponent()
 
 void dae::Render2DComponent::Initialize([[maybe_unused]] GameTime* time)
 {
+	m_transform = m_GameObject->GetComponent<TransformComponent>();
 }
 
 void dae::Render2DComponent::Update()
@@ -26,7 +27,7 @@ void dae::Render2DComponent::Update()
 
 void dae::Render2DComponent::Draw()
 {
-	[[maybe_unused]] const auto& pos = m_transform.GetPosition();
+	[[maybe_unused]] const auto& pos = m_transform.lock()->GetPosition();
 
 	switch (m_DrawStyle)
 	{
@@ -70,7 +71,7 @@ void dae::Render2DComponent::SetTexture(const std::string& filename)
 
 void dae::Render2DComponent::SetPosition(const float x, const float y)
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	m_transform.lock()->SetPosition(x, y, 0.0f);
 }
 
 void dae::Render2DComponent::SetResolution(const int width, const int height)

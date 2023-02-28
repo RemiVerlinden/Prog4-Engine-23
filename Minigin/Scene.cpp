@@ -14,6 +14,11 @@ Scene::Scene(const std::string& tag)
 	m_GameTime.Stop();
 }
 
+GameTime* dae::Scene::GetGameTime()
+{
+	return &m_GameTime;
+}
+
 Scene::~Scene() = default;
 
 void Scene::Add(std::shared_ptr<GameObject> object)
@@ -56,13 +61,6 @@ void dae::Scene::FixedUpdate()
 		object->FixedUpdate();
 	}
 }
-void dae::Scene::Initialize()
-{
-	for (auto& object : m_objects)
-	{
-		object->Initialize(&m_GameTime);
-	}
-}
 
 void Scene::Render() const
 {
@@ -71,4 +69,3 @@ void Scene::Render() const
 		object->Render();
 	}
 }
-

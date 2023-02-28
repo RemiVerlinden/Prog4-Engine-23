@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "GameObject.h"
 
 namespace dae {
 	class GameObject;
@@ -8,7 +9,7 @@ namespace dae {
 	{
 	public:
 		BaseComponent();
-		~BaseComponent() = default;
+		virtual ~BaseComponent() = default;
 
 		virtual void Initialize(GameTime* time) = 0;
 		virtual void Update() = 0;
@@ -22,6 +23,9 @@ namespace dae {
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
+	protected:
+		GameObject* m_GameObject;
+
 	private:
 		friend GameObject;
 
@@ -30,7 +34,5 @@ namespace dae {
 		virtual void RootDraw();
 		virtual void RootFixedUpdate();
 		virtual void RootLateUpdate();
-
-		GameObject* m_GameObject;
 	};
 }

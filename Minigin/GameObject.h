@@ -1,12 +1,14 @@
 #pragma once
 #include <memory>
-#include "Transform.h"
 #include <vector>
 #include <unordered_set>
+#include "Scene.h"
+#include <assert.h>
 
 namespace dae
 {
 	class BaseComponent;
+	class TransformComponent;
 	class GameTime;
 	// todo: this should become final.
 	class GameObject final
@@ -16,21 +18,18 @@ namespace dae
 		void LateUpdate();
 		void FixedUpdate();
 		void Render() const;
-		void Initialize(GameTime* time);
 
 		void SetPosition(float x, float y);
 
 		//===============================================
 
-		void SetTag(const std::string& tag) { m_Tag = tag; }
-
 		template<typename ComponentType, typename... Args>
 		[[maybe_unused]] std::weak_ptr<ComponentType> AddComponent(Args&&... args)
 		{
-			assert(!HasComponent<ComponentType>());
-			std::shared_ptr<ComponentType> newComponent = std::make_shared<ComponentType>(std::forward<Args>(args)...);
+			std::shared_ptr<BaseComponent> newComponent = std::make_shared<ComponentType>(std::forward<Args>(args)...);
 			m_Components.push_back(newComponent);
-			return newComponent;
+			newComponent->RootInitialize(this, m_Scene->GetGameTime());
+			return std::dynamic_pointer_cast<ComponentType>(newComponent);
 		}
 
 		template<typename ComponentType>
@@ -45,6 +44,7 @@ namespace dae
 					return castedComponent;
 				}
 			}
+			return std::shared_ptr<ComponentType>(nullptr);
 		}
 		template<typename ComponentType>
 		bool HasComponent() 
@@ -73,10 +73,14 @@ namespace dae
 				}
 			}
 		};
+
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		void GetParent();
+		void AddChild(GameObject* go);
+		void RemoveChild(GameObject* go);
 		//===============================================
 
-		GameObject() = default;
-		GameObject(const std::string& tag);
+		GameObject( Scene* scene );
 
 		~GameObject();
 		
@@ -86,9 +90,17 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_transform{};
+
+		std::weak_ptr<TransformComponent> m_transform;
 		std::vector<std::shared_ptr<BaseComponent>> m_Components;
-		std::string m_Tag;
+
+		Scene* m_Scene;
+
+		GameObject* m_Parent;
+		std::vector<GameObject*> m_Children;
 		// todo: mmm, every gameobject has a texture? Is that correct?
 	};
 }
+
+
+

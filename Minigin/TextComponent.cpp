@@ -27,7 +27,7 @@ void dae::TextComponent::SetColor(int r, int g, int b, int a)
 
 void dae::TextComponent::Initialize([[maybe_unused]] GameTime* time)
 {
-
+	m_transform = m_GameObject->AddComponent<TransformComponent>();
 }
 
 void dae::TextComponent::Update()
@@ -54,7 +54,7 @@ void dae::TextComponent::Draw()
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_transform.GetPosition();
+		const auto& pos = m_transform.lock()->GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
@@ -78,5 +78,5 @@ void dae::TextComponent::SetText(const std::string& text)
 
 void dae::TextComponent::SetPosition(const float x, const float y)
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	m_transform.lock()->SetPosition(x, y, 0.0f);
 }
