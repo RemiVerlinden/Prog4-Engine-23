@@ -4,10 +4,10 @@
 #include <unordered_set>
 #include "Scene.h"
 #include <assert.h>
+#include "BaseComponent.h"
 
 namespace dae
 {
-	class BaseComponent;
 	class TransformComponent;
 	class GameTime;
 	// todo: this should become final.

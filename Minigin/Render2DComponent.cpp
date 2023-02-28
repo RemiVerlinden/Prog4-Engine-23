@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "GameTime.h"
 #include "glm\glm.hpp"
+#include "GameObject.h"
 
 dae::Render2DComponent::Render2DComponent()
 	: m_Texture(nullptr)

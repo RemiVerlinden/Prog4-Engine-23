@@ -6,6 +6,7 @@
 #include "Texture2D.h"
 #include <iostream>
 #include "GameTime.h"
+#include "GameObject.h"
 
 dae::TextComponent::TextComponent(std::shared_ptr<Font> font) 
 	: TextComponent("",font) 

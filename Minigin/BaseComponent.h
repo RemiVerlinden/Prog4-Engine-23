@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "GameObject.h"
 
 namespace dae {
 	class GameObject;
