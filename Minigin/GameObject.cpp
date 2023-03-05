@@ -6,6 +6,8 @@
 #include "GameTime.h"
 #include "Transform.h"
 
+using namespace dae;
+
 dae::GameObject::GameObject(Scene* scene) :m_Scene(scene), m_Parent{nullptr}
 {
 	m_transform = AddComponent<TransformComponent>();
@@ -92,4 +94,17 @@ void dae::GameObject::SetPosition(float x, float y)
 	m_transform.lock()->SetLocalPosition(x, y, 0.0f);
 }
 
+GameObject* dae::GameObject::GetChildAt(unsigned int index)
+{
+	assert(index >= 0 && index < m_Children.size());
 
+	return m_Children.at(index);
+}
+
+//GameObject* dae::GameObject::GetChildAt(unsigned int index)
+//{
+//	if (index >= m_Children.size()) {
+//		throw std::out_of_range("Index out of range in dae::GameObject::GetChildAt()");
+//	}
+//	return m_Children.at(index);
+//}

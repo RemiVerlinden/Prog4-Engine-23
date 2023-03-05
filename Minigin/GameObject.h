@@ -47,7 +47,7 @@ namespace dae
 			return std::shared_ptr<ComponentType>(nullptr);
 		}
 		template<typename ComponentType>
-		bool HasComponent() 
+		bool HasComponent()
 		{
 			for (std::shared_ptr<BaseComponent> component : m_Components)
 			{
@@ -76,8 +76,8 @@ namespace dae
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		inline GameObject* GetParent() { return m_Parent; };
-		void AddChild(GameObject* go);
-		void RemoveChild(GameObject* go);
+		inline size_t GetChildCount() { return m_Children.size(); };
+		GameObject* GetChildAt(unsigned int index);
 		//===============================================
 
 		GameObject( Scene* scene );
@@ -89,6 +89,9 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+	private:
+		void AddChild(GameObject* go);
+		void RemoveChild(GameObject* go);
 	private:
 
 		std::weak_ptr<TransformComponent> m_transform;
