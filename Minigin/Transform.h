@@ -19,18 +19,20 @@ namespace dae
 		virtual void LateUpdate() override;
 		virtual void FixedUpdate() override;
 
-		const glm::vec3& GetPosition() const { return m_Position; }
-		void SetPosition(float x, float y, float z);
+		void SetLocalPosition(float x, float y, float z);
+		void SetLocalPosition(const glm::vec3& pos);
+		inline const glm::vec3& GetLocalPosition() { return m_LocalPosition; }
+		const glm::vec3& GetWorldPosition();
 
-		const glm::vec3& GetScale() const { return m_Scale; }
-		void SetScale(float x, float y, float z);
+		void SetPositionDirty();
 
 		TransformComponent(const TransformComponent & other) = delete;
 		TransformComponent(TransformComponent && other) = delete;
 		TransformComponent& operator=(const TransformComponent & other) = delete;
 		TransformComponent& operator=(TransformComponent && other) = delete;
 	private:
-		glm::vec3 m_Position;
-		glm::vec3 m_Scale;
+		glm::vec3				m_LocalPosition;
+		glm::vec3				m_WorldPosition;
+		bool					m_DirtyFlag = true;
 	};
 }

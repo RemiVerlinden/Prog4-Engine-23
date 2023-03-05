@@ -23,6 +23,7 @@ namespace dae{
 
 		void SetText(const std::string& text);
 		void SetPosition(const float x, const float y);
+		glm::vec3 GetPosition() {return m_Transform.lock()->GetWorldPosition(); };
 		void SetColor(int r, int g, int b, int a);
 
 		TextComponent(const TextComponent& other) = delete;
@@ -34,7 +35,7 @@ namespace dae{
 		bool m_needsUpdate;
 		std::string m_text;
 		SDL_Color m_FontColor;
-		std::weak_ptr<TransformComponent> m_transform;
+		std::weak_ptr<TransformComponent> m_Transform;
 		std::shared_ptr<Font> m_font;
 		std::shared_ptr<Texture2D> m_textTexture;
 	};

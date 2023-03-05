@@ -14,6 +14,7 @@
 #include "TextObject.h"
 #include "scene.h"
 #include <thread>
+#include "Timers.h"
 
 SDL_Window* g_window{};
 
@@ -86,23 +87,20 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
-	auto& renderer = Renderer::GetInstance();
-	auto& sceneManager = SceneManager::GetInstance();
-	auto& input = InputManager::GetInstance();
-
-	// todo: this update loop could use some work.
+	auto&								renderer = Renderer::GetInstance();
+	auto&								sceneManager =SceneManager::GetInstance();
+	auto&								input = InputManager::GetInstance();
 
 
-	//=============TIMER================
-	using namespace std::chrono;
-	GameTime time;
-	time.Reset();
-	float accumulator = 0.f; // time since last fixed timestep
-	const float fixedTimeStep = time.GetFixedTimeStep();
-	
-	auto minFrameTime = time.GetFrameRateLimit();
-	high_resolution_clock::time_point frameStart{};
-	high_resolution_clock::time_point frameEnd{};
+	//==========TIMER-VARIABLES=========
+
+	float								accumulator = 0.f; // time since last fixed timestep
+	const float							fixedTimeStep = 0.02f;
+	bool								framerateLimit = true;
+	float								frameRateLimitFPS = 100.f;
+	float								limitedFrameTime = 1000.f / frameRateLimitFPS;
+
+	Seconds								timeStep = 1.0f / 60.0f;
 
 	//==================================
 
@@ -111,36 +109,50 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	bool doContinue = true;
 	while (doContinue)
 	{
-		time.Update();
-		accumulator += time.GetElapsed();
-
-		//============INPUT=================
-		doContinue = input.ProcessInput();
-		//==================================
-
-
-		//=============UPDATE===============
-		sceneManager.CheckNewActiveGameScene(); // before we start to update the active scene, check if we have a new one
-
-		frameStart = std::chrono::steady_clock::now();
-		while(accumulator >= fixedTimeStep)
+		Milliseconds deltaTime = 0;
 		{
-			sceneManager.FixedUpdate();
-			accumulator -= fixedTimeStep;
+			ScopedTimer<PlatformClock> frameTimer(deltaTime);
+
+			accumulator += timeStep;
+
+			//============INPUT=================
+			doContinue = input.ProcessInput();
+			//==================================
+
+
+			//=============UPDATE===============
+			sceneManager.CheckNewActiveGameScene(); // before we start to update the active scene, check if we have a new one
+
+			while (accumulator >= fixedTimeStep)
+			{
+				sceneManager.FixedUpdate();
+				accumulator -= fixedTimeStep;
+			}
+			sceneManager.Update();
+			sceneManager.LateUpdate();
+			//==================================
+
+
+			//============RENDER================
+			renderer.Render();
+			//==================================
 		}
-		sceneManager.Update();
-		sceneManager.LateUpdate();
-		//==================================
 
+		//==========UPDATE-TIME=============
 
-		//============RENDER================
-		renderer.Render();
-		//==================================
-		frameEnd = std::chrono::steady_clock::now();
-		auto frameTime = frameEnd - frameStart;
+		// Frame rate limiter
+		if (framerateLimit)
+		{
+			float const minimumFrameTime = limitedFrameTime;
+			if (deltaTime < minimumFrameTime)
+			{
+				Milliseconds sleepTime = minimumFrameTime - deltaTime;
+				std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+				deltaTime = minimumFrameTime;
+			}
+		}
 
-		auto sleepTime = std::max<std::common_type_t<std::chrono::nanoseconds, std::chrono::nanoseconds>>(minFrameTime - frameTime, std::chrono::nanoseconds(0));
-		SDL_Delay((Uint32)std::chrono::duration_cast<std::chrono::milliseconds>(sleepTime).count());
-		std::this_thread::sleep_for(sleepTime);
+		timeStep = deltaTime;
+		EngineClock::Update(deltaTime);
 	}
 }

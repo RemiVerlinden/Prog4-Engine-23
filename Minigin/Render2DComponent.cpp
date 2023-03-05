@@ -12,6 +12,7 @@
 dae::Render2DComponent::Render2DComponent()
 	: m_Texture(nullptr)
 	, m_DrawStyle(DrawStyle::position)
+	, m_SrcRect( 0,0,1,1 )
 {
 
 }
@@ -28,7 +29,8 @@ void dae::Render2DComponent::Update()
 
 void dae::Render2DComponent::Draw()
 {
-	[[maybe_unused]] const auto& pos = m_transform.lock()->GetPosition();
+	[[maybe_unused]] const auto& pos = m_transform.lock()->GetWorldPosition();
+
 
 	switch (m_DrawStyle)
 	{
@@ -72,7 +74,7 @@ void dae::Render2DComponent::SetTexture(const std::string& filename)
 
 void dae::Render2DComponent::SetPosition(const float x, const float y)
 {
-	m_transform.lock()->SetPosition(x, y, 0.0f);
+	m_transform.lock()->SetLocalPosition(x, y, 0.0f);
 }
 
 void dae::Render2DComponent::SetResolution(const int width, const int height)

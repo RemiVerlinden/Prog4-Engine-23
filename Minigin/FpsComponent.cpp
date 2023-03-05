@@ -25,27 +25,37 @@ void dae::FpsComponent::Update()
 {
 	auto textComponent = m_TextComponent.lock();
 	textComponent->SetText(std::format("{} FPS", m_Time->GetFPS()));
-	textComponent->Update();
+
+	glm::vec3 rotateblabla{0,0,0};
+	float timestep = m_Time->GetElapsed();
+	rotateblabla.x = glm::sin(5 * timestep);
+	rotateblabla.y = glm::cos(5 * timestep);
+	auto wow = startPos + rotateblabla;
+	textComponent->SetPosition(wow.x, wow.y);
 }
 
 void dae::FpsComponent::Draw()
 {
-	m_TextComponent.lock()->Draw();
+	if (do_once)
+	{
+	startPos = m_TextComponent.lock()->GetPosition();
+	do_once = false;
+	}
+
 }
 
 void dae::FpsComponent::LateUpdate()
 {
-	m_TextComponent.lock()->LateUpdate();
 }
 
 void dae::FpsComponent::FixedUpdate()
 {
-	m_TextComponent.lock()->FixedUpdate();
 }
 
 void dae::FpsComponent::SetPosition(const float x, const float y)
 {
 	m_TextComponent.lock()->SetPosition(x, y);
+
 }
 
 void dae::FpsComponent::SetColor(int r, int g, int b, int a)

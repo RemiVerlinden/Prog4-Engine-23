@@ -75,7 +75,7 @@ namespace dae
 		};
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
-		void GetParent();
+		inline GameObject* GetParent() { return m_Parent; };
 		void AddChild(GameObject* go);
 		void RemoveChild(GameObject* go);
 		//===============================================

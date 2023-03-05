@@ -21,21 +21,40 @@ void dae::GameObject::Update()
 		component->RootUpdate();
 	}
 }
-void dae::GameObject::SetParent([[maybe_unused]]GameObject* parent, [[maybe_unused]] bool keepWorldPosition)
+void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
-	//if (parent == nullptr)
-	//	SetLocalPosition(GetWorldPosition());
-	//else
-	//{
-	//	if (keepWorldPosition)
-	//		SetLocalPosition(GetLocalPosition() - parent->GetWorldPosition());
-	//	SetPositionDirty()
-	//}
-	//if (m_parent)
-	//	m_parent->RemoveChild(this);
-	//m_parent = parent;
-	//if (m_parent)
-	//	m_parent->AddChild(this)
+	std::shared_ptr<TransformComponent> transform = GetComponent<TransformComponent>().lock();
+	std::shared_ptr<TransformComponent> parentTransform = parent->GetComponent<TransformComponent>().lock();
+	if (parent == nullptr)
+		transform->SetLocalPosition(transform->GetWorldPosition());
+	else
+	{
+		if (keepWorldPosition)
+			transform->SetLocalPosition(transform->GetLocalPosition() - parentTransform->GetWorldPosition());
+		transform->SetPositionDirty();
+	}
+	if (m_Parent)
+		m_Parent->RemoveChild(this);
+	m_Parent = parent;
+	if (m_Parent)
+		m_Parent->AddChild(this);
+}
+
+void dae::GameObject::AddChild(GameObject* go)
+{
+	m_Children.push_back(go);
+}
+
+void dae::GameObject::RemoveChild(GameObject* go)
+{
+	for (auto itChild = m_Children.begin(); itChild != m_Children.end(); ++itChild)
+	{
+		if (*itChild == go)
+		{
+			m_Children.erase(itChild);
+			break;
+		}
+	}
 }
 
 void dae::GameObject::LateUpdate()
@@ -70,7 +89,7 @@ void dae::GameObject::Render() const
 //
 void dae::GameObject::SetPosition(float x, float y)
 {
-	m_transform.lock()->SetPosition(x, y, 0.0f);
+	m_transform.lock()->SetLocalPosition(x, y, 0.0f);
 }
 
 

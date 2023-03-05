@@ -28,6 +28,7 @@ namespace dae
 		bool IsRunning() const { return !m_IsStopped; }
 
 		inline void SetFrameRateLimit(float FPS) { m_frameRateLimitFPS = glm::max(0.0f, FPS); }
+		inline float HasFrameRateLimit() const { return m_frameRateLimitFPS > 0; }
 		inline float GetFrameRateLimit() const { return m_frameRateLimitFPS; }
 		inline float GetLimitedFrameTime() const { return (1000.f / m_frameRateLimitFPS); }
 
