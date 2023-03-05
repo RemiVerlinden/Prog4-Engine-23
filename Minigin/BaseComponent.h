@@ -3,18 +3,18 @@
 
 namespace dae {
 	class GameObject;
-	class GameTime;
+	class UpdateContext;
 	class BaseComponent
 	{
 	public:
 		BaseComponent();
 		virtual ~BaseComponent() = default;
 
-		virtual void Initialize(GameTime* time) = 0;
-		virtual void Update() = 0;
+		virtual void Initialize() = 0;
+		virtual void Update(const UpdateContext& context) = 0;
 		virtual void Draw() = 0;
-		virtual void LateUpdate() = 0;
-		virtual void FixedUpdate() = 0;
+		virtual void LateUpdate(const UpdateContext& context) = 0;
+		virtual void FixedUpdate(const UpdateContext& context) = 0;
 
 
 		BaseComponent(const BaseComponent& other) = delete;
@@ -28,10 +28,10 @@ namespace dae {
 	private:
 		friend GameObject;
 
-		virtual void RootInitialize(GameObject* go, GameTime* time);
-		virtual void RootUpdate();
+		virtual void RootInitialize(GameObject* go);
+		virtual void RootUpdate(const UpdateContext& context);
 		virtual void RootDraw();
-		virtual void RootFixedUpdate();
-		virtual void RootLateUpdate();
+		virtual void RootFixedUpdate(const UpdateContext& context);
+		virtual void RootLateUpdate(const UpdateContext& context);
 	};
 }

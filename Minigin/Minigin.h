@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <functional>
+#include "UpdateContext.h"
 
 namespace dae
 {

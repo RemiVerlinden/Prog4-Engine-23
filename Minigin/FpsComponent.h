@@ -2,9 +2,12 @@
 #include "BaseComponent.h"
 #include <memory>
 #include "Transform.h"
+#include "Time.h"
 
 namespace dae {
 
+	class UpdateContext;
+	class Seconds;
 	class Font;
 	class Texture2D;
 	class GameTime;
@@ -15,11 +18,11 @@ namespace dae {
 		FpsComponent(std::shared_ptr<Font> font);
 		~FpsComponent() = default;
 
-		virtual void Initialize(GameTime* time) override;
-		virtual void Update() override;
+		virtual void Initialize() override;
+		virtual void Update(const UpdateContext& context) override;
 		virtual void Draw() override;
-		virtual void LateUpdate() override;
-		virtual void FixedUpdate() override;
+		virtual void LateUpdate(const UpdateContext& context) override;
+		virtual void FixedUpdate(const UpdateContext& context) override;
 
 		void SetPosition(const float x, const float y);
 		void SetColor(int r, int g, int b, int a);
@@ -32,6 +35,9 @@ namespace dae {
 	private:
 		std::weak_ptr<TextComponent> m_TextComponent;
 		std::weak_ptr<Font> m_Font;
-		GameTime* m_Time;
+
+		Seconds m_Accumulator = 0.f;
+		uint64_t m_FpsCount = 0;
+		uint64_t m_FramesPerSecond = 0;
 	};
 }

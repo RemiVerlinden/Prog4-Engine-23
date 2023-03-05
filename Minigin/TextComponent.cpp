@@ -5,7 +5,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include <iostream>
-#include "GameTime.h"
+
 #include "GameObject.h"
 
 dae::TextComponent::TextComponent(std::shared_ptr<Font> font) 
@@ -26,12 +26,12 @@ void dae::TextComponent::SetColor(int r, int g, int b, int a)
 }
 
 
-void dae::TextComponent::Initialize([[maybe_unused]] GameTime* time)
+void dae::TextComponent::Initialize()
 {
 	m_Transform = m_GameObject->GetComponent<TransformComponent>();
 }
 
-void dae::TextComponent::Update()
+void dae::TextComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
 	if (m_needsUpdate)
 	{
@@ -60,12 +60,12 @@ void dae::TextComponent::Draw()
 	}
 }
 
-void dae::TextComponent::LateUpdate()
+void dae::TextComponent::LateUpdate([[maybe_unused]] const UpdateContext& context)
 {
 
 }
 
-void dae::TextComponent::FixedUpdate()
+void dae::TextComponent::FixedUpdate([[maybe_unused]] const UpdateContext& context)
 {
 
 }

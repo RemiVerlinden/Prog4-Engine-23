@@ -8,15 +8,16 @@
 
 namespace dae
 {
+	class UpdateContext;
 	class TransformComponent;
 	class GameTime;
 	// todo: this should become final.
 	class GameObject final
 	{
 	public:
-		void Update();
-		void LateUpdate();
-		void FixedUpdate();
+		void Update(const UpdateContext& context);
+		void LateUpdate(const UpdateContext& context);
+		void FixedUpdate(const UpdateContext& context);
 		void Render() const;
 
 		void SetPosition(float x, float y);
@@ -28,7 +29,7 @@ namespace dae
 		{
 			std::shared_ptr<BaseComponent> newComponent = std::make_shared<ComponentType>(std::forward<Args>(args)...);
 			m_Components.push_back(newComponent);
-			newComponent->RootInitialize(this, m_Scene->GetGameTime());
+			newComponent->RootInitialize(this);
 			return std::dynamic_pointer_cast<ComponentType>(newComponent);
 		}
 

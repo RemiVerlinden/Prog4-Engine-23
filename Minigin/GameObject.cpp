@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "BaseComponent.h"
-#include "GameTime.h"
+
 #include "Transform.h"
 
 using namespace dae;
@@ -16,11 +16,11 @@ dae::GameObject::GameObject(Scene* scene) :m_Scene(scene), m_Parent{nullptr}
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::Update()
+void dae::GameObject::Update(const UpdateContext& context)
 {
 	for (std::shared_ptr<BaseComponent> component : m_Components)
 	{
-		component->RootUpdate();
+		component->RootUpdate(context);
 	}
 }
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
@@ -59,19 +59,19 @@ void dae::GameObject::RemoveChild(GameObject* go)
 	}
 }
 
-void dae::GameObject::LateUpdate()
+void dae::GameObject::LateUpdate(const UpdateContext& context)
 {
 	for (std::shared_ptr<BaseComponent> component : m_Components)
 	{
-		component->RootLateUpdate();
+		component->RootLateUpdate(context);
 	}
 }
 
-void dae::GameObject::FixedUpdate()
+void dae::GameObject::FixedUpdate(const UpdateContext& context)
 {
 	for (std::shared_ptr<BaseComponent> component : m_Components)
 	{
-		component->RootFixedUpdate();
+		component->RootFixedUpdate(context);
 	}
 }
 

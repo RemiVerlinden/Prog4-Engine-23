@@ -5,6 +5,7 @@
 
 namespace dae {
 
+	class UpdateContext;
 	class Texture2D;
 	class Render2DComponent final : public BaseComponent
 	{
@@ -19,11 +20,11 @@ namespace dae {
 		Render2DComponent();
 		~Render2DComponent() = default;
 
-		virtual void Initialize(GameTime* time);
-		virtual void Update();
+		virtual void Initialize();
+		virtual void Update(const UpdateContext& context);
 		virtual void Draw();
-		virtual void LateUpdate();
-		virtual void FixedUpdate();
+		virtual void LateUpdate(const UpdateContext& context);
+		virtual void FixedUpdate(const UpdateContext& context);
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(const float x, const float y);

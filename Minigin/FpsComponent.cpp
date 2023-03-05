@@ -8,33 +8,42 @@
 #include "TextComponent.h"
 #include <format>
 #include "GameObject.h"
-#include "GameTime.h"
+#include "UpdateContext.h"
+
 dae::FpsComponent::FpsComponent( std::shared_ptr<Font> font)
 {
 	m_Font = font;
 }
 
-void dae::FpsComponent::Initialize([[maybe_unused]] GameTime* time)
+void dae::FpsComponent::Initialize()
 {
 	m_TextComponent = m_GameObject->AddComponent<TextComponent>(m_Font.lock());
-	m_Time = time;
 }
 
-void dae::FpsComponent::Update()
+void dae::FpsComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
+	m_Accumulator += context.GetDeltaTime();
+	++m_FpsCount;
+	if (m_Accumulator >= 1.0f)
+	{
+		m_FramesPerSecond = m_FpsCount;
+		m_FpsCount = 0;
+		m_Accumulator -= 1.0f;
+	}
+
 	auto textComponent = m_TextComponent.lock();
-	textComponent->SetText(std::format("{} FPS", m_Time->GetFPS()));
+	textComponent->SetText(std::format("{} FPS", m_FramesPerSecond));
 }
 
 void dae::FpsComponent::Draw()
 {
 }
 
-void dae::FpsComponent::LateUpdate()
+void dae::FpsComponent::LateUpdate([[maybe_unused]]const UpdateContext& context)
 {
 }
 
-void dae::FpsComponent::FixedUpdate()
+void dae::FpsComponent::FixedUpdate ([[maybe_unused]] const UpdateContext& context)
 {
 }
 

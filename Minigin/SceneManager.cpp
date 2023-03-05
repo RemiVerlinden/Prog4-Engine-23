@@ -1,18 +1,18 @@
 #include "SceneManager.h"
 #include "Scene.h"
-void dae::SceneManager::Update()
+void dae::SceneManager::Update(const UpdateContext& context)
 {
-	if (m_pActiveScene != nullptr) m_pActiveScene->Update();
+	if (m_pActiveScene != nullptr) m_pActiveScene->Update(context);
 }
 
-void dae::SceneManager::LateUpdate()
+void dae::SceneManager::LateUpdate(const UpdateContext& context)
 {
-	if (m_pActiveScene != nullptr) m_pActiveScene->LateUpdate();
+	if (m_pActiveScene != nullptr) m_pActiveScene->LateUpdate(context);
 }
 
-void dae::SceneManager::FixedUpdate()
+void dae::SceneManager::FixedUpdate(const UpdateContext& context)
 {
-	if (m_pActiveScene != nullptr) m_pActiveScene->FixedUpdate();
+	if (m_pActiveScene != nullptr) m_pActiveScene->FixedUpdate(context);
 }
 
 void dae::SceneManager::Render()

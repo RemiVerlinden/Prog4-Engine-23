@@ -3,11 +3,11 @@
 
 using namespace dae;
 
-void dae::TransformComponent::Initialize([[maybe_unused]] GameTime* time)
+void dae::TransformComponent::Initialize()
 {
 }
 
-void dae::TransformComponent::Update()
+void dae::TransformComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
 	GetWorldPosition();
 }
@@ -16,11 +16,11 @@ void dae::TransformComponent::Draw()
 {
 }
 
-void dae::TransformComponent::LateUpdate()
+void dae::TransformComponent::LateUpdate([[maybe_unused]] const UpdateContext& context)
 {
 }
 
-void dae::TransformComponent::FixedUpdate()
+void dae::TransformComponent::FixedUpdate([[maybe_unused]] const UpdateContext& context)
 {
 }
 

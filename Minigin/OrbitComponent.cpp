@@ -1,18 +1,18 @@
 #include "OrbitComponent.h"
 #include "GameObject.h"
+#include "UpdateContext.h"
 
 using namespace dae;
 
-void dae::OrbitComponent::Initialize(GameTime* time)
+void dae::OrbitComponent::Initialize()
 {
-	m_Time = time;
 	m_Transform = m_GameObject->GetComponent<TransformComponent>().lock().get();
 	m_CenterPos = m_Transform->GetWorldPosition();
 }
 
-void dae::OrbitComponent::Update()
+void dae::OrbitComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
-	float time = m_Time->GetTotal();
+	float time = EngineClock::GetTimeInSeconds();
 
 	glm::vec3 orbitPos{ m_CenterPos };
 	orbitPos.x += glm::cos(m_Speed * time) * m_Radius;
@@ -25,10 +25,10 @@ void dae::OrbitComponent::Draw()
 {
 }
 
-void dae::OrbitComponent::LateUpdate()
+void dae::OrbitComponent::LateUpdate([[maybe_unused]] const UpdateContext& context)
 {
 }
 
-void dae::OrbitComponent::FixedUpdate()
+void dae::OrbitComponent::FixedUpdate([[maybe_unused]] const UpdateContext& context)
 {
 }

@@ -7,17 +7,10 @@ unsigned int Scene::m_idCounter = 0;
 
 Scene::Scene(const std::string& tag) 
 	: m_Tag(tag)
-	, m_GameTime{}
 {
 	// Initialize the timer in the scene
-	m_GameTime.Reset();
-	m_GameTime.Stop();
 }
 
-GameTime* dae::Scene::GetGameTime()
-{
-	return &m_GameTime;
-}
 
 Scene::~Scene() = default;
 
@@ -36,29 +29,27 @@ void Scene::RemoveAll()
 	m_objects.clear();
 }
 
-void Scene::Update()
+void Scene::Update(const UpdateContext& context)
 {
-	m_GameTime.Update();
-
 	for(auto& object : m_objects)
 	{
-		object->Update();
+		object->Update(context);
 	}
 }
 
-void dae::Scene::LateUpdate()
+void dae::Scene::LateUpdate(const UpdateContext& context)
 {
 	for (auto& object : m_objects)
 	{
-		object->LateUpdate();
+		object->LateUpdate(context);
 	}
 }
 
-void dae::Scene::FixedUpdate()
+void dae::Scene::FixedUpdate(const UpdateContext& context)
 {
 	for (auto& object : m_objects)
 	{
-		object->FixedUpdate();
+		object->FixedUpdate(context);
 	}
 }
 

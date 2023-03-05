@@ -4,6 +4,7 @@
 #include "Transform.h"
 
 namespace dae {
+	class UpdateContext;
 	class Font;
 	class Texture2D;
 	class GameTime;
@@ -14,11 +15,11 @@ class OrbitComponent final : public BaseComponent
 		OrbitComponent() = default;
 		~OrbitComponent() = default;
 
-		virtual void Initialize(GameTime* time) override;
-		virtual void Update() override;
+		virtual void Initialize() override;
+		virtual void Update(const UpdateContext& context) override;
 		virtual void Draw() override;
-		virtual void LateUpdate() override;
-		virtual void FixedUpdate() override;
+		virtual void LateUpdate(const UpdateContext& context) override;
+		virtual void FixedUpdate(const UpdateContext& context) override;
 
 		inline void SetRadius(float radius) { m_Radius = radius; }
 		inline void SetSpeed(float speed) { m_Speed = speed; }
@@ -30,7 +31,6 @@ class OrbitComponent final : public BaseComponent
 
 	private:
 		TransformComponent* m_Transform;
-		GameTime* m_Time;
 		glm::vec3 m_CenterPos;
 
 		float m_Speed = 10.f;

@@ -1,9 +1,10 @@
 #pragma once
 #include "SceneManager.h"
-#include "GameTime.h"
+
 
 namespace dae
 {
+	class UpdateContext;
 	class GameObject;
 	class Scene final
 	{
@@ -13,18 +14,17 @@ namespace dae
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
-		void Update();
+		void Update(const UpdateContext& context);
 		void Render() const;
 
 		//========================================================
-		void LateUpdate();
-		void FixedUpdate();
+		void LateUpdate(const UpdateContext& context);
+		void FixedUpdate(const UpdateContext& context);
 
 		std::string GetTag() { return m_Tag; };
-		void OnSceneActivated() { m_GameTime.Start(); }
-		void OnSceneDeactivated() { m_GameTime.Stop(); }
+		void OnSceneActivated() {  }
+		void OnSceneDeactivated() {  }
 
-		GameTime* GetGameTime();
 		//========================================================
 
 		~Scene();
@@ -45,9 +45,6 @@ namespace dae
 		static unsigned int m_idCounter; 
 
 		//========================================================
-
-		GameTime m_GameTime;
-
 
 		//========================================================
 	};

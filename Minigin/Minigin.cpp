@@ -10,11 +10,13 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
-#include "GameTime.h" 
+ 
 #include "TextObject.h"
 #include "scene.h"
 #include <thread>
 #include "Timers.h"
+#include <iostream>
+#include "UpdateContext.h"
 
 SDL_Window* g_window{};
 
@@ -94,13 +96,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	//==========TIMER-VARIABLES=========
 
+	UpdateContext						updateContext{};
 	float								accumulator = 0.f; // time since last fixed timestep
-	const float							fixedTimeStep = 0.02f;
-	bool								framerateLimit = true;
-	float								frameRateLimitFPS = 100.f;
-	float								limitedFrameTime = 1000.f / frameRateLimitFPS;
-
-	Seconds								timeStep = 1.0f / 60.0f;
 
 	//==================================
 
@@ -113,7 +110,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		{
 			ScopedTimer<PlatformClock> frameTimer(frameTime);
 
-			accumulator += timeStep;
+			accumulator += updateContext.GetDeltaTime();
 
 			//============INPUT=================
 			doContinue = input.ProcessInput();
@@ -123,13 +120,13 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			//=============UPDATE===============
 			sceneManager.CheckNewActiveGameScene(); // before we start to update the active scene, check if we have a new one
 
-			while (accumulator >= fixedTimeStep)
+			while (accumulator >= updateContext.GetFixedTimeStep())
 			{
-				sceneManager.FixedUpdate();
-				accumulator -= fixedTimeStep;
+				sceneManager.FixedUpdate(updateContext);
+				accumulator -= updateContext.GetFixedTimeStep();
 			}
-			sceneManager.Update();
-			sceneManager.LateUpdate();
+			sceneManager.Update(updateContext);
+			sceneManager.LateUpdate(updateContext);
 			//==================================
 
 
@@ -141,9 +138,9 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		//==========UPDATE-TIME=============
 
 		// Frame rate limiter
-		if (framerateLimit)
+		if (updateContext.HasFrameRateLimit())
 		{
-			float const minimumFrameTime = limitedFrameTime;
+			float const minimumFrameTime = updateContext.GetLimitedFrameTime();
 			if (frameTime < minimumFrameTime)
 			{
 				Milliseconds sleepTime = minimumFrameTime - frameTime;
@@ -152,7 +149,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			}
 		}
 
-		timeStep = frameTime;
+		updateContext.UpdateDeltaTime(frameTime);
 		EngineClock::Update(frameTime);
 	}
 }

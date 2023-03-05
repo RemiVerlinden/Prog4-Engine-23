@@ -6,6 +6,7 @@
 
 namespace dae
 {
+	class UpdateContext;
 	class Scene;
 	class SceneManager final : public Singleton<SceneManager>
 	{
@@ -22,11 +23,11 @@ namespace dae
 		void NextScene();
 		void PreviousScene();
 
-		void LateUpdate();
-		void FixedUpdate();
+		void LateUpdate(const UpdateContext& context);
+		void FixedUpdate(const UpdateContext& context);
 		void Initialize();
 		//=========================================================
-		void Update();
+		void Update(const UpdateContext& context);
 		void Render();
 	private:
 		friend class Singleton<SceneManager>;

@@ -4,7 +4,8 @@
 
 namespace dae
 {
-	class GameTime;
+	class GameTime; 
+	class UpdateContex;
 	class TransformComponent final : public BaseComponent
 	{
 	public:
@@ -13,11 +14,11 @@ namespace dae
 		TransformComponent() = default;
 		~TransformComponent() = default;
 
-		virtual void Initialize(GameTime * time) override;
-		virtual void Update() override;
+		virtual void Initialize() override;
+		virtual void Update(const UpdateContext& context) override;
 		virtual void Draw() override;
-		virtual void LateUpdate() override;
-		virtual void FixedUpdate() override;
+		virtual void LateUpdate(const UpdateContext& context) override;
+		virtual void FixedUpdate(const UpdateContext& context) override;
 
 		void SetLocalPosition(float x, float y, float z);
 		void SetLocalPosition(const glm::vec3& pos);

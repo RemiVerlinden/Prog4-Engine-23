@@ -6,6 +6,7 @@
 
 namespace dae{
 
+	class UpdateContext;
 	class Font;
 	class Texture2D;
 	class TextComponent final : public BaseComponent
@@ -15,11 +16,11 @@ namespace dae{
 		TextComponent(const std::string& text, std::shared_ptr<Font> font);
 		~TextComponent() = default;
 
-		virtual void Initialize( GameTime* time) override;
-		virtual void Update() override;
+		virtual void Initialize() override;
+		virtual void Update(const UpdateContext& context) override;
 		virtual void Draw() override;
-		virtual void LateUpdate() override;
-		virtual void FixedUpdate() override;
+		virtual void LateUpdate(const UpdateContext& context) override;
+		virtual void FixedUpdate(const UpdateContext& context) override;
 
 		void SetText(const std::string& text);
 		void SetPosition(const float x, const float y);

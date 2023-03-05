@@ -5,7 +5,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include "ResourceManager.h"
-#include "GameTime.h"
+
 #include "glm\glm.hpp"
 #include "GameObject.h"
 
@@ -17,12 +17,12 @@ dae::Render2DComponent::Render2DComponent()
 
 }
 
-void dae::Render2DComponent::Initialize([[maybe_unused]] GameTime* time)
+void dae::Render2DComponent::Initialize()
 {
 	m_transform = m_GameObject->GetComponent<TransformComponent>();
 }
 
-void dae::Render2DComponent::Update()
+void dae::Render2DComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
 
 }
@@ -51,14 +51,12 @@ void dae::Render2DComponent::Draw()
 	}
 }
 
-void dae::Render2DComponent::LateUpdate()
+void dae::Render2DComponent::LateUpdate([[maybe_unused]] const UpdateContext& context)
 {
-
 }
 
-void dae::Render2DComponent::FixedUpdate()
+void dae::Render2DComponent::FixedUpdate([[maybe_unused]] const UpdateContext& context)
 {
-
 }
 
 void dae::Render2DComponent::SetTexture(const std::string& filename)
