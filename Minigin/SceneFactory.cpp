@@ -83,9 +83,9 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		go = std::make_shared<dae::GameObject>(pScene);
 		auto textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent.lock()->SetTexture("fatalerror.png");
+		textureComponent.lock()->SetTexture("cheff.png");
 		textureComponent.lock()->SetPosition(300, 300);
-		textureComponent.lock()->SetResolution(50,50);
+		textureComponent.lock()->SetResolution(50, 50);
 		textureComponent.lock()->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
 		auto orbitComp = go->AddComponent<OrbitComponent>();
@@ -100,7 +100,7 @@ void dae::SceneFactory::InitDefaultScene()
 		go = std::make_shared<dae::GameObject>(pScene);
 
 		auto textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent.lock()->SetTexture("colorbars.png");
+		textureComponent.lock()->SetTexture("bean.png");
 		textureComponent.lock()->SetPosition(0, 0);
 		textureComponent.lock()->SetResolution(50, 50);
 		textureComponent.lock()->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
@@ -133,18 +133,55 @@ void dae::SceneFactory::InitFpsDemoScene()
 
 
 	pScene->Add(fpsGO);
+
+
 }
 
 void dae::SceneFactory::InitBonusScene()
 {
 	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Bonus").get();
 
-	std::shared_ptr<GameObject> go = std::make_shared<dae::GameObject>(pScene);
-	std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
-	textureComponent.lock()->SetTexture("backdrop_trees.png");
-	textureComponent.lock()->SetPosition(-80, 0);
-	textureComponent.lock()->SetResolution(800, 600);
-	textureComponent.lock()->SetDrawStyle(dae::Render2DComponent::DrawStyle::positionScale);
-	Renderer::GetInstance().SetBackgroundColor(SDL_Color{ 100,140,230,255 });
-	pScene->Add(go);
+	std::shared_ptr<GameObject> go;
+	{
+		go = std::make_shared<dae::GameObject>(pScene);
+		std::weak_ptr<Render2DComponent> textureComponent = go->AddComponent<Render2DComponent>();
+		textureComponent.lock()->SetTexture("backdrop_trees.png");
+		textureComponent.lock()->SetPosition(-80, 0);
+		textureComponent.lock()->SetResolution(800, 600);
+		textureComponent.lock()->SetDrawStyle(dae::Render2DComponent::DrawStyle::positionScale);
+		Renderer::GetInstance().SetBackgroundColor(SDL_Color{ 100,140,230,255 });
+		pScene->Add(go);
+	}
+	// orbiting texture 1
+	{
+		go = std::make_shared<dae::GameObject>(pScene);
+		auto textureComponent = go->AddComponent<Render2DComponent>();
+		textureComponent.lock()->SetTexture("fatalerror.png");
+		textureComponent.lock()->SetPosition(300, 200);
+		textureComponent.lock()->SetResolution(100, 100);
+		textureComponent.lock()->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+
+		auto orbitComp = go->AddComponent<OrbitComponent>();
+		orbitComp.lock()->SetSpeed(2.6f);
+		orbitComp.lock()->SetRadius(100.f);
+		pScene->Add(go);
+	}
+
+	// orbiting texture 2
+	{
+		auto parentGo = go; // previous go from RAII block above
+		go = std::make_shared<dae::GameObject>(pScene);
+
+		auto textureComponent = go->AddComponent<Render2DComponent>();
+		textureComponent.lock()->SetTexture("colorbars.png");
+		textureComponent.lock()->SetPosition(0, 0);
+		textureComponent.lock()->SetResolution(100, 100);
+		textureComponent.lock()->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+
+		go->SetParent(parentGo.get(), true);
+		auto orbitComp = go->AddComponent<OrbitComponent>();
+		orbitComp.lock()->SetSpeed(8.4f);
+		orbitComp.lock()->SetRadius(150.f);
+		pScene->Add(go);
+	}
 }
