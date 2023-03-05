@@ -24,7 +24,7 @@ namespace dae {
 
 	protected:
 		GameObject* m_GameObject;
-
+		
 	private:
 		friend GameObject;
 

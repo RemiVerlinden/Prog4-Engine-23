@@ -109,9 +109,9 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	bool doContinue = true;
 	while (doContinue)
 	{
-		Milliseconds deltaTime = 0;
+		Milliseconds frameTime = 0;
 		{
-			ScopedTimer<PlatformClock> frameTimer(deltaTime);
+			ScopedTimer<PlatformClock> frameTimer(frameTime);
 
 			accumulator += timeStep;
 
@@ -144,15 +144,15 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		if (framerateLimit)
 		{
 			float const minimumFrameTime = limitedFrameTime;
-			if (deltaTime < minimumFrameTime)
+			if (frameTime < minimumFrameTime)
 			{
-				Milliseconds sleepTime = minimumFrameTime - deltaTime;
+				Milliseconds sleepTime = minimumFrameTime - frameTime;
 				std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-				deltaTime = minimumFrameTime;
+				frameTime = minimumFrameTime;
 			}
 		}
 
-		timeStep = deltaTime;
-		EngineClock::Update(deltaTime);
+		timeStep = frameTime;
+		EngineClock::Update(frameTime);
 	}
 }

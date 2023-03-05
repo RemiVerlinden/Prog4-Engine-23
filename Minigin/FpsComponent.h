@@ -28,12 +28,10 @@ namespace dae {
 		FpsComponent& operator=(const FpsComponent& other) = delete;
 		FpsComponent& operator=(FpsComponent&& other) = delete;
 
+		int sign = 1;
 	private:
 		std::weak_ptr<TextComponent> m_TextComponent;
 		std::weak_ptr<Font> m_Font;
 		GameTime* m_Time;
-
-		glm::vec3 startPos;
-		bool do_once = true;
 	};
 }
