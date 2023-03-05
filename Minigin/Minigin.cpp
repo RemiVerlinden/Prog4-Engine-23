@@ -94,10 +94,16 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 
 	//=============TIMER================
+	using namespace std::chrono;
 	GameTime time;
 	time.Reset();
 	float accumulator = 0.f; // time since last fixed timestep
 	const float fixedTimeStep = time.GetFixedTimeStep();
+	
+	auto minFrameTime = time.GetFrameRateLimit();
+	high_resolution_clock::time_point frameStart{};
+	high_resolution_clock::time_point frameEnd{};
+
 	//==================================
 
 	sceneManager.Initialize(); // IMPORTANT
@@ -116,6 +122,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		//=============UPDATE===============
 		sceneManager.CheckNewActiveGameScene(); // before we start to update the active scene, check if we have a new one
 
+		frameStart = std::chrono::steady_clock::now();
 		while(accumulator >= fixedTimeStep)
 		{
 			sceneManager.FixedUpdate();
@@ -129,7 +136,11 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		//============RENDER================
 		renderer.Render();
 		//==================================
-		
-		//std::this_thread::sleep_for(0);
+		frameEnd = std::chrono::steady_clock::now();
+		auto frameTime = frameEnd - frameStart;
+
+		auto sleepTime = std::max<std::common_type_t<std::chrono::nanoseconds, std::chrono::nanoseconds>>(minFrameTime - frameTime, std::chrono::nanoseconds(0));
+		SDL_Delay((Uint32)std::chrono::duration_cast<std::chrono::milliseconds>(sleepTime).count());
+		std::this_thread::sleep_for(sleepTime);
 	}
 }
