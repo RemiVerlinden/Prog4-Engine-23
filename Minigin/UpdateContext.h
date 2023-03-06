@@ -1,21 +1,3 @@
-//-------------------------------------------------------------------------
-
-
-
-// BIG DISCLAIMER
-
-// TIME.H - TIME.CPP - TIMERS.H - UPDATECONTEXT.H - UPDATECONTEXT.H
-
-// THESE FILES ARE NOT MINE, I DID NOT WRITE THEM
-
-// I LIKE HOW THEY WORK AND JUST WANT TO EXPERIMENT WITH THEM
-
-// CREDITS https://github.com/BobbyAnguelov/Esoterica
-
-
-
-//-------------------------------------------------------------------------
-
 #pragma once
 #include "Time.h"
 #include "glm/glm.hpp"
@@ -61,7 +43,7 @@ namespace dae
 
         Seconds                                     m_DeltaTime = 1.0f / 60.0f;
         uint64_t                                    m_FrameID = 0;
-        float                                       m_FrameRateLimitFPS = 144.0f;
+        float                                       m_FrameRateLimitFPS = 100.0f;
         Seconds							            m_FixedTimeStep = 0.02f;
 
     };
