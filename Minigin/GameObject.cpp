@@ -8,7 +8,7 @@
 
 using namespace dae;
 
-dae::GameObject::GameObject(Scene* scene) :m_Scene(scene), m_Parent{nullptr}
+dae::GameObject::GameObject(Scene* scene) :m_Scene(scene), m_Parent{ nullptr }, m_MarkedForDestroy{false}
 {
 	m_Transform = AddComponent<TransformComponent>();
 	m_Parent = nullptr;
@@ -25,13 +25,15 @@ void dae::GameObject::Update(const UpdateContext& context)
 }
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
-	TransformComponent* parentTransform = parent->GetComponent<TransformComponent>();
 	if (parent == nullptr)
 		m_Transform->SetLocalPosition(m_Transform->GetWorldPosition());
 	else
 	{
 		if (keepWorldPosition)
+		{
+			TransformComponent* parentTransform = parent->GetComponent<TransformComponent>();
 			m_Transform->SetLocalPosition(m_Transform->GetLocalPosition() - parentTransform->GetWorldPosition());
+		}
 		m_Transform->SetPositionDirty();
 	}
 	if (m_Parent)
@@ -91,6 +93,16 @@ void dae::GameObject::Render() const
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_Transform->SetLocalPosition(x, y, 0.0f);
+}
+
+void dae::GameObject::Destroy()
+{
+	m_MarkedForDestroy = true;
+	SetParent(nullptr, true);
+	for (const auto& child : m_Children)
+	{
+		child->Destroy();
+	}
 }
 
 GameObject* dae::GameObject::GetChildAt(unsigned int index)

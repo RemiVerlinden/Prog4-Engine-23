@@ -11,6 +11,14 @@ Scene::Scene(const std::string& tag)
 	// Initialize the timer in the scene
 }
 
+void dae::Scene::DeleteMarkedForDestroy()
+{
+	std::erase_if(m_objects,[](const std::shared_ptr<GameObject>& obj) 
+		{
+			return obj->IsMarkedForDestroy();
+		});
+}
+
 
 Scene::~Scene() = default;
 
@@ -43,6 +51,9 @@ void dae::Scene::LateUpdate(const UpdateContext& context)
 	{
 		object->LateUpdate(context);
 	}
+
+	DeleteMarkedForDestroy();
+
 }
 
 void dae::Scene::FixedUpdate(const UpdateContext& context)

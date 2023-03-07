@@ -22,8 +22,9 @@ namespace dae
 
 		void SetPosition(float x, float y);
 
+		void Destroy();
+		inline bool IsMarkedForDestroy() { return m_MarkedForDestroy; }
 		//===============================================
-
 		template<typename ComponentType, typename... Args>
 		ComponentType* AddComponent(Args&&... args);
 
@@ -36,13 +37,13 @@ namespace dae
 
 		template<typename ComponentType>
 		void RemoveComponent();
+		//===============================================
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		inline GameObject* GetParent() { return m_Parent; };
 		inline const std::vector<GameObject*>& GetChildren() { return m_Children; };
 		inline size_t GetChildCount() { return m_Children.size(); };
 		GameObject* GetChildAt(unsigned int index);
-		//===============================================
 
 		GameObject(Scene* scene);
 
@@ -61,11 +62,11 @@ namespace dae
 	private:
 
 		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
+		Scene*											m_Scene;
 
-		Scene* m_Scene;
-
-		GameObject* m_Parent;
+		GameObject*										m_Parent;
 		std::vector<GameObject*>						m_Children;
+		bool											m_MarkedForDestroy;
 	};
 
 

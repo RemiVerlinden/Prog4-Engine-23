@@ -34,10 +34,9 @@ namespace dae
 		Scene& operator=(Scene&& other) = delete;
 
 
-
 	private: 
 		explicit Scene(const std::string& name);
-
+		void DeleteMarkedForDestroy();
 
 		std::string m_Tag;
 		std::vector <std::shared_ptr<GameObject>> m_objects{};
