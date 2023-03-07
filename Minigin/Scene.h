@@ -40,7 +40,7 @@ namespace dae
 
 
 		std::string m_Tag;
-		std::vector < std::shared_ptr<GameObject>> m_objects{};
+		std::vector <std::shared_ptr<GameObject>> m_objects{};
 
 		static unsigned int m_idCounter; 
 

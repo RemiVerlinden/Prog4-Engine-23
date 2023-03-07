@@ -15,9 +15,13 @@ dae::FpsComponent::FpsComponent( std::shared_ptr<Font> font)
 	m_Font = font;
 }
 
+dae::FpsComponent::~FpsComponent()
+{
+}
+
 void dae::FpsComponent::Initialize()
 {
-	m_TextComponent = m_GameObject->AddComponent<TextComponent>(m_Font.lock());
+	m_TextComponent = m_GameObject->AddComponent<TextComponent>(m_Font);
 }
 
 void dae::FpsComponent::Update([[maybe_unused]] const UpdateContext& context)
@@ -31,30 +35,17 @@ void dae::FpsComponent::Update([[maybe_unused]] const UpdateContext& context)
 		m_Accumulator -= 1.0f;
 	}
 
-	auto textComponent = m_TextComponent.lock();
-	textComponent->SetText(std::format("{} FPS", m_FramesPerSecond));
-}
-
-void dae::FpsComponent::Draw()
-{
-}
-
-void dae::FpsComponent::LateUpdate([[maybe_unused]]const UpdateContext& context)
-{
-}
-
-void dae::FpsComponent::FixedUpdate ([[maybe_unused]] const UpdateContext& context)
-{
+	m_TextComponent->SetText(std::format("{} FPS", m_FramesPerSecond));
 }
 
 void dae::FpsComponent::SetPosition(const float x, const float y)
 {
-	m_TextComponent.lock()->SetPosition(x, y);
+	m_TextComponent->SetPosition(x, y);
 
 }
 
 void dae::FpsComponent::SetColor(int r, int g, int b, int a)
 {
-	m_TextComponent.lock()->SetColor(r, g, b, a);
+	m_TextComponent->SetColor(r, g, b, a);
 }
 

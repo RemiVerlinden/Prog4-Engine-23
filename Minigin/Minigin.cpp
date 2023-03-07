@@ -10,7 +10,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
- 
+
 #include "TextObject.h"
 #include "scene.h"
 #include <thread>
@@ -89,9 +89,9 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
-	auto&								renderer = Renderer::GetInstance();
-	auto&								sceneManager =SceneManager::GetInstance();
-	auto&								input = InputManager::GetInstance();
+	auto& renderer = Renderer::GetInstance();
+	auto& sceneManager = SceneManager::GetInstance();
+	auto& input = InputManager::GetInstance();
 
 
 	//==========TIMER-VARIABLES=========
@@ -136,11 +136,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		}
 
 		//==========UPDATE-TIME=============
-
 		// Frame rate limiter
 		if (updateContext.HasFrameRateLimit())
 		{
-			float const minimumFrameTime = updateContext.GetLimitedFrameTime();
+			const float minimumFrameTime = updateContext.GetLimitedFrameTime();
 			if (frameTime < minimumFrameTime)
 			{
 				Milliseconds sleepTime = minimumFrameTime - frameTime;
@@ -148,6 +147,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 				frameTime = minimumFrameTime;
 			}
 		}
+		//==================================
 
 		updateContext.UpdateDeltaTime(frameTime);
 		EngineClock::Update(frameTime);

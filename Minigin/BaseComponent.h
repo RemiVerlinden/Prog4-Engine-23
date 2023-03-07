@@ -11,10 +11,10 @@ namespace dae {
 		virtual ~BaseComponent() = default;
 
 		virtual void Initialize() = 0;
-		virtual void Update(const UpdateContext& context) = 0;
-		virtual void Draw() = 0;
-		virtual void LateUpdate(const UpdateContext& context) = 0;
-		virtual void FixedUpdate(const UpdateContext& context) = 0;
+		virtual void Update([[maybe_unused]] const UpdateContext& context) {};
+		virtual void Draw() {};
+		virtual void LateUpdate([[maybe_unused]] const UpdateContext& context) {};
+		virtual void FixedUpdate([[maybe_unused]] const UpdateContext& context) {};
 
 
 		BaseComponent(const BaseComponent& other) = delete;
@@ -23,15 +23,15 @@ namespace dae {
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 	protected:
-		GameObject* m_GameObject;
+		GameObject*						m_GameObject;
 		
 	private:
 		friend GameObject;
 
-		virtual void RootInitialize(GameObject* go);
-		virtual void RootUpdate(const UpdateContext& context);
-		virtual void RootDraw();
-		virtual void RootFixedUpdate(const UpdateContext& context);
-		virtual void RootLateUpdate(const UpdateContext& context);
+		void RootInitialize(GameObject* go);
+		void RootUpdate(const UpdateContext& context);
+		void RootDraw();
+		void RootFixedUpdate(const UpdateContext& context);
+		void RootLateUpdate(const UpdateContext& context);
 	};
 }

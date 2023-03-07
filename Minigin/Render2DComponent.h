@@ -21,10 +21,7 @@ namespace dae {
 		~Render2DComponent() = default;
 
 		virtual void Initialize();
-		virtual void Update(const UpdateContext& context);
 		virtual void Draw();
-		virtual void LateUpdate(const UpdateContext& context);
-		virtual void FixedUpdate(const UpdateContext& context);
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(const float x, const float y);
@@ -37,11 +34,10 @@ namespace dae {
 		Render2DComponent& operator=(Render2DComponent&& other) = delete;
 
 	private:
-		DrawStyle m_DrawStyle;
-		std::weak_ptr<TransformComponent> m_transform{};
-		glm::vec4 m_SrcRect;
-		glm::ivec2 m_TextureResolution;
-		std::shared_ptr<Texture2D> m_Texture;
+		DrawStyle						m_DrawStyle;
+		glm::vec4						m_SrcRect;
+		glm::ivec2						m_TextureResolution;
+		std::shared_ptr<Texture2D>		m_Texture;
 
 	};
 }

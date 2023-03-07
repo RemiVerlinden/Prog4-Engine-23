@@ -43,7 +43,7 @@ namespace dae
 
         Seconds                                     m_DeltaTime = 1.0f / 60.0f;
         uint64_t                                    m_FrameID = 0;
-        float                                       m_FrameRateLimitFPS = 100.0f;
+        float                                       m_FrameRateLimitFPS = 00.0f;
         Seconds							            m_FixedTimeStep = 0.02f;
 
     };

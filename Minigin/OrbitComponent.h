@@ -17,9 +17,6 @@ class OrbitComponent final : public BaseComponent
 
 		virtual void Initialize() override;
 		virtual void Update(const UpdateContext& context) override;
-		virtual void Draw() override;
-		virtual void LateUpdate(const UpdateContext& context) override;
-		virtual void FixedUpdate(const UpdateContext& context) override;
 
 		inline void SetRadius(float radius) { m_Radius = radius; }
 		inline void SetSpeed(float speed) { m_Speed = speed; }
@@ -30,10 +27,9 @@ class OrbitComponent final : public BaseComponent
 		OrbitComponent& operator=(OrbitComponent&& other) = delete;
 
 	private:
-		TransformComponent* m_Transform;
-		glm::vec3 m_CenterPos;
+		glm::vec3					m_CenterPos;
 
-		float m_Speed = 10.f;
-		float m_Radius = 10.f;
+		float						m_Speed = 10.f;
+		float						m_Radius = 10.f;
 	};
 };

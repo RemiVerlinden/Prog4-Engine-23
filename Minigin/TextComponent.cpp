@@ -28,7 +28,6 @@ void dae::TextComponent::SetColor(int r, int g, int b, int a)
 
 void dae::TextComponent::Initialize()
 {
-	m_Transform = m_GameObject->GetComponent<TransformComponent>();
 }
 
 void dae::TextComponent::Update([[maybe_unused]] const UpdateContext& context)
@@ -55,19 +54,9 @@ void dae::TextComponent::Draw()
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_Transform.lock()->GetWorldPosition();
+		const auto& pos = m_GameObject->m_Transform->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
-}
-
-void dae::TextComponent::LateUpdate([[maybe_unused]] const UpdateContext& context)
-{
-
-}
-
-void dae::TextComponent::FixedUpdate([[maybe_unused]] const UpdateContext& context)
-{
-
 }
 
 // This implementation uses the "dirty flag" pattern
@@ -79,5 +68,10 @@ void dae::TextComponent::SetText(const std::string& text)
 
 void dae::TextComponent::SetPosition(const float x, const float y)
 {
-	m_Transform.lock()->SetLocalPosition(x, y, 0.0f);
+	m_GameObject->m_Transform->SetLocalPosition(x, y, 0.0f);
+}
+
+inline glm::vec3 dae::TextComponent::GetPosition()
+{
+	return m_GameObject->m_Transform->GetWorldPosition();
 }

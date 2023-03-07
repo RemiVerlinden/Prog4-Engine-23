@@ -16,9 +16,6 @@ namespace dae
 
 		virtual void Initialize() override;
 		virtual void Update(const UpdateContext& context) override;
-		virtual void Draw() override;
-		virtual void LateUpdate(const UpdateContext& context) override;
-		virtual void FixedUpdate(const UpdateContext& context) override;
 
 		void SetLocalPosition(float x, float y, float z);
 		void SetLocalPosition(const glm::vec3& pos);
@@ -34,6 +31,6 @@ namespace dae
 	private:
 		glm::vec3				m_LocalPosition;
 		glm::vec3				m_WorldPosition;
-		bool					m_DirtyFlag = true;
+		bool					m_IsDirty = true;
 	};
 }

@@ -1,8 +1,8 @@
-#include "BaseComponent.h"
 #include "GameObject.h"
+#include "BaseComponent.h"
 
 
-dae::BaseComponent::BaseComponent()
+dae::BaseComponent::BaseComponent() 
 {
 
 }

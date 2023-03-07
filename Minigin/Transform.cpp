@@ -12,23 +12,11 @@ void dae::TransformComponent::Update([[maybe_unused]] const UpdateContext& conte
 	GetWorldPosition();
 }
 
-void dae::TransformComponent::Draw()
-{
-}
-
-void dae::TransformComponent::LateUpdate([[maybe_unused]] const UpdateContext& context)
-{
-}
-
-void dae::TransformComponent::FixedUpdate([[maybe_unused]] const UpdateContext& context)
-{
-}
-
 const glm::vec3& dae::TransformComponent::GetWorldPosition()
 {
-	if (m_DirtyFlag)
+	if (m_IsDirty)
 	{
-		m_DirtyFlag = false;
+		m_IsDirty = false;
 		//return local position if the gameobject we are attached to has no parent
 		GameObject* parent = m_GameObject->GetParent();
 		if (parent == nullptr) 
@@ -39,7 +27,7 @@ const glm::vec3& dae::TransformComponent::GetWorldPosition()
 
 		//ask parent for its' world position, and add it to ours
 		//this way, if our parent has another parent, it will calculate its own world position
-		const glm::vec3 parentWorldPosition = parent->GetComponent<TransformComponent>().lock()->GetWorldPosition();
+		const glm::vec3 parentWorldPosition = parent->m_Transform->GetWorldPosition();
 		m_WorldPosition = m_LocalPosition + parentWorldPosition;
 	}
 
@@ -63,5 +51,11 @@ void dae::TransformComponent::SetLocalPosition(const glm::vec3& pos)
 
 void dae::TransformComponent::SetPositionDirty()
 {
-	m_DirtyFlag = true;
+	m_IsDirty = true;
+
+	const auto& pChildVec = m_GameObject->GetChildren();
+	for (GameObject* child : pChildVec)
+	{
+		child->m_Transform->SetPositionDirty();
+	}
 }

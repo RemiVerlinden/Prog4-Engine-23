@@ -25,34 +25,35 @@ namespace dae
 		//===============================================
 
 		template<typename ComponentType, typename... Args>
-		[[maybe_unused]] std::weak_ptr<ComponentType> AddComponent(Args&&... args)
+		[[maybe_unused]] ComponentType* AddComponent(Args&&... args)
 		{
-			std::shared_ptr<BaseComponent> newComponent = std::make_shared<ComponentType>(std::forward<Args>(args)...);
-			m_Components.push_back(newComponent);
-			newComponent->RootInitialize(this);
-			return std::dynamic_pointer_cast<ComponentType>(newComponent);
+			m_Components.push_back(std::make_unique<ComponentType>(std::forward<Args>(args)...));
+
+			ComponentType* newComponent = GetComponent<ComponentType>();
+			dynamic_cast<BaseComponent*>(newComponent)->RootInitialize(this);
+			return newComponent;
 		}
 
 		template<typename ComponentType>
-		std::weak_ptr<ComponentType> GetComponent()
+		ComponentType* GetComponent()
 		{
 			assert(HasComponent<ComponentType>());
-			for (std::shared_ptr<BaseComponent> component : m_Components)
+			for (const std::unique_ptr<BaseComponent>& component : m_Components)
 			{
-				std::shared_ptr<ComponentType> castedComponent = std::dynamic_pointer_cast<ComponentType>(component);
+				ComponentType* castedComponent = dynamic_cast<ComponentType*>(component.get());
 				if (castedComponent != nullptr)
 				{
 					return castedComponent;
 				}
 			}
-			return std::shared_ptr<ComponentType>(nullptr);
+			return nullptr;
 		}
 		template<typename ComponentType>
 		bool HasComponent()
 		{
-			for (std::shared_ptr<BaseComponent> component : m_Components)
+			for (const std::unique_ptr<BaseComponent>& component : m_Components)
 			{
-				if (std::dynamic_pointer_cast<ComponentType>(component) != nullptr)
+				if (dynamic_cast<ComponentType*>(component.get()) != nullptr)
 				{
 					return true;
 				}
@@ -67,7 +68,7 @@ namespace dae
 
 			for (auto itr = m_Components.begin(); itr != m_Components.end(); ++itr)
 			{
-				std::shared_ptr<ComponentType> castedComponent = std::dynamic_pointer_cast<ComponentType>(*itr);
+				ComponentType* castedComponent = dynamic_cast<ComponentType*>(itr->get());
 				if (castedComponent != nullptr)
 				{
 					m_Components.erase(itr);
@@ -77,6 +78,7 @@ namespace dae
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		inline GameObject* GetParent() { return m_Parent; };
+		inline const std::vector<GameObject*>& GetChildren() { return m_Children; };
 		inline size_t GetChildCount() { return m_Children.size(); };
 		GameObject* GetChildAt(unsigned int index);
 		//===============================================
@@ -89,20 +91,20 @@ namespace dae
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
+	public:
+		TransformComponent*								m_Transform;
 
 	private:
 		void AddChild(GameObject* go);
 		void RemoveChild(GameObject* go);
 	private:
 
-		std::weak_ptr<TransformComponent> m_transform;
-		std::vector<std::shared_ptr<BaseComponent>> m_Components;
+		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 
-		Scene* m_Scene;
+		Scene*											m_Scene;
 
-		GameObject* m_Parent;
-		std::vector<GameObject*> m_Children;
-		// todo: mmm, every gameobject has a texture? Is that correct?
+		GameObject*										m_Parent;
+		std::vector<GameObject*>						m_Children;
 	};
 }
 

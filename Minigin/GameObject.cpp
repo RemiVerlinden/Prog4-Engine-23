@@ -10,7 +10,7 @@ using namespace dae;
 
 dae::GameObject::GameObject(Scene* scene) :m_Scene(scene), m_Parent{nullptr}
 {
-	m_transform = AddComponent<TransformComponent>();
+	m_Transform = AddComponent<TransformComponent>();
 	m_Parent = nullptr;
 };
 
@@ -18,22 +18,21 @@ dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update(const UpdateContext& context)
 {
-	for (std::shared_ptr<BaseComponent> component : m_Components)
+	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootUpdate(context);
 	}
 }
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
-	std::shared_ptr<TransformComponent> transform = GetComponent<TransformComponent>().lock();
-	std::shared_ptr<TransformComponent> parentTransform = parent->GetComponent<TransformComponent>().lock();
+	TransformComponent* parentTransform = parent->GetComponent<TransformComponent>();
 	if (parent == nullptr)
-		transform->SetLocalPosition(transform->GetWorldPosition());
+		m_Transform->SetLocalPosition(m_Transform->GetWorldPosition());
 	else
 	{
 		if (keepWorldPosition)
-			transform->SetLocalPosition(transform->GetLocalPosition() - parentTransform->GetWorldPosition());
-		transform->SetPositionDirty();
+			m_Transform->SetLocalPosition(m_Transform->GetLocalPosition() - parentTransform->GetWorldPosition());
+		m_Transform->SetPositionDirty();
 	}
 	if (m_Parent)
 		m_Parent->RemoveChild(this);
@@ -61,7 +60,7 @@ void dae::GameObject::RemoveChild(GameObject* go)
 
 void dae::GameObject::LateUpdate(const UpdateContext& context)
 {
-	for (std::shared_ptr<BaseComponent> component : m_Components)
+	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootLateUpdate(context);
 	}
@@ -69,7 +68,7 @@ void dae::GameObject::LateUpdate(const UpdateContext& context)
 
 void dae::GameObject::FixedUpdate(const UpdateContext& context)
 {
-	for (std::shared_ptr<BaseComponent> component : m_Components)
+	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootFixedUpdate(context);
 	}
@@ -78,7 +77,7 @@ void dae::GameObject::FixedUpdate(const UpdateContext& context)
 
 void dae::GameObject::Render() const
 {
-	for (std::shared_ptr<BaseComponent> component : m_Components)
+	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootDraw();
 	}
@@ -91,7 +90,7 @@ void dae::GameObject::Render() const
 //
 void dae::GameObject::SetPosition(float x, float y)
 {
-	m_transform.lock()->SetLocalPosition(x, y, 0.0f);
+	m_Transform->SetLocalPosition(x, y, 0.0f);
 }
 
 GameObject* dae::GameObject::GetChildAt(unsigned int index)

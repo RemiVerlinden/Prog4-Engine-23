@@ -16,13 +16,11 @@ namespace dae {
 	{
 	public:
 		FpsComponent(std::shared_ptr<Font> font);
-		~FpsComponent() = default;
+		~FpsComponent();
 
 		virtual void Initialize() override;
 		virtual void Update(const UpdateContext& context) override;
-		virtual void Draw() override;
-		virtual void LateUpdate(const UpdateContext& context) override;
-		virtual void FixedUpdate(const UpdateContext& context) override;
+
 
 		void SetPosition(const float x, const float y);
 		void SetColor(int r, int g, int b, int a);
@@ -31,13 +29,12 @@ namespace dae {
 		FpsComponent& operator=(const FpsComponent& other) = delete;
 		FpsComponent& operator=(FpsComponent&& other) = delete;
 
-		int sign = 1;
 	private:
-		std::weak_ptr<TextComponent> m_TextComponent;
-		std::weak_ptr<Font> m_Font;
+		TextComponent*					m_TextComponent;
+		std::shared_ptr<Font>			m_Font;
 
-		Seconds m_Accumulator = 0.f;
-		uint64_t m_FpsCount = 0;
-		uint64_t m_FramesPerSecond = 0;
+		Seconds							m_Accumulator = 0.f;
+		uint64_t						m_FpsCount = 0;
+		uint64_t						m_FramesPerSecond = 0;
 	};
 }
