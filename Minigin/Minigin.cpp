@@ -11,7 +11,6 @@
 #include "ResourceManager.h"
 
 
-#include "TextObject.h"
 #include "scene.h"
 #include <thread>
 #include "Timers.h"
