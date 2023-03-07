@@ -14,8 +14,8 @@ using namespace dae;
 void dae::SceneFactory::CreateScenes()
 {
 	InitDefaultScene();
-	//InitFpsDemoScene();
-	//InitBonusScene();
+	InitFpsDemoScene();
+	InitBonusScene();
 }
 
 void dae::SceneFactory::InitDefaultScene()
@@ -70,6 +70,7 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		go = std::make_shared<dae::GameObject>(pScene);
 		auto font = dae::ResourceManager::GetInstance().LoadFont("raju-bold.otf", 42);
+		//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 		FpsComponent* fpsComponent = go->AddComponent<FpsComponent>(font);
 		go->SetPosition(270, 80);
 		fpsComponent->SetColor(255, 255, 255, 255);
