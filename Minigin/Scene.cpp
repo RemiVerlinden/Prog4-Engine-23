@@ -71,3 +71,12 @@ void Scene::Render() const
 		object->Render();
 	}
 }
+
+std::shared_ptr<GameObject> Scene::MakeGameObject()
+{
+	std::shared_ptr<GameObject> go{ std::make_shared<GameObject>(this) };
+
+	Add(go);
+
+	return go;
+}

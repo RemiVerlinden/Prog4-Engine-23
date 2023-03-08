@@ -10,7 +10,6 @@ namespace dae
 	{
 		friend const std::shared_ptr<dae::Scene> SceneManager::AddGameScene(const std::string& name);
 	public:
-		void Add(std::shared_ptr<GameObject> object);
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
@@ -24,7 +23,7 @@ namespace dae
 		std::string GetTag() { return m_Tag; };
 		void OnSceneActivated() {  }
 		void OnSceneDeactivated() {  }
-
+		std::shared_ptr<GameObject> MakeGameObject();
 		//========================================================
 
 		~Scene();
@@ -36,6 +35,8 @@ namespace dae
 
 	private: 
 		explicit Scene(const std::string& name);
+		void Add(std::shared_ptr<GameObject> object);
+		
 		void DeleteMarkedForDestroy();
 
 		std::string m_Tag;
