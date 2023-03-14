@@ -8,10 +8,13 @@
 
 using namespace dae;
 
+uint64_t dae::GameObject::m_GameObjectCount{0};
+
 dae::GameObject::GameObject(Scene* scene) :m_Scene(scene), m_Parent{ nullptr }, m_MarkedForDestroy{false}
 {
 	m_Transform = AddComponent<TransformComponent>();
-	m_Parent = nullptr;
+
+	++m_GameObjectCount;
 };
 
 dae::GameObject::~GameObject() = default;
@@ -22,6 +25,7 @@ void dae::GameObject::Update(const UpdateContext& context)
 	{
 		component->RootUpdate(context);
 	}
+	--m_GameObjectCount;
 }
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {

@@ -45,6 +45,8 @@ namespace dae
 		inline size_t GetChildCount() { return m_Children.size(); };
 		GameObject* GetChildAt(unsigned int index);
 
+		static uint64_t GetGameObjectCount() { return m_GameObjectCount; }
+
 		GameObject(Scene* scene);
 
 		~GameObject();
@@ -60,13 +62,13 @@ namespace dae
 		void AddChild(GameObject* go);
 		void RemoveChild(GameObject* go);
 	private:
-
-		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 		Scene*											m_Scene;
-
 		GameObject*										m_Parent;
 		std::vector<GameObject*>						m_Children;
+		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 		bool											m_MarkedForDestroy;
+
+		static uint64_t m_GameObjectCount;
 	};
 
 

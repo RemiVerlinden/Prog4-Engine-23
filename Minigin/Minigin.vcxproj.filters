@@ -37,6 +37,9 @@
     <Filter Include="Engine Files\Time">
       <UniqueIdentifier>{fe95d17f-c101-43d2-9a08-913ad0241455}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\ErrorHandling">
+      <UniqueIdentifier>{c663ea7f-65c9-46b3-86d9-2a4d71c90c8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneFactory.h">

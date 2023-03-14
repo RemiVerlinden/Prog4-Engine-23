@@ -16,6 +16,7 @@ namespace dae {
 		virtual void LateUpdate([[maybe_unused]] const UpdateContext& context) {};
 		virtual void FixedUpdate([[maybe_unused]] const UpdateContext& context) {};
 
+		static uint64_t GetComponentCount() { return m_ComponentCount; }
 
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
@@ -24,7 +25,8 @@ namespace dae {
 
 	protected:
 		GameObject*						m_GameObject;
-		
+		static uint64_t					m_ComponentCount;
+
 	private:
 		friend GameObject;
 
