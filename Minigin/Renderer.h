@@ -13,12 +13,13 @@ namespace dae
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};
+		bool m_showDemo{ true };
 
 		int m_Width;
 		int m_Height;
 	public:
 		void Init(SDL_Window* window);
-		void Render() const;
+		void Render();
 		void Destroy();
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;

@@ -40,6 +40,9 @@
     <Filter Include="Engine Files\ErrorHandling">
       <UniqueIdentifier>{c663ea7f-65c9-46b3-86d9-2a4d71c90c8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Imgui">
+      <UniqueIdentifier>{8294ce3f-59c4-4ca1-83d5-6d7c37587a3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneFactory.h">
@@ -102,6 +105,33 @@
     <ClInclude Include="Renderer.h">
       <Filter>Engine Files\Singletons</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imgui.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imgui_internal.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imconfig.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imstb_rectpack.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\backends\imgui_impl_opengl2.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\backends\imgui_impl_sdl2.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneFactory.cpp">
@@ -157,6 +187,30 @@
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Engine Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\imgui_demo.cpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\imgui_draw.cpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_opengl2.cpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_sdl2.cpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
+      <Filter>Engine Files\Imgui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

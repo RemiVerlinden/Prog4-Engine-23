@@ -3,6 +3,8 @@
 #include "SceneManager.h"
 #include <iostream>
 
+#include <backends/imgui_impl_sdl2.h>
+
 bool dae::InputManager::ProcessInput()
 {
 	SDL_Event e;
@@ -26,7 +28,9 @@ bool dae::InputManager::ProcessInput()
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 
 		}
-		// etc...
+
+			//process event for IMGUI
+			ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
 	return true;
