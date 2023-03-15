@@ -220,6 +220,7 @@
     <ClInclude Include="Timers.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UpdateContext.h" />
+    <ClInclude Include="Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_opengl2.cpp" />

@@ -17,6 +17,8 @@
 #include <iostream>
 #include "UpdateContext.h"
 
+#include "Utils.hpp"
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -142,7 +144,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			if (frameTime < minimumFrameTime)
 			{
 				Milliseconds sleepTime = minimumFrameTime - frameTime;
-				std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+				Utils::preciseSleep(sleepTime.ToNanoseconds());
+				//std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
 				frameTime = minimumFrameTime;
 			}
 		}
