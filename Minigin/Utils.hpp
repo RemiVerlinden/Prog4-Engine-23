@@ -41,7 +41,7 @@ namespace dae
 
             // spin lock
             auto start = high_resolution_clock::now();
-            while ((high_resolution_clock::now() - start).count() < sleepTime);
+            while ((high_resolution_clock::now() - start).count() < (int64_t)sleepTime);
         }
 	}
 }
