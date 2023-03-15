@@ -55,6 +55,9 @@ Index of this file:
 #ifdef _MSC_VER
 #pragma warning (disable: 4127)     // condition expression is constant
 #pragma warning (disable: 4996)     // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
+#pragma warning(disable : 4616)// Suppress warning C4616 for imgui_widgets.cpp
+#pragma warning(disable : 6011)// Suppress warning C6011 for imgui_widgets.cpp
+#pragma warning(disable : 6326)// Suppress warning C6326 for imgui_widgets.cpp
 #if defined(_MSC_VER) && _MSC_VER >= 1922 // MSVC 2019 16.2 or later
 #pragma warning (disable: 5054)     // operator '|': deprecated between enumerations of different types
 #endif

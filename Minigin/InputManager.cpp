@@ -3,7 +3,7 @@
 #include "SceneManager.h"
 #include <iostream>
 
-#include <backends/imgui_impl_sdl2.h>
+#include "ImguiWrapper.h"
 
 bool dae::InputManager::ProcessInput()
 {

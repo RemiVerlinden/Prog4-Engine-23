@@ -5,6 +5,7 @@
 namespace dae
 {
 	class Texture2D;
+	class UpdateContext;
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */
@@ -19,7 +20,7 @@ namespace dae
 		int m_Height;
 	public:
 		void Init(SDL_Window* window);
-		void Render();
+		void Render(UpdateContext& context);
 		void Destroy();
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;

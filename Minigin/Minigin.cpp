@@ -132,7 +132,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 
 			//============RENDER================
-			renderer.Render();
+			renderer.Render(updateContext);
 			//==================================
 		}
 
@@ -141,13 +141,16 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		if (updateContext.HasFrameRateLimit())
 		{
 			const float minimumFrameTime = updateContext.GetLimitedFrameTime();
+			Milliseconds measuredSleepTime;
+
 			if (frameTime < minimumFrameTime)
 			{
+				ScopedTimer<PlatformClock> sleepTimer(measuredSleepTime);
+
 				Milliseconds sleepTime = minimumFrameTime - frameTime;
 				Utils::preciseSleep(sleepTime.ToNanoseconds());
-				//std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-				frameTime = minimumFrameTime;
 			}
+				frameTime += measuredSleepTime;
 		}
 		//==================================
 

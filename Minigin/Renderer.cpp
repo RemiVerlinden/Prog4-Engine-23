@@ -3,11 +3,10 @@
 #include "SceneManager.h"
 #include "Texture2D.h"
 
-#include "imgui.h"
-#include <backends/imgui_impl_sdl2.h>
-#include <backends/imgui_impl_opengl2.h>
-#include <imgui_plot.h>
+#include "ImguiWrapper.h"
+
 #include "Time.h"
+#include "UpdateContext.h"
 
 int GetOpenGLDriverIndex()
 {
@@ -101,7 +100,7 @@ void draw_multi_plot() {
 	ImGui::End();
 }
 
-void dae::Renderer::Render()
+void dae::Renderer::Render(UpdateContext& context)
 {
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
@@ -116,6 +115,43 @@ void dae::Renderer::Render()
 	// hint: something should come here :)
 	generate_data();
 	draw_multi_plot();
+
+	{
+		static float f = 0.0f;
+		static int counter = 0;
+		static float frameratelimit = context.GetFrameRateLimit();
+		static float startTime = dae::PlatformClock::GetTimeInSeconds();
+
+		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+		ImGui::Spacing();
+
+		if (ImGui::SliderFloat("framerate", &frameratelimit, 0.0f, 2000.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp))
+		{
+			context.SetFrameRateLimit(frameratelimit);
+		}
+
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+
+		ImGui::Spacing();
+
+		ImGui::Text("Engine Clock Time	: %.3f s", (float)dae::EngineClock::GetTimeInSeconds());
+		ImGui::Text("OS Clock Time		: %.3f s", (float)dae::PlatformClock::GetTimeInSeconds() - startTime);
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+		ImGui::Text("Wanted frame time	: %.3f ms", (float)context.GetDeltaTime().ToMilliseconds());
+
+		ImGui::End();
+	}
 
 	if (m_showDemo)
 		ImGui::ShowDemoWindow(&m_showDemo);

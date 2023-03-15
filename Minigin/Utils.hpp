@@ -14,34 +14,35 @@ namespace dae
         //------------------------------------------------------------------------------------
         // https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/
         //------------------------------------------------------------------------------------
-        void preciseSleep(Nanoseconds sleepTime) {
+        void preciseSleep(const Nanoseconds& sleepTime) {
             using namespace std;
             using namespace std::chrono;
 
-            static Nanoseconds estimate = Milliseconds(5).ToNanoseconds();
-            static Nanoseconds mean = Milliseconds(5).ToNanoseconds();
-            static Nanoseconds m2 = 0;
-            static uint64_t count = 1;
+            static int64_t estimate = Milliseconds(5).ToNanoseconds();
+            static int64_t mean = Milliseconds(5).ToNanoseconds();
+            static int64_t m2 = 0;
+            static int64_t count = 1;
+            int64_t nanoSeconds = (int64_t)sleepTime;
 
-            while (sleepTime > estimate) {
+            while (nanoSeconds > estimate) {
                 auto start = high_resolution_clock::now();
                 this_thread::sleep_for(milliseconds(1));
                 auto end = high_resolution_clock::now();
 
-                Nanoseconds observed = (end - start).count();
-                sleepTime -= observed;
+                int64_t observed = (end - start).count();
+                nanoSeconds -= observed;
 
                 ++count;
-                Nanoseconds delta = observed - mean;
-                mean += delta / count;
-                m2 += delta * (observed - mean);
-                Nanoseconds stddev = (uint64_t)sqrt(m2 / (count - 1));
+                int64_t delta = observed - mean;
+                mean    += delta / count;
+                m2      += delta * (observed - mean);
+                int64_t stddev = (int64_t)sqrt(m2 / (count - 1));
                 estimate = mean + stddev;
             }
 
             // spin lock
             auto start = high_resolution_clock::now();
-            while ((high_resolution_clock::now() - start).count() < (int64_t)sleepTime);
+            while ((high_resolution_clock::now() - start).count() < nanoSeconds);
         }
 	}
 }

@@ -912,6 +912,7 @@ CODE
 #ifdef _MSC_VER
 #pragma warning (disable: 4127)             // condition expression is constant
 #pragma warning (disable: 4996)             // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
+#pragma warning(disable : 28182)// Suppress warning C28182 for imgui.cpp
 #if defined(_MSC_VER) && _MSC_VER >= 1922   // MSVC 2019 16.2 or later
 #pragma warning (disable: 5054)             // operator '|': deprecated between enumerations of different types
 #endif
