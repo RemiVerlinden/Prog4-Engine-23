@@ -5,6 +5,8 @@
 namespace dae
 {
 	class Texture2D;
+	struct TimeStuff;
+	class UpdateContext;
 	/**
 	 * Simple RAII wrapper for the SDL renderer
 	 */
@@ -13,13 +15,15 @@ namespace dae
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};
-		bool m_showDemo{ true };
+		bool m_showDemo{ false };
+		bool m_showAnotherWindow{ true };
 
 		int m_Width;
 		int m_Height;
+
 	public:
 		void Init(SDL_Window* window);
-		void Render();
+		void Render(UpdateContext& context, TimeStuff& timething);
 		void Destroy();
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;

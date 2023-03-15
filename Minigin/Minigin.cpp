@@ -82,6 +82,70 @@ dae::Minigin::~Minigin()
 	SDL_Quit();
 }
 
+void timerSleep(double seconds) {
+	using namespace std::chrono;
+
+	static HANDLE timer = CreateWaitableTimer(NULL, FALSE, NULL);
+	static double estimate = 5e-3;
+	static double mean = 5e-3;
+	static double m2 = 0;
+	static int64_t count = 1;
+
+	while (seconds - estimate > 1e-7) {
+		double toWait = seconds - estimate;
+		LARGE_INTEGER due;
+		due.QuadPart = -int64_t(toWait * 1e7);
+		auto start = high_resolution_clock::now();
+		SetWaitableTimerEx(timer, &due, 0, NULL, NULL, NULL, 0);
+		WaitForSingleObject(timer, INFINITE);
+		auto end = high_resolution_clock::now();
+
+		double observed = (end - start).count() / 1e9;
+		seconds -= observed;
+
+		++count;
+		double error = observed - toWait;
+		double delta = error - mean;
+		mean += delta / count;
+		m2 += delta * (error - mean);
+		double stddev = sqrt(m2 / (count - 1));
+		estimate = mean + stddev;
+	}
+
+	// spin lock
+	auto start = high_resolution_clock::now();
+	while ((high_resolution_clock::now() - start).count() / 1e9 < seconds);
+}
+
+void preciseSleep(double seconds) {
+	using namespace std;
+	using namespace std::chrono;
+
+	static double estimate = 5e-3;
+	static double mean = 5e-3;
+	static double m2 = 0;
+	static int64_t count = 1;
+
+	while (seconds > estimate) {
+		auto start = high_resolution_clock::now();
+		this_thread::sleep_for(milliseconds(1));
+		auto end = high_resolution_clock::now();
+
+		double observed = (end - start).count() / 1e9;
+		seconds -= observed;
+
+		++count;
+		double delta = observed - mean;
+		mean += delta / count;
+		m2 += delta * (observed - mean);
+		double stddev = sqrt(m2 / (count - 1));
+		estimate = mean + stddev;
+	}
+
+	// spin lock
+	auto start = high_resolution_clock::now();
+	while ((high_resolution_clock::now() - start).count() / 1e9 < seconds);
+}
 
 
 void dae::Minigin::Run(const std::function<void()>& load)
@@ -98,6 +162,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	UpdateContext						updateContext{};
 	float								accumulator = 0.f; // time since last fixed timestep
 
+	TimeStuff timeProps{};
 	//==================================
 
 	sceneManager.Initialize(); // IMPORTANT
@@ -130,7 +195,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 
 			//============RENDER================
-			renderer.Render();
+			renderer.Render(updateContext, timeProps);
 			//==================================
 		}
 
@@ -139,15 +204,27 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		if (updateContext.HasFrameRateLimit())
 		{
 			const float minimumFrameTime = updateContext.GetLimitedFrameTime();
+			timeProps.physicalSleepTime = 0;
+				//Microseconds temp;
 			if (frameTime < minimumFrameTime)
 			{
-				Milliseconds sleepTime = minimumFrameTime - frameTime;
-				std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-				frameTime = minimumFrameTime;
+				ScopedTimer<PlatformClock> sleepTimer(timeProps.physicalSleepTime);
+
+				timeProps.theoreticalSleepTime = minimumFrameTime - frameTime;
+				//temp = theoreticalSleepTime.ToMicroseconds();
+				if (timeProps.timerToggle)
+					preciseSleep(timeProps.theoreticalSleepTime.ToSeconds());
+				else
+					timerSleep(timeProps.theoreticalSleepTime.ToSeconds());
+
+				//std::this_thread::sleep_for(std::chrono::microseconds(theoreticalSleepTime));
+				timeProps.physicalFrameTime = frameTime;
 			}
+				frameTime += timeProps.physicalSleepTime;
+				//frameTime += physicalSleepTime;
+				timeProps.physicalFrameTime += timeProps.physicalSleepTime;
 		}
 		//==================================
-
 		updateContext.UpdateDeltaTime(frameTime);
 		EngineClock::Update(frameTime);
 	}

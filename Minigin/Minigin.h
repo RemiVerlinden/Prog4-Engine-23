@@ -5,6 +5,13 @@
 
 namespace dae
 {
+struct TimeStuff
+{
+	dae::Milliseconds						physicalSleepTime = 0.f;
+	dae::Milliseconds						theoreticalSleepTime = 0.f;
+	dae::Milliseconds						physicalFrameTime = 0.f;
+	bool timerToggle = true;
+};
 	class Minigin
 	{
 	public:

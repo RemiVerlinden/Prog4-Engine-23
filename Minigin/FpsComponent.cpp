@@ -27,13 +27,13 @@ void dae::FpsComponent::Initialize()
 
 void dae::FpsComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
-	m_Accumulator += context.GetDeltaTime();
+	m_Accumulator += context.GetDeltaTime().ToNanoseconds();
 	++m_FpsCount;
-	if (m_Accumulator >= 1.0f)
+	if (m_Accumulator >= (int)1e9)
 	{
 		m_FramesPerSecond = m_FpsCount;
 		m_FpsCount = 0;
-		m_Accumulator -= 1.0f;
+		m_Accumulator -= (int)1e9;
 		m_TextComponent->SetText(std::format("{} FPS", m_FramesPerSecond));
 	}
 

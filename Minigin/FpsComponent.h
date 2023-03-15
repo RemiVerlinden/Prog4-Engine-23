@@ -33,7 +33,7 @@ namespace dae {
 		TextComponent*					m_TextComponent;
 		std::shared_ptr<Font>			m_Font;
 
-		Seconds							m_Accumulator = 0.f;
+		Nanoseconds						m_Accumulator = 0;
 		uint64_t						m_FpsCount = 0;
 		uint64_t						m_FramesPerSecond = 0;
 	};
