@@ -3,10 +3,11 @@
 #include "SceneManager.h"
 #include "Texture2D.h"
 
-#include "ImguiWrapper.h"
-
-#include "Time.h"
+#include "Timers.h"
 #include "UpdateContext.h"
+#include <assert.h>
+#include <algorithm>
+#include "Week4Exercises.hpp"
 
 int GetOpenGLDriverIndex()
 {
@@ -27,10 +28,11 @@ void dae::Renderer::Init(SDL_Window* window)
 	m_window = window;
 	SDL_GetWindowSize(window, &m_Width, &m_Height);
 	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED /*| SDL_RENDERER_PRESENTVSYNC*/);
-	if (m_renderer == nullptr) 
+	if (m_renderer == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
+
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -38,64 +40,112 @@ void dae::Renderer::Init(SDL_Window* window)
 	ImGui_ImplOpenGL2_Init();
 }
 
-constexpr size_t buf_size = 512;
-static float x_data[buf_size];
-static float y_data1[buf_size];
-static float y_data2[buf_size];
-static float y_data3[buf_size];
 
-void generate_data() {
-	constexpr float sampling_freq = 44100;
-	constexpr float freq = 500;
-	for (size_t i = 0; i < buf_size; ++i) {
-		const float t = i / sampling_freq;
-		x_data[i] = t;
-		const float arg = 2.f * (float)M_PI * freq * t;
-		y_data1[i] = sinf(arg);
-		y_data2[i] = y_data1[i] * -0.6f + sinf(2 * arg) * 0.4f;
-		y_data3[i] = y_data2[i] * -0.6f + sinf(3 * arg) * 0.4f;
+//void dae::Renderer::DrawImguiDefaultWindow(UpdateContext& context)
+//{
+//	static std::string frametimeGraphName = "frametime";
+//	static ImColor graphColor = m_FrametimeColorTypes.highPerformance;
+//
+//	if (m_IsFramerateLimitChanged)
+//	{
+//		m_IsFramerateLimitChanged = false;
+//
+//		static size_t framerateLimit = static_cast<size_t>(context.GetFrameRateLimit());
+//		static const Seconds fpsGraphDuration = 5;
+//		size_t newFramerateVecSize = framerateLimit * static_cast<size_t>(fpsGraphDuration);
+//		const size_t uncappedFramerateVecSize = 16000;
+//
+//
+//		if (m_FramerateHistory.size() == 0)
+//		{
+//			m_FramerateHistory.resize(newFramerateVecSize);
+//		}
+//		else if (framerateLimit == 0)
+//		{
+//			m_FramerateHistory.resize(uncappedFramerateVecSize);
+//		}
+//		else if (newFramerateVecSize > m_FramerateHistory.size())
+//		{
+//			size_t numToAdd = newFramerateVecSize - m_FramerateHistory.size();
+//			std::vector<float> newFramerateHistory(newFramerateVecSize, m_FramerateHistory.front());
+//			std::copy(m_FramerateHistory.begin() ,m_FramerateHistory.end(), newFramerateHistory.begin() + numToAdd);
+//			m_FramerateHistory = newFramerateHistory;
+//		}
+//		else if (newFramerateVecSize < m_FramerateHistory.size())
+//		{
+//			size_t numToRemove = m_FramerateHistory.size() - newFramerateVecSize;
+//			std::vector<float> newFramerateHistory(newFramerateVecSize);
+//			std::copy(m_FramerateHistory.begin() + numToRemove, m_FramerateHistory.end(), newFramerateHistory.begin());
+//			m_FramerateHistory = newFramerateHistory;
+//		}
+//
+//	}
+//
+//	m_FramerateHistory.erase(m_FramerateHistory.begin());
+//	m_FramerateHistory.push_back(context.GetDeltaTime() * 1000.f);
+//
+//
+//
+//	ImGui::Begin("runtime info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+//	// Draw first plot with multiple sources
+//	ImGui::PlotConfig conf;
+//	conf.values.count = static_cast<int>(m_FramerateHistory.size());
+//	conf.values.ys = m_FramerateHistory.data(); // use ys_list to draw several lines simultaneously
+//	conf.values.ys_count = 1;
+//	conf.values.color = graphColor;
+//	conf.scale.min = 0;
+//	conf.scale.max = 1.f / 60.f * 2.f * 1000.f;
+//	conf.tooltip.show = true;
+//	conf.tooltip.format = "%.0f:%.1fms";
+//	conf.grid_x.show = true;
+//	conf.grid_x.size = 0;
+//	conf.grid_x.subticks = 0;
+//	conf.grid_y.size = 1.f / 60.f * 1000.f;
+//	conf.grid_y.subticks = 1;
+//	conf.grid_y.show = true;
+//	conf.frame_size = ImVec2(200, 100);
+//	conf.overlay_text = frametimeGraphName.c_str();
+//	ImGui::Plot("frametime graph", conf);
+//
+//
+//	ImGui::End();
+//}
+
+void dae::Renderer::DrawImguiFramerateWindow(UpdateContext& context)
+{
+	static float f = 0.0f;
+	static int counter = 0;
+	static float frameratelimit = context.GetFrameRateLimit();
+	static float startTime = dae::PlatformClock::GetTimeInSeconds();
+
+	ImGui::Begin("Framerate info");
+
+	ImGui::Spacing();
+
+	if (ImGui::SliderFloat("framerate", &frameratelimit, 0.0f, 750.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp))
+	{
+		context.SetFrameRateLimit(frameratelimit);
+		//m_IsFramerateLimitChanged = true;
 	}
-}
 
 
-void draw_multi_plot() {
-	static const float* y_data[] = { y_data1, y_data2, y_data3 };
-	static ImU32 colors[3] = { ImColor(0, 255, 0), ImColor(255, 0, 0), ImColor(0, 0, 255) };
-	static uint32_t selection_start = 0, selection_length = 0;
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 
-	ImGui::Begin("Example plot", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-	// Draw first plot with multiple sources
-	ImGui::PlotConfig conf;
-	conf.values.xs = x_data;
-	conf.values.count = buf_size;
-	conf.values.ys_list = y_data; // use ys_list to draw several lines simultaneously
-	conf.values.ys_count = 3;
-	conf.values.colors = colors;
-	conf.scale.min = -1;
-	conf.scale.max = 1;
-	conf.tooltip.show = true;
-	conf.grid_x.show = true;
-	conf.grid_x.size = 128;
-	conf.grid_x.subticks = 4;
-	conf.grid_y.show = true;
-	conf.grid_y.size = 0.5f;
-	conf.grid_y.subticks = 5;
-	conf.selection.show = true;
-	conf.selection.start = &selection_start;
-	conf.selection.length = &selection_length;
-	conf.frame_size = ImVec2(buf_size, 200);
-	ImGui::Plot("plot1", conf);
 
-	// Draw second plot with the selection
-	// reset previous values
-	conf.values.ys_list = nullptr;
-	conf.selection.show = false;
-	// set new ones
-	conf.values.ys = y_data3;
-	conf.values.offset = selection_start;
-	conf.values.count = selection_length;
-	conf.line_thickness = 2.f;
-	ImGui::Plot("plot2", conf);
+	ImGui::Spacing();
+
+	ImGui::Text("Engine Clock Time	: %.3f s", (float)dae::EngineClock::GetTimeInSeconds());
+	ImGui::Text("OS Clock Time		: %.3f s", (float)dae::PlatformClock::GetTimeInSeconds() - startTime);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::Text("Frame time	: %.3f ms", (float)context.GetDeltaTime().ToMilliseconds());
 
 	ImGui::End();
 }
@@ -107,52 +157,16 @@ void dae::Renderer::Render(UpdateContext& context)
 	SDL_RenderClear(m_renderer);
 
 	SceneManager::GetInstance().Render();
-	
+
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_window);
 	ImGui::NewFrame();
 
-	// hint: something should come here :)
-	generate_data();
-	draw_multi_plot();
+	//DrawImguiDefaultWindow(context);
 
-	{
-		static float f = 0.0f;
-		static int counter = 0;
-		static float frameratelimit = context.GetFrameRateLimit();
-		static float startTime = dae::PlatformClock::GetTimeInSeconds();
+	dae::Ex4::DrawImguiWeek04Exercises();
 
-		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-		ImGui::Spacing();
-
-		if (ImGui::SliderFloat("framerate", &frameratelimit, 0.0f, 2000.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp))
-		{
-			context.SetFrameRateLimit(frameratelimit);
-		}
-
-
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
-
-
-		ImGui::Spacing();
-
-		ImGui::Text("Engine Clock Time	: %.3f s", (float)dae::EngineClock::GetTimeInSeconds());
-		ImGui::Text("OS Clock Time		: %.3f s", (float)dae::PlatformClock::GetTimeInSeconds() - startTime);
-
-		ImGui::Spacing();
-		ImGui::Spacing();
-		ImGui::Spacing();
-
-		ImGui::Text("Wanted frame time	: %.3f ms", (float)context.GetDeltaTime().ToMilliseconds());
-
-		ImGui::End();
-	}
-
+	DrawImguiFramerateWindow(context);
 	if (m_showDemo)
 		ImGui::ShowDemoWindow(&m_showDemo);
 	ImGui::Render();
@@ -160,8 +174,6 @@ void dae::Renderer::Render(UpdateContext& context)
 
 	SDL_RenderPresent(m_renderer);
 }
-
-
 
 
 void dae::Renderer::Destroy()

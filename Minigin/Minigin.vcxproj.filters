@@ -132,6 +132,15 @@
     <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
       <Filter>Engine Files\Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="ImguiWrapper.h">
+      <Filter>Application Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.hpp">
+      <Filter>Application Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Week4Exercises.hpp">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneFactory.cpp">
