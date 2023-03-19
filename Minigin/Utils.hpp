@@ -14,7 +14,7 @@ namespace dae
         //------------------------------------------------------------------------------------
         // https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/
         //------------------------------------------------------------------------------------
-        void preciseSleep(const Nanoseconds& sleepTime) {
+        inline void preciseSleep(const Nanoseconds& sleepTime) {
             using namespace std::chrono;
 
             static int64_t estimate = Milliseconds(5).ToNanoseconds();
