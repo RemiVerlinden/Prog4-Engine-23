@@ -15,7 +15,6 @@ namespace dae
         // https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/
         //------------------------------------------------------------------------------------
         void preciseSleep(const Nanoseconds& sleepTime) {
-            using namespace std;
             using namespace std::chrono;
 
             static int64_t estimate = Milliseconds(5).ToNanoseconds();
@@ -26,7 +25,7 @@ namespace dae
 
             while (nanoSeconds > estimate) {
                 auto start = high_resolution_clock::now();
-                this_thread::sleep_for(milliseconds(1));
+                std::this_thread::sleep_for(milliseconds(1));
                 auto end = high_resolution_clock::now();
 
                 int64_t observed = (end - start).count();
