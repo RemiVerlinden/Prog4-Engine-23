@@ -23,7 +23,7 @@ namespace dae
         //-------------------------------------------------------------------------
 
         inline bool HasFrameRateLimit() const { return m_FrameRateLimitFPS > 0; }
-        inline void SetFrameRateLimit( float FPS ) { m_FrameRateLimitFPS = glm::max( 0.0f, FPS ); }
+        void SetFrameRateLimit( float FPS ) { m_FrameRateLimitFPS = glm::max<float>( 0.0f, FPS ); }
         inline float GetFrameRateLimit() const { assert( HasFrameRateLimit() ); return m_FrameRateLimitFPS; }
         inline Milliseconds GetLimitedFrameTime() const { assert( HasFrameRateLimit() ); return Milliseconds( 1000 ) / m_FrameRateLimitFPS; }
         inline const Seconds GetFixedTimeStep() const { return m_FixedTimeStep; };

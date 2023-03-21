@@ -121,7 +121,7 @@ namespace dae
 					static std::vector<TimeData> timeMeasurements;
 
 					InputTimingParameters inout;
-					inout.arraySize = 1'000'000;
+					inout.arraySize = 10'000'000;
 					inout.sampleSize = numSamples;
 					inout.timings = &timeMeasurements;
 					TimeInt(inout);

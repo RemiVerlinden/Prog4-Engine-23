@@ -8,6 +8,7 @@
 #include "Render2DComponent.h"
 #include "GameObject.h"
 #include "OrbitComponent.h"
+#include "InputManager.h"
 
 using namespace dae;
 
@@ -28,7 +29,7 @@ void dae::SceneFactory::InitDefaultScene()
 	// Background
 	{
 		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("background.tga");
+		textureComponent->SetTexture("demo/background.tga");
 	}
 
 
@@ -36,7 +37,7 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		go = pScene->MakeGameObject();
 		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("logo.tga");
+		textureComponent->SetTexture("demo/logo.tga");
 		textureComponent->SetPosition(216, 180);
 
 	}
@@ -44,7 +45,7 @@ void dae::SceneFactory::InitDefaultScene()
 
 	// text comp 1
 	{
-		auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 36);
 		go = pScene->MakeGameObject();
 
 		auto textComponent = go->AddComponent<TextComponent>("Programming 4 Assignment", font);
@@ -56,7 +57,7 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		go = pScene->MakeGameObject();
 
-		auto font = dae::ResourceManager::GetInstance().LoadFont("lowres.ttf", 36);
+		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 36);
 		auto textComponent = go->AddComponent<TextComponent>("Press [PAGE UP|DOWN] to change scene", font);
 		textComponent->SetPosition(60, 420);
 		textComponent->SetColor(255, 160, 100, 255);
@@ -66,7 +67,7 @@ void dae::SceneFactory::InitDefaultScene()
 	// fps comp 1
 	{
 		go = pScene->MakeGameObject();
-		auto font = dae::ResourceManager::GetInstance().LoadFont("raju-bold.otf", 42);
+		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 42);
 		//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 		FpsComponent* fpsComponent = go->AddComponent<FpsComponent>(font);
 		go->SetPosition(270, 80);
@@ -85,6 +86,8 @@ void dae::SceneFactory::InitDefaultScene()
 		auto orbitComp = go->AddComponent<OrbitComponent>();
 		orbitComp->SetSpeed(-2.6f);
 		orbitComp->SetRadius(50.f);
+
+
 	}
 
 	// orbiting texture 2
@@ -103,13 +106,59 @@ void dae::SceneFactory::InitDefaultScene()
 		orbitComp->SetSpeed(6.4f);
 		orbitComp->SetRadius(75.f);
 	}
+
+	{
+		go = pScene->MakeGameObject();
+		auto textureComponent = go->AddComponent<Render2DComponent>();
+		textureComponent->SetTexture("cheff.png");
+		textureComponent->SetPosition(300, 300);
+		textureComponent->SetResolution(50, 50);
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+
+		ButtonConditions b;
+		b.buttonMask = XINPUT_GAMEPAD_DPAD_LEFT;
+		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
+		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVELEFT, b);
+		CommandTriggerCondition c;
+		c.action = dae::PLAYERACTION::MOVELEFT;
+		c.gamepadID = 0;
+		c.pCommand = std::make_unique<MoveLeftCommand>(go.get());
+		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+
+		b.buttonMask = XINPUT_GAMEPAD_DPAD_RIGHT;
+		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
+		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVERIGHT, b);
+
+		c.action = dae::PLAYERACTION::MOVERIGHT;
+		c.gamepadID = 0;
+		c.pCommand = std::make_unique<MoveRightCommand>(go.get());
+		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+
+		b.buttonMask = XINPUT_GAMEPAD_DPAD_UP;
+		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
+		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVEUP, b);
+
+		c.action = dae::PLAYERACTION::MOVEUP;
+		c.gamepadID = 0;
+		c.pCommand = std::make_unique<MoveUpCommand>(go.get());
+		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+
+		b.buttonMask = XINPUT_GAMEPAD_DPAD_DOWN;
+		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
+		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVEDOWN, b);
+
+		c.action = dae::PLAYERACTION::MOVEDOWN;
+		c.gamepadID = 0;
+		c.pCommand = std::make_unique<MoveDownCommand>(go.get());
+		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+	}
 }
 
 void dae::SceneFactory::InitFpsDemoScene()
 {
 	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Demo2").get();
 
-	auto font = dae::ResourceManager::GetInstance().LoadFont("raju-bold.otf", 72);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 72);
 	std::shared_ptr<dae::GameObject> fpsGO = pScene->MakeGameObject();
 
 
@@ -119,7 +168,7 @@ void dae::SceneFactory::InitFpsDemoScene()
 
 	std::shared_ptr<GameObject> go = pScene->MakeGameObject();
 	Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
-	textureComponent->SetTexture("colorbars.png");
+	textureComponent->SetTexture("demo/colorbars.png");
 	textureComponent->SetDrawStyle(dae::Render2DComponent::DrawStyle::background);
 }
 
@@ -131,7 +180,7 @@ void dae::SceneFactory::InitBonusScene()
 	{
 		go = pScene->MakeGameObject();
 		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("backdrop_trees.png");
+		textureComponent->SetTexture("demo/backdrop_trees.png");
 		textureComponent->SetPosition(-80, 0);
 		textureComponent->SetResolution(800, 600);
 		textureComponent->SetDrawStyle(dae::Render2DComponent::DrawStyle::positionScale);
@@ -141,7 +190,7 @@ void dae::SceneFactory::InitBonusScene()
 	{
 		go = pScene->MakeGameObject();
 		auto textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("fatalerror.png");
+		textureComponent->SetTexture("demo/fatalerror.png");
 		textureComponent->SetPosition(300, 200);
 		textureComponent->SetResolution(100, 100);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
@@ -157,7 +206,7 @@ void dae::SceneFactory::InitBonusScene()
 		go = pScene->MakeGameObject();
 
 		auto textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("colorbars.png");
+		textureComponent->SetTexture("demo/colorbars.png");
 		textureComponent->SetPosition(0, 0);
 		textureComponent->SetResolution(100, 100);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);

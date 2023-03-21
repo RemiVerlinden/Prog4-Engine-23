@@ -114,7 +114,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			accumulator += updateContext.GetDeltaTime();
 
 			//============INPUT=================
-			doContinue = input.ProcessInput();
+			doContinue = input.ProcessInput(updateContext);
 			//==================================
 
 

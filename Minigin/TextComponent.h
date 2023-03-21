@@ -16,7 +16,6 @@ namespace dae{
 		TextComponent(const std::string& text, std::shared_ptr<Font> font);
 		~TextComponent() = default;
 
-		virtual void Initialize() override;
 		virtual void Update(const UpdateContext& context) override;
 		virtual void Draw() override;
 

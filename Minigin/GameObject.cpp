@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "BaseComponent.h"
+#include "Scene.h"
 
 #include "Transform.h"
 
@@ -89,11 +90,14 @@ void dae::GameObject::Render() const
 	}
 }
 
-//void dae::GameObject::SetTexture(const std::string& filename)
-//{
-//	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
-//}
-//
+void dae::GameObject::RenderUI() const
+{
+	for (const std::unique_ptr<BaseComponent>& component : m_Components)
+	{
+		component->RootDraw();
+	}
+}
+
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_Transform->SetLocalPosition(x, y, 0.0f);
@@ -115,13 +119,5 @@ GameObject* dae::GameObject::GetChildAt(unsigned int index)
 
 	return m_Children.at(index);
 }
-
-//GameObject* dae::GameObject::GetChildAt(unsigned int index)
-//{
-//	if (index >= m_Children.size()) {
-//		throw std::out_of_range("Index out of range in dae::GameObject::GetChildAt()");
-//	}
-//	return m_Children.at(index);
-//}
 
 

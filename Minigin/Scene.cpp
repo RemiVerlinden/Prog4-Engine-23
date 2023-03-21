@@ -71,6 +71,13 @@ void Scene::Render() const
 		object->Render();
 	}
 }
+void Scene::RenderUI() const
+{
+	for (const auto& object : m_objects)
+	{
+		object->RenderUI();
+	}
+}
 
 std::shared_ptr<GameObject> Scene::MakeGameObject()
 {

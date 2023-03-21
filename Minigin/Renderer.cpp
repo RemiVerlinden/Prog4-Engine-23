@@ -163,8 +163,10 @@ void dae::Renderer::Render(UpdateContext& context)
 	ImGui::NewFrame();
 
 	//DrawImguiDefaultWindow(context);
+	//SceneManager::GetInstance().RenderUI();
 
 	dae::Ex4::DrawImguiWeek04Exercises();
+	SceneManager::GetInstance().RenderUI();
 
 	DrawImguiFramerateWindow(context);
 	if (m_showDemo)

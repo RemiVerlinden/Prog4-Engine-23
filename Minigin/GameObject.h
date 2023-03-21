@@ -2,16 +2,15 @@
 #include <memory>
 #include <vector>
 #include <unordered_set>
-#include "Scene.h"
 #include <assert.h>
-#include "BaseComponent.h"
 
 namespace dae
 {
 	class UpdateContext;
 	class TransformComponent;
 	class GameTime;
-	// todo: this should become final.
+	class Scene;
+	class BaseComponent;
 	class GameObject final
 	{
 	public:
@@ -19,6 +18,7 @@ namespace dae
 		void LateUpdate(const UpdateContext& context);
 		void FixedUpdate(const UpdateContext& context);
 		void Render() const;
+		void RenderUI() const;
 
 		void SetPosition(float x, float y);
 
@@ -55,12 +55,12 @@ namespace dae
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
-	public:
-		TransformComponent* m_Transform;
-
 	private:
 		void AddChild(GameObject* go);
 		void RemoveChild(GameObject* go);
+	public:
+		TransformComponent* m_Transform;
+
 	private:
 		Scene*											m_Scene;
 		GameObject*										m_Parent;

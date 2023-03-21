@@ -29,6 +29,7 @@ namespace dae
 		//=========================================================
 		void Update(const UpdateContext& context);
 		void Render();
+		void RenderUI();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

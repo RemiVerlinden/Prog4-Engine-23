@@ -15,6 +15,7 @@ namespace dae
 
 		void Update(const UpdateContext& context);
 		void Render() const;
+		void RenderUI() const;
 
 		//========================================================
 		void LateUpdate(const UpdateContext& context);

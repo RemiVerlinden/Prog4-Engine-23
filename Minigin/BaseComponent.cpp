@@ -23,6 +23,11 @@ void dae::BaseComponent::RootDraw()
 	Draw();
 }
 
+void dae::BaseComponent::RootDrawUI()
+{
+	DrawUI();
+}
+
 void dae::BaseComponent::RootFixedUpdate(const UpdateContext& context)
 {
 	FixedUpdate(context);

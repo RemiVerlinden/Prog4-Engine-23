@@ -19,7 +19,7 @@ namespace dae {
 		~FpsComponent();
 
 		virtual void Initialize() override;
-		virtual void Update(const UpdateContext& context) override;
+		virtual void Update( const UpdateContext& context) override;
 
 
 		void SetPosition(const float x, const float y);

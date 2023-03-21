@@ -26,10 +26,6 @@ void dae::TextComponent::SetColor(int r, int g, int b, int a)
 }
 
 
-void dae::TextComponent::Initialize()
-{
-}
-
 void dae::TextComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
 	if (m_needsUpdate)
