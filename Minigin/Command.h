@@ -23,96 +23,12 @@ namespace dae
 		MoveCommand(GameObject* gameObject, glm::vec3 movedir)
 			: Command(gameObject)
 			, m_MoveDir(movedir)
-			, m_Transform( GetActor()->m_Transform )
+			, m_Transform(GetActor()->m_Transform)
 		{
 		}
-		
+
 		MoveCommand(GameObject* gameObject, glm::vec2 movedir)
-			: MoveCommand(gameObject, {movedir.x,movedir.y,0})
-		{
-		}
-
-		void Execute(const UpdateContext& context)
-		{
-			glm::vec3 moveVec = m_MoveDir * speed * context.GetDeltaTime().ToFloat();
-			*m_Transform += moveVec;
-		}
-	private:
-		TransformComponent* m_Transform;
-		glm::vec3 m_MoveDir;
-		float speed = 100.f;
-	};
-
-	class MoveLeftCommand final : public Command
-	{
-	public:
-		MoveLeftCommand(GameObject* gameObject)
-			: Command(gameObject)
-			, m_MoveDir(-1, 0, 0)
-			, m_Transform(GetActor()->m_Transform)
-		{
-		}
-
-		void Execute(const UpdateContext& context)
-		{
-			glm::vec3 moveVec = m_MoveDir * speed * context.GetDeltaTime().ToFloat();
-			*m_Transform += moveVec;
-		}
-	private:
-		TransformComponent* m_Transform;
-		glm::vec3 m_MoveDir;
-		float speed = 100.f;
-	};
-
-	class MoveRightCommand final : public Command
-	{
-	public:
-		MoveRightCommand(GameObject* gameObject)
-			: Command(gameObject)
-			, m_MoveDir(1, 0, 0)
-			, m_Transform(GetActor()->m_Transform)
-		{
-		}
-
-		void Execute(const UpdateContext& context)
-		{
-			glm::vec3 moveVec = m_MoveDir * speed * context.GetDeltaTime().ToFloat();
-			*m_Transform += moveVec;
-		}
-	private:
-		TransformComponent* m_Transform;
-		glm::vec3 m_MoveDir;
-		float speed = 100.f;
-	};
-
-	class MoveUpCommand final : public Command
-	{
-	public:
-		MoveUpCommand(GameObject* gameObject)
-			: Command(gameObject)
-			, m_MoveDir(0, -1, 0)
-			, m_Transform(GetActor()->m_Transform)
-		{
-		}
-
-		void Execute(const UpdateContext& context)
-		{
-			glm::vec3 moveVec = m_MoveDir * speed * context.GetDeltaTime().ToFloat();
-			*m_Transform += moveVec;
-		}
-	private:
-		TransformComponent* m_Transform;
-		glm::vec3 m_MoveDir;
-		float speed = 100.f;
-	};
-
-	class MoveDownCommand final : public Command
-	{
-	public:
-		MoveDownCommand(GameObject* gameObject)
-			: Command(gameObject)
-			, m_MoveDir(0, 1, 0)
-			, m_Transform(GetActor()->m_Transform)
+			: MoveCommand(gameObject, { movedir.x,movedir.y,0 })
 		{
 		}
 

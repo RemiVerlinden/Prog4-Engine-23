@@ -115,42 +115,25 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetResolution(50, 50);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
-		ButtonConditions b;
-		b.buttonMask = XINPUT_GAMEPAD_DPAD_LEFT;
-		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
-		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVELEFT, b);
+
 		CommandTriggerCondition c;
-		c.action = dae::PLAYERACTION::MOVELEFT;
 		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveLeftCommand>(go.get());
-		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{-1,0});
+		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
 
-		b.buttonMask = XINPUT_GAMEPAD_DPAD_RIGHT;
-		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
-		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVERIGHT, b);
-
-		c.action = dae::PLAYERACTION::MOVERIGHT;
 		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveRightCommand>(go.get());
-		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
+		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_RIGHT, XINPUT_KEYSTROKE_REPEAT }, c);
 
-		b.buttonMask = XINPUT_GAMEPAD_DPAD_UP;
-		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
-		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVEUP, b);
-
-		c.action = dae::PLAYERACTION::MOVEUP;
 		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveUpCommand>(go.get());
-		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
+		InputManager::GetInstance().AddKeybind({XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT}, c);
 
-		b.buttonMask = XINPUT_GAMEPAD_DPAD_DOWN;
-		b.buttonPhase = XINPUT_KEYSTROKE_REPEAT;
-		InputManager::GetInstance().AddKeybind(dae::PLAYERACTION::MOVEDOWN, b);
 
-		c.action = dae::PLAYERACTION::MOVEDOWN;
 		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveDownCommand>(go.get());
-		InputManager::GetInstance().AddCommandLinkedToPlayerAction(c);
+		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
+		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
+
 	}
 }
 

@@ -4,10 +4,11 @@
 #include <iostream>
 
 #include "ImguiWrapper.h"
+#include <algorithm>
 
 
 dae::InputManager::InputManager()
-	:m_GamepadStates(XUSER_MAX_COUNT)
+	:m_Gamepads(XUSER_MAX_COUNT)
 {
 }
 
@@ -15,9 +16,9 @@ dae::InputManager::InputManager()
 bool dae::InputManager::ProcessInput(const UpdateContext& context)
 {
 	if (!ProcessSDLEvent()) return false;
-
-	ProcessXInput();
-	ExecuteCommands(context);
+	(context);
+	//ProcessXInput();
+	//ExecuteCommands(context);
 
 	return true;
 }
@@ -34,15 +35,12 @@ void dae::InputManager::ProcessXInput()
 
 void dae::InputManager::ExecuteCommands(const UpdateContext& context)
 {
-	for (const CommandTriggerCondition& commandCondition : m_CommandsLinkedToPlayerAction)
-	{
-		auto buttonConditionsItr = m_Keybinds.find(commandCondition.action);
-		if (buttonConditionsItr == m_Keybinds.end()) continue;
+	std::for_each(m_Keybinds.begin(), m_Keybinds.end(), [this, &context](const auto& keybind)
+		{
+			if (!CheckButtonConditions(keybind.first, keybind.second.gamepadID)) return;
 
-		if (!CheckButtonConditions(buttonConditionsItr->second, commandCondition.gamepadID)) continue;
-
-		commandCondition.pCommand->Execute(context);
-	}
+			keybind.second.pCommand->Execute(context);
+		});
 }
 
 
@@ -69,25 +67,25 @@ inline void dae::InputManager::UpdateGamepadButtonStates(DWORD gamepadIndex)
 	XINPUT_STATE buttonState;
 	DWORD result = XInputGetState(gamepadIndex, &buttonState);
 
-	GamepadState& gamepadState = m_GamepadStates[gamepadIndex];
+	Gamepad& Gamepad = m_Gamepads[gamepadIndex];
 	switch (result)
 	{
 		case ERROR_SUCCESS:
 		{
-			gamepadState.connected = true;
-			std::swap(gamepadState.previousButtonState, gamepadState.currentButtonState);
-			gamepadState.currentButtonState = buttonState.Gamepad;
+			Gamepad.connected = true;
+			std::swap(Gamepad.previousButtonState, Gamepad.currentButtonState);
+			Gamepad.currentButtonState = buttonState.Gamepad;
 
-			WORD buttonChanges = gamepadState.currentButtonState.wButtons ^ gamepadState.previousButtonState.wButtons;
-			gamepadState.buttonsPressedThisFrame = buttonChanges & gamepadState.currentButtonState.wButtons;
-			gamepadState.buttonsReleasedThisFrame = buttonChanges & (~gamepadState.currentButtonState.wButtons);
+			WORD buttonChanges = Gamepad.currentButtonState.wButtons ^ Gamepad.previousButtonState.wButtons;
+			Gamepad.buttonsPressedThisFrame = buttonChanges & Gamepad.currentButtonState.wButtons;
+			Gamepad.buttonsReleasedThisFrame = buttonChanges & (~Gamepad.currentButtonState.wButtons);
 			break;
 		}
 
 		case ERROR_DEVICE_NOT_CONNECTED:
 		{
 		default:
-			ZeroMemory(&gamepadState, sizeof(GamepadState));
+			ZeroMemory(&Gamepad, sizeof(Gamepad));
 			break;
 		}
 	}
@@ -99,31 +97,26 @@ inline void dae::InputManager::UpdateGamepadBatteryInformation(DWORD gamepadInde
 	DWORD result = XInputGetBatteryInformation(gamepadIndex, BATTERY_DEVTYPE_GAMEPAD, &batteryInfo);
 	if (result == ERROR_SUCCESS)
 	{
-		m_GamepadStates[gamepadIndex].batteryInformation = batteryInfo;
+		m_Gamepads[gamepadIndex].batteryInformation = batteryInfo;
 	}
 }
 
 bool dae::InputManager::IsDown(WORD button, int controllerID) const
 {
-	return (m_GamepadStates[controllerID].buttonsPressedThisFrame & button);
+	return (m_Gamepads[controllerID].buttonsPressedThisFrame & button);
 }
 bool dae::InputManager::IsPressed(WORD button, int controllerID) const
 {
-	return (m_GamepadStates[controllerID].currentButtonState.wButtons & button);
+	return (m_Gamepads[controllerID].currentButtonState.wButtons & button);
 }
 bool dae::InputManager::IsReleased(WORD button, int controllerID) const
 {
-	return (m_GamepadStates[controllerID].buttonsReleasedThisFrame & button);
+	return (m_Gamepads[controllerID].buttonsReleasedThisFrame & button);
 }
 
-void dae::InputManager::AddKeybind(PLAYERACTION action, ButtonConditions buttonConditions)
+void dae::InputManager::AddKeybind(ButtonConditions buttonConditions, CommandTriggerCondition& commandTriggerCondition)
 {
-	m_Keybinds.insert({ action,buttonConditions });
-}
-
-void dae::InputManager::AddCommandLinkedToPlayerAction(CommandTriggerCondition& commandTriggerCondition)
-{
-	m_CommandsLinkedToPlayerAction.push_back(std::move(commandTriggerCondition));
+	m_Keybinds.insert(std::move(std::make_pair( buttonConditions,std::move(commandTriggerCondition))));
 }
 
 

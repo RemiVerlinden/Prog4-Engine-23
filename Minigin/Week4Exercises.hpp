@@ -202,7 +202,7 @@ namespace dae
 				{
 					static std::vector<TimeData> timeMeasurements;
 					InputTimingParameters inout;
-					inout.arraySize = 1'000'000;
+					inout.arraySize = 10'000'000;
 					inout.sampleSize = numSamples;
 					inout.timings = &timeMeasurements;
 					TimeGameObject<GameObject3D>(inout);
@@ -258,7 +258,7 @@ namespace dae
 				{
 					static std::vector<TimeData> timeMeasurements;
 					InputTimingParameters inout;
-					inout.arraySize = 1'000'000;
+					inout.arraySize = 10'000'000;
 					inout.sampleSize = 100;
 					inout.timings = &timeMeasurements;
 					TimeGameObject<GameObject3DAlt>(inout);

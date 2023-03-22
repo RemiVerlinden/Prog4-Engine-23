@@ -14,23 +14,29 @@ namespace dae
 	{
 		WORD buttonMask; // if all buttons from this mask are in the required phase -> then buttonCodition will trigger
 		WORD buttonPhase; // the button phase: [DOWN|PRESSED|RELEASED]
+
+		bool operator==(const ButtonConditions& other) const
+		{
+			return buttonMask == other.buttonMask && buttonPhase == other.buttonPhase;
+		}
 	};
-
-
-	enum class PLAYERACTION
+}
+namespace std
+{
+	template<>
+	struct hash<dae::ButtonConditions>
 	{
-		MOVELEFT,
-		MOVERIGHT,
-		MOVEUP,
-		MOVEDOWN,
-		JUMP,
-		SHOOT,
-		DASH,
-		QUIT
+		std::size_t operator()(const dae::ButtonConditions& bc) const
+		{
+			return std::hash<WORD>()(bc.buttonMask) ^ std::hash<WORD>()(bc.buttonPhase);
+		}
 	};
+}
+
+namespace dae
+{
 	struct CommandTriggerCondition
 	{
-		PLAYERACTION action;
 		int gamepadID; // [0-3]
 		std::unique_ptr<Command> pCommand;
 	};
@@ -40,14 +46,12 @@ namespace dae
 	public:
 		bool ProcessInput(const UpdateContext& context);
 
-		void AddKeybind(PLAYERACTION action, ButtonConditions buttonConditions);
-		void AddCommandLinkedToPlayerAction(CommandTriggerCondition& commandTriggerCondition);
+		void AddKeybind(ButtonConditions buttonConditions, CommandTriggerCondition& commandTriggerCondition);
 	private:
 		bool ProcessSDLEvent();
 		void ProcessXInput();
 		void ExecuteCommands(const UpdateContext& context);
 
-		struct GamepadState;
 		inline void UpdateGamepadButtonStates(DWORD gamepadIndex);
 		inline void UpdateGamepadBatteryInformation(DWORD gamepadIndex);
 		bool IsDown(WORD button, int gamepadID) const;
@@ -61,7 +65,7 @@ namespace dae
 
 	private:
 
-		struct GamepadState
+		struct Gamepad
 		{
 			bool connected;
 			XINPUT_GAMEPAD previousButtonState;
@@ -73,11 +77,9 @@ namespace dae
 			XINPUT_BATTERY_INFORMATION batteryInformation;
 		};
 
-		std::vector<GamepadState> m_GamepadStates;
-		std::unordered_map<PLAYERACTION, ButtonConditions> m_Keybinds;
-		std::vector<CommandTriggerCondition> m_CommandsLinkedToPlayerAction;
+		std::vector<Gamepad> m_Gamepads;
+		std::unordered_map<ButtonConditions, CommandTriggerCondition> m_Keybinds;
 	};
-
 }
 
 
