@@ -5,31 +5,46 @@
 
 #include "ImguiWrapper.h"
 #include <algorithm>
-
+#include "Timers.h"
 
 dae::InputManager::InputManager()
 	:m_Gamepads(XUSER_MAX_COUNT)
 {
+	m_IsRunning = true;
+	//std::thread inputPollingThread(&dae::InputManager::PollInputThread, this);
+	//inputPollingThread.detach();
+}
+
+dae::InputManager::~InputManager()
+
+{
+	m_IsRunning = false;
 }
 
 
 bool dae::InputManager::ProcessInput(const UpdateContext& context)
 {
 	if (!ProcessSDLEvent()) return false;
-	(context);
-	//ProcessXInput();
-	//ExecuteCommands(context);
+	ProcessXInput();
+	ExecuteCommands(context);
 
 	return true;
 }
 
 void dae::InputManager::ProcessXInput()
 {
+	const int maxPollingRate = 500;
+	const Milliseconds maximumPollingTime = 1000.f / maxPollingRate;
+	static CyclicTimer<EngineClock> cyclicTimer{maximumPollingTime};
+
+	if (cyclicTimer.Update())
+	{
+		UpdateGamepadButtonStates();
+	}
+
 	for (DWORD gamepadIndex = 0; gamepadIndex < XUSER_MAX_COUNT; ++gamepadIndex)
 	{
-		UpdateGamepadButtonStates(gamepadIndex);
-
-		UpdateGamepadBatteryInformation(gamepadIndex);
+		//UpdateGamepadBatteryInformation(gamepadIndex);
 	}
 }
 
@@ -62,31 +77,35 @@ bool dae::InputManager::CheckButtonConditions(const ButtonConditions& buttonCond
 	return false;
 }
 
-inline void dae::InputManager::UpdateGamepadButtonStates(DWORD gamepadIndex)
+inline void dae::InputManager::UpdateGamepadButtonStates()
 {
-	XINPUT_STATE buttonState;
-	DWORD result = XInputGetState(gamepadIndex, &buttonState);
-
-	Gamepad& Gamepad = m_Gamepads[gamepadIndex];
-	switch (result)
+	for (DWORD gamepadIndex = 0; gamepadIndex < XUSER_MAX_COUNT; ++gamepadIndex)
 	{
-		case ERROR_SUCCESS:
-		{
-			Gamepad.connected = true;
-			std::swap(Gamepad.previousButtonState, Gamepad.currentButtonState);
-			Gamepad.currentButtonState = buttonState.Gamepad;
+		XINPUT_STATE buttonState;
+		ZeroMemory(&buttonState, sizeof(XINPUT_STATE));
+		DWORD result = XInputGetState(gamepadIndex, &buttonState);
 
-			WORD buttonChanges = Gamepad.currentButtonState.wButtons ^ Gamepad.previousButtonState.wButtons;
-			Gamepad.buttonsPressedThisFrame = buttonChanges & Gamepad.currentButtonState.wButtons;
-			Gamepad.buttonsReleasedThisFrame = buttonChanges & (~Gamepad.currentButtonState.wButtons);
-			break;
-		}
+		Gamepad& Gamepad = m_Gamepads[gamepadIndex];
+		switch (result)
+		{
+		case ERROR_SUCCESS:
+			{
+				Gamepad.connected = true;
+				std::swap(Gamepad.previousButtonState, Gamepad.currentButtonState);
+				Gamepad.currentButtonState = buttonState.Gamepad;
+
+				WORD buttonChanges = Gamepad.currentButtonState.wButtons ^ Gamepad.previousButtonState.wButtons;
+				Gamepad.buttonsPressedThisFrame = buttonChanges & Gamepad.currentButtonState.wButtons;
+				Gamepad.buttonsReleasedThisFrame = buttonChanges & (~Gamepad.currentButtonState.wButtons);
+				break;
+			}
 
 		case ERROR_DEVICE_NOT_CONNECTED:
-		{
-		default:
-			ZeroMemory(&Gamepad, sizeof(Gamepad));
-			break;
+			{
+			default:
+				ZeroMemory(&Gamepad, sizeof(Gamepad));
+				break;
+			}
 		}
 	}
 }
@@ -116,7 +135,7 @@ bool dae::InputManager::IsReleased(WORD button, int controllerID) const
 
 void dae::InputManager::AddKeybind(ButtonConditions buttonConditions, CommandTriggerCondition& commandTriggerCondition)
 {
-	m_Keybinds.insert(std::move(std::make_pair( buttonConditions,std::move(commandTriggerCondition))));
+	m_Keybinds.insert(std::move(std::make_pair(buttonConditions, std::move(commandTriggerCondition))));
 }
 
 
@@ -130,50 +149,59 @@ bool dae::InputManager::ProcessSDLEvent()
 
 		switch (e.type)
 		{
-			case SDL_QUIT:
+		case SDL_QUIT:
+		{
+			return false;
+			break;
+		}
+
+		case SDL_KEYDOWN:
+		{
+			break;
+		}
+
+		case SDL_KEYUP:
+		{
+			switch (e.key.keysym.sym)
 			{
-				return false;
+			case SDLK_PAGEUP:
+			{
+				SceneManager::GetInstance().NextScene();
 				break;
 			}
 
-			case SDL_KEYDOWN:
+			case SDLK_PAGEDOWN:
 			{
+				SceneManager::GetInstance().PreviousScene();
 				break;
 			}
-
-			case SDL_KEYUP:
-			{
-				switch (e.key.keysym.sym)
-				{
-					case SDLK_PAGEUP:
-					{
-						SceneManager::GetInstance().NextScene();
-						break;
-					}
-
-					case SDLK_PAGEDOWN:
-					{
-						SceneManager::GetInstance().PreviousScene();
-						break;
-					}
-				}
-				break;
 			}
+			break;
+		}
 
-			case SDL_MOUSEBUTTONDOWN:
-			{
-				break;
-			}
+		case SDL_MOUSEBUTTONDOWN:
+		{
+			break;
+		}
 
-			default:
-			{
-				break;
-			}
+		default:
+		{
+			break;
+		}
 		}
 
 	}
 	return true;
 }
 
+
+void dae::InputManager::PollInputThread()
+{
+	while (m_IsRunning)
+	{
+		UpdateGamepadButtonStates();
+		std::this_thread::sleep_for(std::chrono::milliseconds(1)); // Adjust the sleep duration as needed
+	}
+}
 
 

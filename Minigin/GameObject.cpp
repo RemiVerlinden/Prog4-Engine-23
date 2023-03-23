@@ -94,7 +94,7 @@ void dae::GameObject::RenderUI() const
 {
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
-		component->RootDraw();
+		component->RootDrawUI();
 	}
 }
 

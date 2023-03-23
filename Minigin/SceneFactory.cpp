@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "OrbitComponent.h"
 #include "InputManager.h"
+#include "ImguiInputComponent.h"
 
 using namespace dae;
 
@@ -116,9 +117,39 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
 
+		//CommandTriggerCondition c;
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{-1,0});
+ 	//	InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
+
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
+		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_RIGHT, XINPUT_KEYSTROKE_REPEAT }, c);
+
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
+		//InputManager::GetInstance().AddKeybind({XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT}, c);
+
+
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
+		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
+
+	}
+
+	{
+		auto parentGo = go; // previous go from RAII block above
+		go = pScene->MakeGameObject();
+
+		auto textureComponent = go->AddComponent<Render2DComponent>();
+		textureComponent->SetTexture("bean.png");
+		textureComponent->SetPosition(350, 350);
+		textureComponent->SetResolution(50, 50);
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+
 		CommandTriggerCondition c;
-		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{-1,0});
+		c.gamepadID =0;
+		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ -1,0 });
 		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
 
 		c.gamepadID = 0;
@@ -127,13 +158,18 @@ void dae::SceneFactory::InitDefaultScene()
 
 		c.gamepadID = 0;
 		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
-		InputManager::GetInstance().AddKeybind({XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT}, c);
+		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT }, c);
 
 
 		c.gamepadID = 0;
 		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
 		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
+	}
 
+	{
+		go = pScene->MakeGameObject();
+
+		go->AddComponent<ImguiInputComponent>();
 	}
 }
 

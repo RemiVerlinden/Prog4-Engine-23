@@ -7,6 +7,8 @@
 #include "Command.h"
 #include <vector>
 #include <unordered_map>
+#include <atomic>
+#include <thread>
 
 namespace dae
 {
@@ -47,12 +49,14 @@ namespace dae
 		bool ProcessInput(const UpdateContext& context);
 
 		void AddKeybind(ButtonConditions buttonConditions, CommandTriggerCondition& commandTriggerCondition);
+		~InputManager();
+
 	private:
 		bool ProcessSDLEvent();
 		void ProcessXInput();
 		void ExecuteCommands(const UpdateContext& context);
 
-		inline void UpdateGamepadButtonStates(DWORD gamepadIndex);
+		inline void UpdateGamepadButtonStates();
 		inline void UpdateGamepadBatteryInformation(DWORD gamepadIndex);
 		bool IsDown(WORD button, int gamepadID) const;
 		bool IsPressed(WORD button, int gamepadID) const;
@@ -62,6 +66,8 @@ namespace dae
 
 		friend class Singleton<InputManager>;
 		InputManager();
+
+		void PollInputThread();
 
 	private:
 
@@ -79,6 +85,11 @@ namespace dae
 
 		std::vector<Gamepad> m_Gamepads;
 		std::unordered_map<ButtonConditions, CommandTriggerCondition> m_Keybinds;
+
+		std::atomic<bool> m_IsRunning;
+	public:
+		std::vector<Gamepad>& GetGamepads() { return m_Gamepads; };
+
 	};
 }
 

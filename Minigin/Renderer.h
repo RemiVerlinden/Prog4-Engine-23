@@ -17,7 +17,7 @@ namespace dae
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};
-		bool m_showDemo{ true };
+		bool m_showDemo{ false };
 
 		int m_Width;
 		int m_Height;
