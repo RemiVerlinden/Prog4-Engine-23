@@ -4,7 +4,7 @@
 
 namespace dae
 {
-	class UpdateContex;
+	class UpdateContext;
 	class TransformComponent final : public BaseComponent
 	{
 	public:
