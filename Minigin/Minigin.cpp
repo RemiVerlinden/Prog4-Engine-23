@@ -6,6 +6,7 @@
 #include <SDL_ttf.h>
 #include "Minigin.h"
 #include "InputManager.h"
+#include "InputSystem.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
@@ -93,6 +94,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& input2 = Input::InputSystem::GetInstance();
 
 
 	//==========TIMER-VARIABLES=========
@@ -114,6 +116,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			accumulator += updateContext.GetDeltaTime();
 
 			//============INPUT=================
+			doContinue = input2.ProcessInput(updateContext.GetDeltaTime());
 			doContinue = input.ProcessInput(updateContext);
 			//==================================
 

@@ -43,6 +43,21 @@
     <Filter Include="Engine Files\Imgui">
       <UniqueIdentifier>{8294ce3f-59c4-4ca1-83d5-6d7c37587a3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Input">
+      <UniqueIdentifier>{33e9c23f-292a-4ce6-914c-21912f87ea98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Input\Devices">
+      <UniqueIdentifier>{9b75b128-4a44-4c23-b20a-c69583ffeaf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Input\InputStates">
+      <UniqueIdentifier>{61388da2-4e3c-4250-b44e-0ceae26bff01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Input\Commands">
+      <UniqueIdentifier>{025bd39c-3ae3-4100-b43d-5284f8931de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Input\Buttons">
+      <UniqueIdentifier>{f95e694f-2036-4949-a04f-9f2af690584c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneFactory.h">
@@ -132,14 +147,44 @@
     <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
       <Filter>Engine Files\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="ImguiWrapper.h">
-      <Filter>Application Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.hpp">
       <Filter>Application Files</Filter>
     </ClInclude>
     <ClInclude Include="Week4Exercises.hpp">
       <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="InputStateMouse.h">
+      <Filter>Engine Files\Input\InputStates</Filter>
+    </ClInclude>
+    <ClInclude Include="InputStateKeyboard.h">
+      <Filter>Engine Files\Input\InputStates</Filter>
+    </ClInclude>
+    <ClInclude Include="InputStateGamepad.h">
+      <Filter>Engine Files\Input\InputStates</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDeviceKeyboardMouse.h">
+      <Filter>Engine Files\Input\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDeviceGamepad.h">
+      <Filter>Engine Files\Input\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDevice.h">
+      <Filter>Engine Files\Input\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWrapper.h">
+      <Filter>Engine Files\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Engine Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiInputComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Engine Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="XInputButtons.h">
+      <Filter>Engine Files\Input\Buttons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +265,24 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
       <Filter>Engine Files\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiInputComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDevice.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDeviceGamepad.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDeviceKeyboardMouse.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Engine Files\Input\Commands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
