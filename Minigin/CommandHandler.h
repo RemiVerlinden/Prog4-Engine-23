@@ -4,7 +4,7 @@
 #include "Command.h"
 #include "InputDevice.h"
 #include "Time.h"
-#include "InputSystem.h"
+#include "InputState.h"
 
 namespace dae::Input
 {
@@ -15,11 +15,12 @@ namespace dae::Input
 		Release
 	};
 
+
 	struct InputAction
 	{
 		InputDevice* device;
-		uint64_t button;
 		ButtonPressType pressType;
+		std::unique_ptr<Command> command;
 	};
 
 	class InputActionCommandList
@@ -44,14 +45,23 @@ namespace dae::Input
 	public:
 		CommandHandler() = default;
 		void Update(Seconds elapsedTime);
-		void UpdateActionsCommandsList(InputActionCommandList& actionCommandList);
+		void BindNewAction(deviceButton button, InputAction& inputAction);
 	private:
 		void UpdateActionBindings();
 	private:
-		//std::unordered_map<InputAction, Command*> m_BindActions;
-		std::unordered_map<int, Command*> m_BindActions{};
-		InputActionCommandList m_ActionCommandList;
-		std::list<InputActionCommandList> m_inputSchemes;
+
+		struct deviceButtonHash
+		{
+			std::size_t operator()(const deviceButton& button) const
+			{
+				return std::visit([](const auto& arg)
+				{
+					return std::hash<std::decay_t<decltype(arg)>>()(arg);
+				}, button);
+			}
+		};
+
+		std::unordered_map<deviceButton, InputAction, deviceButtonHash> m_BindActions{};
 	};
 }
 

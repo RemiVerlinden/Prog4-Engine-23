@@ -13,6 +13,7 @@ namespace dae::Input
     bool InputSystem::Initialize()
     {
 
+        m_CommandHandler = std::make_unique<CommandHandler>();
         // Create Gamepads
         //-------------------------------------------------------------------------
 
@@ -50,6 +51,9 @@ namespace dae::Input
         {
             doContinue = static_cast<bool>(pInputDevice->ProcessInput(deltaTime) | doContinue);
         }
+
+        m_CommandHandler.get()->Update(deltaTime);
+
         return doContinue;
     }
 

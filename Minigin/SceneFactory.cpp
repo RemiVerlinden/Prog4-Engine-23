@@ -8,13 +8,14 @@
 #include "Render2DComponent.h"
 #include "GameObject.h"
 #include "OrbitComponent.h"
-#include "InputManager.h"
+#include "InputSystem.h"
 #include "InputDebugImguiComponent.h"
 
 using namespace dae;
 
 void dae::SceneFactory::CreateScenes()
 {
+
 	InitDefaultScene();
 	InitFpsDemoScene();
 	InitBonusScene();
@@ -116,23 +117,48 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetResolution(50, 50);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
+		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
+		dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
 
+		dae::Input::deviceButton button{ WORD(XINPUT_GAMEPAD_DPAD_RIGHT) };
+
+		dae::Input::InputAction inputAction;
+		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
+		inputAction.device = inputSystem.GetGamepadDevice(0);
+		inputAction.pressType = dae::Input::ButtonPressType::Hold;
+
+		commandHandler->BindNewAction(button, inputAction);
+
+		button = WORD(XINPUT_GAMEPAD_DPAD_LEFT);
+		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ -1,0 });
+		commandHandler->BindNewAction(button, inputAction);
+		button = WORD(XINPUT_GAMEPAD_DPAD_UP);
+		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
+
+		commandHandler->BindNewAction(button, inputAction);
+		button = WORD(XINPUT_GAMEPAD_DPAD_DOWN);
+		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
+
+		commandHandler->BindNewAction(button, inputAction);
+
+		button = SDL_Scancode(SDL_SCANCODE_S);
+		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
+		inputAction.device = inputSystem.GetKeyboardMouseDevice();
+		commandHandler->BindNewAction(button, inputAction);
 		//CommandTriggerCondition c;
 		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{-1,0});
- 	//	InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
+		//c.pCommand = 
+	//	InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
 
 		//c.gamepadID = 0;
 		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
 		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_RIGHT, XINPUT_KEYSTROKE_REPEAT }, c);
 
 		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
 		//InputManager::GetInstance().AddKeybind({XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT}, c);
 
 
 		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
 		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
 
 	}
@@ -147,23 +173,23 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetResolution(50, 50);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
-		CommandTriggerCondition c;
-		c.gamepadID =0;
-		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ -1,0 });
-		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
+		//CommandTriggerCondition c;
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ -1,0 });
+		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
 
-		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
-		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_RIGHT, XINPUT_KEYSTROKE_REPEAT }, c);
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
+		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_RIGHT, XINPUT_KEYSTROKE_REPEAT }, c);
 
-		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
-		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT }, c);
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
+		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT }, c);
 
 
-		c.gamepadID = 0;
-		c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
-		InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
+		//c.gamepadID = 0;
+		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
+		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
 	}
 
 	{

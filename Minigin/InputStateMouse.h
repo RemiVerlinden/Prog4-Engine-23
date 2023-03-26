@@ -1,13 +1,14 @@
 #pragma once
 #include "glm\glm.hpp"
 #include "Time.h"
+#include "InputState.h"
 
 namespace dae::Input
 {
 
 	//-------------------------------------------------------------------------
 
-	class InputStateMouse
+	class InputStateMouse : public InputState
 	{
 		friend class InputDeviceKeyboardMouse;
 
@@ -28,14 +29,14 @@ namespace dae::Input
 
 		// Was the button just pressed (i.e. went from up to down this frame)
 		// Use SDL_BUTTON for input
-		bool WasPressed(uint8_t button) const { return SDL_BUTTON(button) & m_ButtonsPressedThisFrame; }
+		virtual bool WasPressed(deviceButton button) const override { return SDL_BUTTON(GetMouseButton(button)) & m_ButtonsPressedThisFrame; }
 
 		// Was the button just release (i.e. went from down to up this frame). Also optionally returns how long the button was held for
 		// Use SDL_BUTTON for input
-		bool WasReleased(uint8_t button) const { return SDL_BUTTON(button) & m_ButtonsReleasedThisFrame; }
+		virtual bool WasReleased(deviceButton button) const override { return SDL_BUTTON(GetMouseButton(button)) & m_ButtonsReleasedThisFrame; }
 
 		// Is the button being held down? Use SDL_BUTTON for input
-		bool IsHeldDown(uint8_t button) const { return m_MouseState & SDL_BUTTON(button); }
+		virtual bool IsHeldDown(deviceButton button) const override { return SDL_BUTTON(GetMouseButton(button)) & m_MouseState; }
 
 		void ProcesMouseWheel(SDL_MouseWheelEvent& mouseWheelEvent)
 		{
@@ -44,6 +45,11 @@ namespace dae::Input
 		}
 	private:
 
+		inline uint8_t GetMouseButton(deviceButton button) const
+		{
+			const int buttonType = static_cast<int>(DeviceButtonType::Mouse);
+			return std::get<buttonType>(button);
+		}
 
 		void ProcessInput(Seconds deltaTime)
 		{
@@ -59,7 +65,7 @@ namespace dae::Input
 
 			m_MovementDelta = m_Position - m_PrevPosition;
 
-			if (WasReleased(SDL_BUTTON_LEFT))
+			if (WasReleased( SDL_BUTTON_LEFT ))
 			{
 				std::cout << "hey";
 			}

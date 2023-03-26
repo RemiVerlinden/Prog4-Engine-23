@@ -1,89 +1,81 @@
 #include "CommandHandler.h"
 #include "InputDeviceGamepad.h"
 #include "InputDeviceKeyboardMouse.h"
+#include "InputState.h"
+
 void dae::Input::CommandHandler::Update(Seconds elapsedTime)
 {
 	for (auto& bindAction : m_BindActions)
 	{
-		const InputAction& inputAction = InputAction{};
-		//const InputAction& inputAction = bindAction.first;
-		Command* command = bindAction.second;
+		deviceButton button = bindAction.first;
+		const InputAction& inputAction = bindAction.second;
 
-		bool executeCommand = false;
+		const InputState* deviceInputState{};
+
 		switch (inputAction.device->GetDeviceCategory())
 		{
 			case DeviceCategory::Gamepad:
 			{
-				InputDeviceGamepad* gamepadDevice = static_cast<InputDeviceGamepad*>(inputAction.device);
-
-				switch (inputAction.pressType)
-				{
-					case ButtonPressType::Press:
-						executeCommand = gamepadDevice->GetGamepadState().WasPressed(inputAction.button);
-						break;
-					case ButtonPressType::Hold:
-						executeCommand = gamepadDevice->GetGamepadState().IsHeldDown(inputAction.button);
-						break;
-					case ButtonPressType::Release:
-						executeCommand = gamepadDevice->GetGamepadState().WasReleased(inputAction.button);
-						break;
-				}
+				deviceInputState = &static_cast<InputDeviceGamepad*>(inputAction.device)->GetGamepadState();
 				break;
 			}
 			case DeviceCategory::KeyboardMouse:
 			{
-				InputDeviceKeyboardMouse* keyboardMouseDevice = static_cast<InputDeviceKeyboardMouse*>(inputAction.device);
-				uint8_t button = (uint8_t)inputAction.button;
+				DeviceButtonType buttonType = ((std::holds_alternative<SDL_Scancode>(button)) ? DeviceButtonType::Keyboard : DeviceButtonType::Mouse);
 
-				if (button == SDL_BUTTON(SDL_BUTTON_LEFT))
+				switch (buttonType)
 				{
-					switch (inputAction.pressType)
-					{
-						case ButtonPressType::Press:
-							executeCommand = keyboardMouseDevice->GetMouseState().WasPressed(button);
-							break;
-						case ButtonPressType::Hold:
-							executeCommand = keyboardMouseDevice->GetMouseState().IsHeldDown(button);
-							break;
-						case ButtonPressType::Release:
-							executeCommand = keyboardMouseDevice->GetMouseState().WasReleased(button);
-							break;
-					}
-				}
-				else
-				{
+					case DeviceButtonType::Keyboard:
+						deviceInputState = &static_cast<InputDeviceKeyboardMouse*>(inputAction.device)->GetKeyboardState();
+						break;
 
-					//switch (inputAction.pressType)
-					//{
-					//	case ButtonPressType::Press:
-					//		executeCommand = keyboardMouseDevice->GetKeyboardState().WasPressed(button);
-					//		break;
-					//	case ButtonPressType::Hold:
-					//		executeCommand = keyboardMouseDevice->GetKeyboardState().IsHeldDown(button);
-					//		break;
-					//	case ButtonPressType::Release:
-					//		executeCommand = keyboardMouseDevice->GetKeyboardState().WasReleased(button);
-					//		break;
-					//}
+					case DeviceButtonType::Mouse:
+						deviceInputState = &static_cast<InputDeviceKeyboardMouse*>(inputAction.device)->GetMouseState();
+						break;
 				}
-			}
 			break;
+			}
 		}
+
+		bool executeCommand = false;
+
+		switch (bindAction.second.pressType)
+		{
+			case ButtonPressType::Press:
+				executeCommand = deviceInputState->WasPressed(button);
+				break;
+			case ButtonPressType::Hold:
+				executeCommand = deviceInputState->IsHeldDown(button);
+				break;
+			case ButtonPressType::Release:
+				executeCommand = deviceInputState->WasReleased(button);
+				break;
+		}
+
+		Command* command = inputAction.command.get();
+
 		if (executeCommand) command->Execute(elapsedTime);
 	}
 
 }
 
-void dae::Input::CommandHandler::UpdateActionsCommandsList(InputActionCommandList& actionCommandList)
+void dae::Input::CommandHandler::BindNewAction(deviceButton button, InputAction& inputAction)
 {
-	m_ActionCommandList = actionCommandList;
-	UpdateActionBindings();
+	std::pair<deviceButton, InputAction> bindAction{ std::make_pair(button, std::move(inputAction)) };
+	m_BindActions.emplace(std::move(bindAction));
 }
 
-void dae::Input::CommandHandler::UpdateActionBindings()
-{
-	//for (auto& actionCommandPair : *m_ActionCommandList.GetList())
-	//{
-	//	//m_BindActions.emplace(std::make_pair(actionCommandPair.first, actionCommandPair.second.get()));
-	//}
-}
+
+//void dae::Input::CommandHandler::UpdateActionsCommandsList(InputActionCommandList& actionCommandList)
+//{
+//	m_ActionCommandList = actionCommandList;
+//	UpdateActionBindings();
+//}
+//
+//void dae::Input::CommandHandler::UpdateActionBindings()
+//{
+//	//for (auto& actionCommandPair : *m_ActionCommandList.GetList())
+//	//{
+//	//	//m_BindActions.emplace(std::make_pair(actionCommandPair.first, actionCommandPair.second.get()));
+//	//}
+//}

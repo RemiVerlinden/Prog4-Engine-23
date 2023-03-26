@@ -89,12 +89,13 @@ dae::Minigin::~Minigin()
 
 void dae::Minigin::Run(const std::function<void()>& load)
 {
+	auto& input2 = Input::InputSystem::GetInstance();
+	Input::InputSystem::GetInstance().Initialize();
 	load();
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
-	auto& input2 = Input::InputSystem::GetInstance();
 
 
 	//==========TIMER-VARIABLES=========
@@ -105,7 +106,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	//==================================
 
 	sceneManager.Initialize(); // IMPORTANT
-	Input::InputSystem::GetInstance().Initialize();
 
 	bool doContinue = true;
 	while (doContinue)

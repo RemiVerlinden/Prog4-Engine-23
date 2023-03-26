@@ -10,7 +10,7 @@
 #include "InputDeviceGamepad.h"
 #include <vector>
 #include <memory>
-
+#include "CommandHandler.h"
 //-------------------------------------------------------------------------
 
 namespace dae::Input
@@ -82,13 +82,17 @@ namespace dae::Input
         InputDeviceKeyboardMouse* GetKeyboardMouseDevice() const;
         InputDeviceGamepad* GetGamepadDevice(uint8_t GamepadIdx = 0) const;
 
+        CommandHandler* GetCommandHandler() const { return m_CommandHandler.get(); }
+
     private:
         friend class Singleton<InputSystem>;
         InputSystem() = default;
 
     private:
 
-        std::vector<std::unique_ptr<InputDevice>>  m_inputDevices;
 
+
+        std::vector<std::unique_ptr<InputDevice>>  m_inputDevices;
+        std::unique_ptr<CommandHandler> m_CommandHandler;
     };
 }

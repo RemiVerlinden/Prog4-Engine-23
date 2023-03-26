@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include <iostream>
 #include <array>
+#include "InputState.h"
 
 namespace dae::Input
 {
@@ -122,7 +123,7 @@ namespace dae::Input
 		NumButtons,
 	};
 
-	class InputStateKeyboard
+	class InputStateKeyboard : public InputState
 	{
 		friend class InputDeviceKeyboardMouse;
 
@@ -139,13 +140,22 @@ namespace dae::Input
 
 
 		// Was the button just pressed (i.e. went from up to down this frame)
-		bool WasPressed(SDL_Scancode button) const { return !m_PrevKeyboardState[button] && m_KeyboardState[button]; }
+		virtual bool WasPressed(deviceButton button) const override
+		{ 
+			return !m_PrevKeyboardState[GetSDL_Scancode(button)] && m_KeyboardState[GetSDL_Scancode(button)];
+		}
 
 		// Was the button just release (i.e. went from down to up this frame). Also optionally returns how long the button was held for
-		bool WasReleased(SDL_Scancode button) const { return m_PrevKeyboardState[button] && !m_KeyboardState[button]; }
+		virtual bool WasReleased(deviceButton button) const override
+		{ 
+			return m_PrevKeyboardState[GetSDL_Scancode(button)] && !m_KeyboardState[GetSDL_Scancode(button)];
+		}
 
 		// Is the button being held down?
-		bool IsHeldDown(SDL_Scancode button) const { return m_KeyboardState[button]; }
+		virtual bool IsHeldDown(deviceButton button)  const override
+		{ 
+			return m_KeyboardState[GetSDL_Scancode(button)];
+		}
 
 		// Syntactic Sugar
 		//-------------------------------------------------------------------------
@@ -167,6 +177,12 @@ namespace dae::Input
 		bool IsAltHeldDown() const { return 0; }
 
 	private:
+
+		inline SDL_Scancode GetSDL_Scancode(deviceButton button) const
+		{
+			const int buttonType = static_cast<int>(DeviceButtonType::Keyboard);
+			return std::get<buttonType>(button);
+		}
 
 		void UpdatePreviousKeyboardState()
 		{

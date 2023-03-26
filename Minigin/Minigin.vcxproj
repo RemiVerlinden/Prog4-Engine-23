@@ -202,6 +202,7 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CommandHandler.h" />
+    <ClInclude Include="InputState.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="XInputButtons.h" />
     <ClInclude Include="Command.h" />

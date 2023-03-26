@@ -6,6 +6,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "Xinput.h"
+
+#include "InputState.h"
 //-------------------------------------------------------------------------
 
 namespace dae::Input
@@ -30,7 +32,7 @@ namespace dae::Input
 
 	//-------------------------------------------------------------------------
 
-	class InputStateGamepad
+	class InputStateGamepad : public InputState
 	{
 		friend class InputDeviceGamepad;
 
@@ -84,26 +86,38 @@ namespace dae::Input
 		//-------------------------------------------------------------------------
 
 		// Was the button just pressed (i.e. went from up to down this frame)
-		bool WasPressed(uint64_t button) const 
+		virtual bool WasPressed(deviceButton button) const override
 		{
-			return (m_ButtonStates.buttonsPressedThisFrame & button);
+			return (m_ButtonStates.buttonsPressedThisFrame & GetGamepadButton(button));
 		}
 
 		// Was the button just release (i.e. went from down to up this frame). Also optionally returns how long the button was held for
-		bool WasReleased(uint64_t button) const
+		virtual bool WasReleased(deviceButton button) const override
 		{
-			return (m_ButtonStates.buttonsReleasedThisFrame & button);
+			return (m_ButtonStates.buttonsReleasedThisFrame & GetGamepadButton(button));
 		}
 
 		// Is the button being held down?
-		bool IsHeldDown(uint64_t button) const
+		virtual bool IsHeldDown(deviceButton button) const override
 		{ 
+			return (m_ButtonStates.currentButtonState.wButtons & GetGamepadButton(button));
+		}
+
+		bool IsHeldDown(WORD button) const
+		{
 			return (m_ButtonStates.currentButtonState.wButtons & button);
 		}
 
 		inline bool IsConnected() const { return m_IsConnected; }
 
 	private:
+
+		inline WORD GetGamepadButton(deviceButton button) const
+		{
+			const int buttonType = static_cast<int>(DeviceButtonType::Gamepad);
+			return std::get<buttonType>(button);
+		}
+
 		bool ProcessInput(Seconds deltaTime, XINPUT_STATE& gamepadState) 
 		{
 			std::swap(m_ButtonStates.previousButtonState, m_ButtonStates.currentButtonState);

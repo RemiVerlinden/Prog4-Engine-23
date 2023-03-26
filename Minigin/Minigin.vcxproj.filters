@@ -187,7 +187,10 @@
       <Filter>Engine Files\Input\Buttons</Filter>
     </ClInclude>
     <ClInclude Include="CommandHandler.h">
-      <Filter>Application Files</Filter>
+      <Filter>Engine Files\Input\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="InputState.h">
+      <Filter>Engine Files\Input\InputStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
