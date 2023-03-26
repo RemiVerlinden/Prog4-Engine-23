@@ -9,7 +9,7 @@
 #include "GameObject.h"
 #include "OrbitComponent.h"
 #include "InputManager.h"
-#include "ImguiInputComponent.h"
+#include "InputDebugImguiComponent.h"
 
 using namespace dae;
 
@@ -169,7 +169,7 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		go = pScene->MakeGameObject();
 
-		go->AddComponent<ImguiInputComponent>();
+		go->AddComponent<dae::Input::InputDebugImguiComponent>();
 	}
 }
 

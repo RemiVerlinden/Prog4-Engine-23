@@ -177,7 +177,7 @@
     <ClInclude Include="InputSystem.h">
       <Filter>Engine Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="ImguiInputComponent.h">
+    <ClInclude Include="InputDebugImguiComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
@@ -185,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="XInputButtons.h">
       <Filter>Engine Files\Input\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandHandler.h">
+      <Filter>Application Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,7 +269,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
       <Filter>Engine Files\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="ImguiInputComponent.cpp">
+    <ClCompile Include="InputDebugImguiComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="InputDevice.cpp">
@@ -283,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Engine Files\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandHandler.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

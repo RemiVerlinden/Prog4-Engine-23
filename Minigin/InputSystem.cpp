@@ -12,8 +12,6 @@ namespace dae::Input
 
     bool InputSystem::Initialize()
     {
-        // Create a keyboard and mouse device
-        m_inputDevices.push_back(std::move(std::make_unique<InputDeviceKeyboardMouse>(InputDeviceKeyboardMouse())));
 
         // Create Gamepads
         //-------------------------------------------------------------------------
@@ -25,6 +23,10 @@ namespace dae::Input
 
         //-------------------------------------------------------------------------
 
+        // Create a keyboard and mouse device
+        m_inputDevices.push_back(std::move(std::make_unique<InputDeviceKeyboardMouse>(InputDeviceKeyboardMouse())));
+
+        //-------------------------------------------------------------------------
         for (auto& pDevice : m_inputDevices)
         {
             pDevice->Initialize();
@@ -94,7 +96,6 @@ namespace dae::Input
             {
                 auto pGamepad = static_cast<InputDeviceGamepad*>(pDevice.get());
 
-                if (!pGamepad->IsConnected()) continue;
                 if (pGamepad->GetGamepadIndex() != GamepadIdx) continue;
 
                 return pGamepad;

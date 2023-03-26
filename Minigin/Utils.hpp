@@ -3,6 +3,7 @@
 #include <thread>
 #include <math.h>
 #include "Time.h"
+
 namespace dae
 {
 	namespace Utils

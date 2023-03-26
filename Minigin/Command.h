@@ -8,7 +8,7 @@ namespace dae
 	class Command
 	{
 	public:
-		virtual void Execute(const UpdateContext& context) = 0;
+		virtual void Execute(Seconds elapsedTime) = 0;
 		virtual ~Command() = default;
 	protected:
 		Command(GameObject* gameObject) : m_GameObject{ gameObject } {}
@@ -32,9 +32,9 @@ namespace dae
 		{
 		}
 
-		void Execute(const UpdateContext& context)
+		void Execute(Seconds elapsedTime)
 		{
-			glm::vec3 moveVec = m_MoveDir * speed * context.GetDeltaTime().ToFloat();
+			glm::vec3 moveVec = m_MoveDir * speed * elapsedTime.ToFloat();
 			*m_Transform += moveVec;
 		}
 	private:

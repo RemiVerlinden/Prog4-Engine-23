@@ -43,14 +43,14 @@ namespace dae::Input
 
 		struct GamepadButtonStates
 		{
-			bool connected;
-			XINPUT_GAMEPAD previousButtonState;
-			XINPUT_GAMEPAD currentButtonState;
+			bool connected = false;
+			XINPUT_GAMEPAD previousButtonState{};
+			XINPUT_GAMEPAD currentButtonState{};
 
-			WORD buttonsPressedThisFrame;
-			WORD buttonsReleasedThisFrame;
+			WORD buttonsPressedThisFrame{};
+			WORD buttonsReleasedThisFrame{};
 
-			XINPUT_BATTERY_INFORMATION batteryInformation;
+			XINPUT_BATTERY_INFORMATION batteryInformation{};
 		};
 
 	public:
@@ -84,23 +84,24 @@ namespace dae::Input
 		//-------------------------------------------------------------------------
 
 		// Was the button just pressed (i.e. went from up to down this frame)
-		bool WasPressed(WORD button) const 
+		bool WasPressed(uint64_t button) const 
 		{
 			return (m_ButtonStates.buttonsPressedThisFrame & button);
-			return (m_ButtonStates.currentButtonState.wButtons & button);
 		}
 
 		// Was the button just release (i.e. went from down to up this frame). Also optionally returns how long the button was held for
-		bool WasReleased(WORD button) const 
+		bool WasReleased(uint64_t button) const
 		{
 			return (m_ButtonStates.buttonsReleasedThisFrame & button);
 		}
 
 		// Is the button being held down?
-		bool IsHeldDown(WORD button) const 
+		bool IsHeldDown(uint64_t button) const
 		{ 
-			return (m_ButtonStates.buttonsPressedThisFrame & button);
+			return (m_ButtonStates.currentButtonState.wButtons & button);
 		}
+
+		inline bool IsConnected() const { return m_IsConnected; }
 
 	private:
 		bool ProcessInput(Seconds deltaTime, XINPUT_STATE& gamepadState) 
@@ -123,5 +124,6 @@ namespace dae::Input
 		std::array<glm::vec2, Direction::size>			m_analogInputFiltered = { glm::vec2{}, glm::vec2{} };
 		std::array<float, Direction::size>				m_triggerRaw = { 0.0f, 0.0f };
 		std::array<float, Direction::size>				m_triggerFiltered = { 0.0f, 0.0f };
+		bool                                        m_IsConnected = false;
 	};
 }

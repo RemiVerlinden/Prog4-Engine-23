@@ -31,10 +31,10 @@ namespace dae
 
 			InputDeviceGamepad(uint8_t GamepadIndex) : m_GamepadIndex(GamepadIndex) {}
 
-            inline Settings const& GetSettings() const { return m_settings; }
-            inline InputStateGamepad const& GetGamepadState() const { return m_GamepadState; }
+            inline const Settings& GetSettings() const { return m_settings; }
+            inline const InputStateGamepad& GetGamepadState() const { return m_GamepadState; }
 
-            inline bool IsConnected() const { return m_IsConnected; }
+            inline bool IsConnected() const { return m_GamepadState.m_IsConnected; }
 			inline uint8_t GetGamepadIndex()const { return m_GamepadIndex; }
 
 			virtual void Initialize() override;
@@ -56,7 +56,6 @@ namespace dae
             Settings                                    m_settings;
             InputStateGamepad							m_GamepadState;
             uint8_t                                     m_GamepadIndex;
-            bool                                        m_IsConnected = false;
         };
     }
 }

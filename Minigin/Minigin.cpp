@@ -105,6 +105,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	//==================================
 
 	sceneManager.Initialize(); // IMPORTANT
+	Input::InputSystem::GetInstance().Initialize();
 
 	bool doContinue = true;
 	while (doContinue)

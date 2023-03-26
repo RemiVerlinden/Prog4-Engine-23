@@ -54,7 +54,7 @@ void dae::InputManager::ExecuteCommands(const UpdateContext& context)
 		{
 			if (!CheckButtonConditions(keybind.first, keybind.second.gamepadID)) return;
 
-			keybind.second.pCommand->Execute(context);
+			keybind.second.pCommand->Execute(context.GetDeltaTime());
 		});
 }
 
@@ -122,11 +122,11 @@ inline void dae::InputManager::UpdateGamepadBatteryInformation(DWORD gamepadInde
 
 bool dae::InputManager::IsDown(WORD button, int controllerID) const
 {
-	return (m_Gamepads[controllerID].buttonsPressedThisFrame & button);
+	return (m_Gamepads[controllerID].currentButtonState.wButtons & button);
 }
 bool dae::InputManager::IsPressed(WORD button, int controllerID) const
 {
-	return (m_Gamepads[controllerID].currentButtonState.wButtons & button);
+	return (m_Gamepads[controllerID].buttonsPressedThisFrame & button);
 }
 bool dae::InputManager::IsReleased(WORD button, int controllerID) const
 {

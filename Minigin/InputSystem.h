@@ -24,6 +24,9 @@ namespace dae::Input
 
     class InputSystem : public Singleton<InputSystem>
     {
+
+        friend class InputDebugImguiComponent;
+
     public:
 
         static InputStateMouse const s_emptyMouseState;
@@ -76,15 +79,16 @@ namespace dae::Input
             return &s_emptyGamepadState;
         }
 
-
-    private:
-        friend class Singleton<InputSystem>;
-        InputSystem() = default;
         InputDeviceKeyboardMouse* GetKeyboardMouseDevice() const;
         InputDeviceGamepad* GetGamepadDevice(uint8_t GamepadIdx = 0) const;
 
     private:
+        friend class Singleton<InputSystem>;
+        InputSystem() = default;
+
+    private:
 
         std::vector<std::unique_ptr<InputDevice>>  m_inputDevices;
+
     };
 }
