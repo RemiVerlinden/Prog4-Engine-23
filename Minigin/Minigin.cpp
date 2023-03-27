@@ -5,7 +5,6 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Minigin.h"
-#include "InputManager.h"
 #include "InputSystem.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -118,7 +117,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			accumulator += updateContext.GetDeltaTime();
 
 			//============INPUT=================
-			doContinue = input.ProcessInput(updateContext.GetDeltaTime());
+			doContinue = input.ProcessInput(updateContext);
 			//==================================
 
 

@@ -96,9 +96,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Engine Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Engine Files\Singletons</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Engine Files\Singletons</Filter>
     </ClInclude>
@@ -232,9 +229,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Engine Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Engine Files\Singletons</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Engine Files\Singletons</Filter>

@@ -6,7 +6,7 @@ namespace dae
 {
 	namespace Input
 	{
-		class InputDeviceKeyboardMouse final : public InputDevice
+		class InputDeviceKeyboardMouse final : public InputDevice // ALL SDL GETS HANDLED IN THIS CLASS
 		{
         public:
 

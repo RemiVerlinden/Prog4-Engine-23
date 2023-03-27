@@ -21,8 +21,9 @@ using namespace dae;
 void dae::SceneFactory::CreateScenes()
 {
 	std::cout << std::endl << std::endl;
-	std::cout << "INPUT: [WASD] - [DPAD] - [LEFT STICK GAMEPAD]\n";
-	std::cout << "SUPPORT FOR 4 GAMEPADS TOTAL\n";
+	std::cout << "INPUT PLAYER 1: [WASD]       -	[GAMEPAD 1: DPAD] - [GAMEPAD 1: LEFT STICK]\n";
+	std::cout << "INPUT PLAYER 2: [ARROW KEYS] -	[GAMEPAD 2: DPAD] - [GAMEPAD 2: LEFT STICK]\n";
+
 	InitDefaultScene();
 	InitFpsDemoScene();
 	InitBonusScene();
@@ -124,6 +125,8 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetResolution(50, 50);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
+
+		// ASSIGN INPUT
 		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
 		dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
 
@@ -140,18 +143,22 @@ void dae::SceneFactory::InitDefaultScene()
 			commandHandler->BindNewAction(button, inputAction);
 		};
 
+
+
+		// GAMEPAD
 		auto gamepadDevice = inputSystem.GetGamepadDevice(0);
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_RIGHT, ButtonPressType::Hold, glm::vec2{ 1,0 });
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_LEFT, ButtonPressType::Hold, glm::vec2{ -1,0 });
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_UP, ButtonPressType::Hold, glm::vec2{ 0,1 });
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
-
+		// KEYBOARD
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_A, ButtonPressType::Hold, glm::vec2{ -1,0 });
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_D, ButtonPressType::Hold, glm::vec2{ 1,0 });
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_W, ButtonPressType::Hold, glm::vec2{ 0,1 });
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_S, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
+		// GAMEPAD ANALOG STICK
 		auto bindAnalogStickMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, const glm::vec2* dir)
 		{
 
@@ -163,6 +170,7 @@ void dae::SceneFactory::InitDefaultScene()
 			commandHandler->BindNewAction(button, inputAction);
 		};
 
+		// GAMEPAD ANALOG STICK
 		bindAnalogStickMove(gamepadDevice, XINPUT_GAMEPAD_LEFT_STICK, ButtonPressType::Hold, gamepadDevice->GetGamepadState().GetAnalogStickFilteredPtr(false));
 	}
 
@@ -176,6 +184,10 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetResolution(50, 50);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
+		auto moveComponent = go->AddComponent<MoveComponent>();
+		moveComponent->SetMoveSpeed(300.f);
+
+		// ASSIGN INPUT
 
 		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
 		dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
@@ -193,17 +205,20 @@ void dae::SceneFactory::InitDefaultScene()
 			commandHandler->BindNewAction(button, inputAction);
 		};
 
+		// GAMEPAD
 		auto gamepadDevice = inputSystem.GetGamepadDevice(1);
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_RIGHT, ButtonPressType::Hold, glm::vec2{ 1,0 });
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_LEFT, ButtonPressType::Hold, glm::vec2{ -1,0 });
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_UP, ButtonPressType::Hold, glm::vec2{ 0,1 });
 		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
-
+		// KEYBOARD
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_LEFT), ButtonPressType::Hold, glm::vec2{ -1,0 });
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_RIGHT), ButtonPressType::Hold, glm::vec2{ 1,0 });
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_UP), ButtonPressType::Hold, glm::vec2{ 0,1 });
 		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_DOWN), ButtonPressType::Hold, glm::vec2{ 0,-1 });
+
+		// GAMEPAD ANALOG STICK
 
 		auto bindAnalogStickMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, const glm::vec2* dir)
 		{
@@ -216,6 +231,7 @@ void dae::SceneFactory::InitDefaultScene()
 			commandHandler->BindNewAction(button, inputAction);
 		};
 
+		// GAMEPAD ANALOG STICK
 		bindAnalogStickMove(gamepadDevice, XINPUT_GAMEPAD_LEFT_STICK, ButtonPressType::Hold, gamepadDevice->GetGamepadState().GetAnalogStickFilteredPtr(false));
 	}
 

@@ -5,16 +5,16 @@
 
 namespace dae::Input
 {
-	using deviceButton = std::variant<int, SDL_Scancode, uint8_t>;
+	using deviceButton = std::variant<int, SDL_Scancode, uint8_t>; // first one is for XINPUT [XINPUT_GAMEPAD_...],  second one is for SDL keyboard [SDL_SCANCODE_...], thrid one is for SDL mouse [SDL_MOUSE_...]
 
-	enum class DeviceButtonType : int
+	enum class DeviceButtonType : int // simple helper for the std::variant defined above
 	{
 		Gamepad,
 		Keyboard,
 		Mouse
 	};
 
-	class InputState
+	class InputState // only reason I have this is so I can make my CommandHandler class cleaner and shorter
 	{
 	public:
 

@@ -216,7 +216,6 @@
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="InputDeviceGamepad.h" />
     <ClInclude Include="InputDeviceKeyboardMouse.h" />
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputStateGamepad.h" />
     <ClInclude Include="InputStateKeyboard.h" />
     <ClInclude Include="InputStateMouse.h" />
@@ -256,7 +255,6 @@
     <ClCompile Include="InputDevice.cpp" />
     <ClCompile Include="InputDeviceGamepad.cpp" />
     <ClCompile Include="InputDeviceKeyboardMouse.cpp" />
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />

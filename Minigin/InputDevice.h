@@ -8,7 +8,7 @@ namespace dae
     namespace Input
     {
 
-        enum class DeviceCategory
+        enum class DeviceCategory // might expand in coming weeks (probably not)
         {
             KeyboardMouse,
             Gamepad
@@ -24,7 +24,7 @@ namespace dae
             virtual void Initialize() = 0;
             virtual void Shutdown() = 0;
 
-            // Get the category for this device (Gamepad/mice), this is necessary since we may have multiple Gamepad device types (e.g. XBox, PS, 3rdParty)
+            // Get the category for this device (Gamepad/mice), this is necessary since we may have multiple Gamepad devices
             virtual DeviceCategory GetDeviceCategory() const = 0;
 
             // Called at the start of the frame to update the current device state

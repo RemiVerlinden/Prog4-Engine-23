@@ -44,7 +44,7 @@ namespace dae
 		{
 			(elapsedTime);
 			glm::vec2 moveVec = (useRef) ? *m_MoveDirRef : m_MoveDir;
-			moveVec.y = -moveVec.y; // in this engine the Y is inverted
+			moveVec.y = -moveVec.y; // in this engine the Y is inverted 
 			m_MoveComponent->SetMoveDirection(moveVec);
 		}
 	private:

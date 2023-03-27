@@ -1,9 +1,6 @@
 #pragma once
 #include "Singleton.h"
-
-
-
-#include "Time.h"
+#include "Timers.h"
 #include "InputDeviceKeyboardMouse.h"
 #include "InputDeviceGamepad.h"
 #include <vector>
@@ -15,12 +12,9 @@ namespace dae::Input
 {
     class InputState;
 
-    //-------------------------------------------------------------------------
-    // Input System
-    //-------------------------------------------------------------------------
-    // The global EE input system, manages all hardware devices and updates their state
+    // input system, manages all hardware devices and updates their state
 
-    class InputSystem : public Singleton<InputSystem>
+    class InputSystem : public Singleton<InputSystem>  // This should be called InputManager but NO
     {
 
         friend class InputDebugImguiComponent;
@@ -35,7 +29,7 @@ namespace dae::Input
 
         bool Initialize();
         void Shutdown();
-        bool ProcessInput(Seconds deltaTime);
+        bool ProcessInput(const UpdateContext& context);
 
         // Keyboard & Mouse
         //-------------------------------------------------------------------------

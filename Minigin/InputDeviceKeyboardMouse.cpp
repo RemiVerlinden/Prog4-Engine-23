@@ -14,7 +14,7 @@ namespace dae
         }
         bool InputDeviceKeyboardMouse::ProcessInput(Seconds deltaTime)
         {
-
+			
 			m_keyboardState.UpdatePreviousKeyboardState();
 
 			SDL_Event event;

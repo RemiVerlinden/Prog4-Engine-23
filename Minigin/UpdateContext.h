@@ -26,7 +26,8 @@ namespace dae
         void SetFrameRateLimit( float FPS ) { m_FrameRateLimitFPS = glm::max<float>( 0.0f, FPS ); }
         inline float GetFrameRateLimit() const { assert( HasFrameRateLimit() ); return m_FrameRateLimitFPS; }
         inline Milliseconds GetLimitedFrameTime() const { assert( HasFrameRateLimit() ); return Milliseconds( 1000 ) / m_FrameRateLimitFPS; }
-        inline const Seconds GetFixedTimeStep() const { return m_FixedTimeStep; };
+        inline const Seconds GetFixedTimeStep() const { return m_FixedTimeStep; }
+        inline const int GetMaxInputPollingRate() const { return m_MaxInputPollingRate; }
         // Set the time delta for this update
         inline void UpdateDeltaTime( Milliseconds deltaTime )
         {
@@ -45,6 +46,7 @@ namespace dae
         uint64_t                    m_FrameID = 0;
         float                       m_FrameRateLimitFPS = 60.0f;
         Seconds					    m_FixedTimeStep = 0.02f;
+        const int                   m_MaxInputPollingRate = 500;
 
     };
 }

@@ -8,6 +8,9 @@
 #include <array>
 #include <vector>
 
+
+// okay this is terrible, I dont know how else to implement this 
+// sorry for this giant clusterfuck
 //-------------------------------------------------------------------------
 
 namespace dae::Input
@@ -109,10 +112,12 @@ namespace dae::Input
 		}
 
 	};
+//-------------------------------------------------------------------------
 
 
 
 
+//-------------------------------------------------------------------------
 
 	class dae::Input::InputDeviceGamepad::InputDeviceGamepadImpl
 	{
@@ -240,6 +245,10 @@ namespace dae::Input
 		uint8_t                                     m_GamepadIndex;
 	};
 
+//-------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------
 
 
 	InputDeviceGamepad::InputDeviceGamepad(uint8_t gamepadIndex)
@@ -306,6 +315,7 @@ namespace dae::Input
 		return m_pImpl->GetDeviceCategory();
 	}
 
+	//-------------------------------------------------------------------------
 
 
 
@@ -321,6 +331,7 @@ namespace dae::Input
 
 
 
+//-------------------------------------------------------------------------
 
 	InputStateGamepad::InputStateGamepad()
 		: m_pImpl(new InputStateGamepadImpl())
