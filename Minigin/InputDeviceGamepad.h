@@ -68,9 +68,5 @@ namespace dae
 
 			InputDeviceGamepadImpl* m_pImpl;
 		};
-
-
-
-
 	}
 }

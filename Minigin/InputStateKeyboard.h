@@ -80,6 +80,9 @@ namespace dae::Input
 		void ProcessInput(Seconds deltaTime)
 		{
 			(deltaTime);
+			// nothing needed here because SDL is cool like that
+			// all I had to do was storing the SDL_GetKeyboardState pointer and now when SDL_PollEvent gets called
+			// then m_KeyboardState pointer will update 
 		};
 
 
