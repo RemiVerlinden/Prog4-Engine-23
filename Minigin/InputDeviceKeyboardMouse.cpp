@@ -41,6 +41,8 @@ namespace dae
             m_mouseState.ProcessInput(deltaTime);
             m_keyboardState.ProcessInput(deltaTime);
 
+
+
 			if (m_keyboardState.WasReleased(SDL_SCANCODE_PAGEUP))
 			{
 				SceneManager::GetInstance().NextScene();

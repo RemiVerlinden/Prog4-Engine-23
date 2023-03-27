@@ -1,14 +1,11 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include "Xinput.h"
 #include <variant>
 #include <SDL.h>
 
 
 namespace dae::Input
 {
-	using deviceButton = std::variant<WORD, SDL_Scancode, uint8_t>;
+	using deviceButton = std::variant<int, SDL_Scancode, uint8_t>;
 
 	enum class DeviceButtonType : int
 	{

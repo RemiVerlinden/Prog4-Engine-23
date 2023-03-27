@@ -23,22 +23,6 @@ namespace dae::Input
 		std::unique_ptr<Command> command;
 	};
 
-	class InputActionCommandList
-	{
-	public:
-		InputActionCommandList() = default;
-
-		//void AddInputActionCommandBind(InputDevice* device, uint64_t button, ButtonPressType pressType, std::unique_ptr<Command>& command) 
-		//{
-		//	//InputAction inputAction{ device, button, pressType };
-		//	//m_InputActioncommandList.push_back(std::move((std::make_pair(inputAction, std::move(command)))));
-		//};
-
-		//std::list<std::pair<InputAction, std::unique_ptr<Command> >>* GetList() { return &m_InputActioncommandList; };
-	private:
-		//std::list<std::pair<InputAction, std::unique_ptr<Command> >> m_InputActioncommandList;
-	};
-
 
 	class CommandHandler final
 	{
@@ -61,7 +45,8 @@ namespace dae::Input
 			}
 		};
 
-		std::unordered_map<deviceButton, InputAction, deviceButtonHash> m_BindActions{};
+		using DeviceActionBinds = std::unordered_map<deviceButton, InputAction, deviceButtonHash>;
+		 std::unordered_map<int, DeviceActionBinds> m_ActionBindPerDevice;
 	};
 }
 

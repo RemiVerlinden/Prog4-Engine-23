@@ -1,9 +1,13 @@
 #include "InputDebugImguiComponent.h"
 #include "ImguiWrapper.h"
-#include "InputManager.h"
-#include "InputSystem.h"
 #include <format>
 #include "glm\glm.hpp"
+#include "InputSystem.h"
+#include "InputDeviceGamepad.h"
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include "Xinput.h"
 
 namespace dae::Input
 {
@@ -151,7 +155,7 @@ namespace dae::Input
 
 	}
 
-	void dae::Input::InputDebugImguiComponent::DrawUI()
+	void dae::Input::InputDebugImguiComponent::DrawUI([[maybe_unused]] UpdateContext& context)
 	{
 		DrawIsDeviceConnectedWindow();
 

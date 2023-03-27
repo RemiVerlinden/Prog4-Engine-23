@@ -20,7 +20,7 @@ namespace dae {
 
 		virtual void Initialize() override;
 		virtual void Update( const UpdateContext& context) override;
-
+		virtual void DrawUI(UpdateContext& context) override;
 
 		void SetPosition(const float x, const float y);
 		void SetColor(int r, int g, int b, int a);

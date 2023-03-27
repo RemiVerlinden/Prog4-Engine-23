@@ -2,60 +2,66 @@
 #include "InputDevice.h"
 #include "InputStateGamepad.h"
 
+#define XINPUT_GAMEPAD_LEFT_STICK    0x0400
+#define XINPUT_GAMEPAD_RIGHT_STICK   0x0800
+
 namespace dae
 {
 	namespace Input
 	{
+
+		struct GamepadSettings
+		{
+
+		public:
+
+			float     m_leftStickInnerDeadzone = 0.0f;
+			float     m_leftStickOuterDeadzone = 0.0f;
+			float     m_leftTriggerThreshold = 0.0f;
+
+			float     m_rightStickInnerDeadzone = 0.0f;
+			float     m_rightStickOuterDeadzone = 0.0f;
+			float     m_rightTriggerThreshold = 0.0f;
+
+			bool    m_leftStickInvertY = false;
+			bool    m_rightStickInvertY = false;
+		};
 		class InputDeviceGamepad final : public InputDevice
 		{
 		public:
 
-			struct Settings
-			{
+			InputDeviceGamepad(uint8_t gamepadIndex);
+			~InputDeviceGamepad();
 
-			public:
+			const GamepadSettings& GetSettings() const;
+			const InputStateGamepad& GetGamepadState() const;
 
-				float     m_leftStickInnerDeadzone = 0.0f;
-				float     m_leftStickOuterDeadzone = 0.0f;
-				float     m_leftTriggerThreshold = 0.0f;
-
-				float     m_rightStickInnerDeadzone = 0.0f;
-				float     m_rightStickOuterDeadzone = 0.0f;
-				float     m_rightTriggerThreshold = 0.0f;
-
-				bool    m_leftStickInvertY = false;
-				bool    m_rightStickInvertY = false;
-			};
-
-	public:
-
-			InputDeviceGamepad(uint8_t GamepadIndex) : m_GamepadIndex(GamepadIndex) {}
-
-            inline const Settings& GetSettings() const { return m_settings; }
-            inline const InputStateGamepad& GetGamepadState() const { return m_GamepadState; }
-
-            inline bool IsConnected() const { return m_GamepadState.m_IsConnected; }
-			inline uint8_t GetGamepadIndex()const { return m_GamepadIndex; }
+			bool IsConnected() const;
+			void SetConnection(bool connection);
+			uint8_t GetGamepadIndex()const;
 
 			virtual void Initialize() override;
 			virtual void Shutdown() override;
 
-        protected:
+		protected:
 
-            virtual bool ProcessInput(Seconds deltaTime) override;
+			virtual bool ProcessInput(Seconds deltaTime) override;
 
-            void SetTriggerValues(float leftRawValue, float rightRawValue);
-            void SetAnalogStickValues(const glm::vec2& leftRawValue, const glm::vec2& rightRawValue);
+			void SetTriggerValues(float leftRawValue, float rightRawValue);
+			void SetAnalogStickValues(const glm::vec2& leftRawValue, const glm::vec2& rightRawValue);
 
-        private:
+		private:
 
-            virtual DeviceCategory GetDeviceCategory() const override final { return DeviceCategory::Gamepad; }
+			virtual DeviceCategory GetDeviceCategory() const override;
 
-        protected:
 
-            Settings                                    m_settings;
-            InputStateGamepad							m_GamepadState;
-            uint8_t                                     m_GamepadIndex;
-        };
-    }
+			class InputDeviceGamepadImpl;
+
+			InputDeviceGamepadImpl* m_pImpl;
+		};
+
+
+
+
+	}
 }

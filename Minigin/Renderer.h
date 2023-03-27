@@ -39,10 +39,7 @@ namespace dae
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
 		void RenderTextureBackground(const Texture2D& texture) const;
-		void DrawImguiFramerateWindow(UpdateContext& context);
-		void DrawImguiExercise2Window();
-		void DrawImguiExercise3Window();
-		//void DrawImguiDefaultWindow(UpdateContext& context);
+
 		SDL_Renderer* GetSDLRenderer() const;
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }

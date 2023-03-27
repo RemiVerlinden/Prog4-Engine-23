@@ -23,9 +23,9 @@ void dae::BaseComponent::RootDraw()
 	Draw();
 }
 
-void dae::BaseComponent::RootDrawUI()
+void dae::BaseComponent::RootDrawUI(UpdateContext& context)
 {
-	DrawUI();
+	DrawUI(context);
 }
 
 void dae::BaseComponent::RootFixedUpdate(const UpdateContext& context)

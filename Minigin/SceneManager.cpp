@@ -20,9 +20,9 @@ void dae::SceneManager::Render()
 	if (m_pActiveScene) m_pActiveScene->Render();
 }
 
-void dae::SceneManager::RenderUI()
+void dae::SceneManager::RenderUI(UpdateContext& context)
 {
-	if (m_pActiveScene) m_pActiveScene->RenderUI();
+	if (m_pActiveScene) m_pActiveScene->RenderUI(context);
 }
 void dae::SceneManager::Initialize()
 {

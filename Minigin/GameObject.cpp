@@ -90,11 +90,11 @@ void dae::GameObject::Render() const
 	}
 }
 
-void dae::GameObject::RenderUI() const
+void dae::GameObject::RenderUI(UpdateContext& context) const
 {
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
-		component->RootDrawUI();
+		component->RootDrawUI(context);
 	}
 }
 

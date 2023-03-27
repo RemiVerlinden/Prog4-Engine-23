@@ -89,13 +89,14 @@ dae::Minigin::~Minigin()
 
 void dae::Minigin::Run(const std::function<void()>& load)
 {
-	auto& input2 = Input::InputSystem::GetInstance();
+
+	auto& input = Input::InputSystem::GetInstance();
 	Input::InputSystem::GetInstance().Initialize();
+
 	load();
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	auto& input = InputManager::GetInstance();
 
 
 	//==========TIMER-VARIABLES=========
@@ -117,8 +118,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			accumulator += updateContext.GetDeltaTime();
 
 			//============INPUT=================
-			doContinue = input2.ProcessInput(updateContext.GetDeltaTime());
-			doContinue = input.ProcessInput(updateContext);
+			doContinue = input.ProcessInput(updateContext.GetDeltaTime());
 			//==================================
 
 

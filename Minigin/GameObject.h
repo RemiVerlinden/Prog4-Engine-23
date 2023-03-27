@@ -18,7 +18,7 @@ namespace dae
 		void LateUpdate(const UpdateContext& context);
 		void FixedUpdate(const UpdateContext& context);
 		void Render() const;
-		void RenderUI() const;
+		void RenderUI(UpdateContext& context) const;
 
 		void SetPosition(float x, float y);
 

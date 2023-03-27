@@ -64,24 +64,6 @@ namespace dae::Input
 
 
 			m_MovementDelta = m_Position - m_PrevPosition;
-
-			if (WasReleased( SDL_BUTTON_LEFT ))
-			{
-				std::cout << "hey";
-			}
-			if (WasPressed(SDL_BUTTON_RIGHT))
-			{
-				std::cout << "hey";
-			}
-			if (IsHeldDown(SDL_BUTTON_MIDDLE))
-			{
-				std::cout << "npoooo";
-			}
-
-			if (IsHeldDown(SDL_BUTTON_X1))
-			{
-				std::cout << m_Position.x<< std::endl;
-			}
 		};
 
 	private:

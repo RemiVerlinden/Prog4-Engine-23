@@ -1,5 +1,9 @@
 #include "InputSystem.h"
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include "Xinput.h"
+
 //-------------------------------------------------------------------------
 
 namespace dae::Input
@@ -19,7 +23,7 @@ namespace dae::Input
 
         for (uint8_t GamepadIdx = 0; GamepadIdx < XUSER_MAX_COUNT; ++GamepadIdx)
         {
-             m_inputDevices.push_back(std::move(std::make_unique<InputDeviceGamepad>(InputDeviceGamepad(GamepadIdx))));
+             m_inputDevices.push_back(std::move(std::make_unique<InputDeviceGamepad>(GamepadIdx)));
         }
 
         //-------------------------------------------------------------------------
@@ -49,7 +53,7 @@ namespace dae::Input
         bool doContinue = true;
         for (auto& pInputDevice : m_inputDevices)
         {
-            doContinue = static_cast<bool>(pInputDevice->ProcessInput(deltaTime) | doContinue);
+            doContinue = static_cast<bool>(pInputDevice->ProcessInput(deltaTime) & doContinue);
         }
 
         m_CommandHandler.get()->Update(deltaTime);

@@ -18,6 +18,7 @@ namespace dae
         {
 
         public:
+            InputDevice() : m_ID(s_NextId++) {}
 
             virtual ~InputDevice() = default;
             virtual void Initialize() = 0;
@@ -28,6 +29,13 @@ namespace dae
 
             // Called at the start of the frame to update the current device state
             virtual bool ProcessInput(Seconds deltaTime) = 0;
+
+            int GetID() { return m_ID; }
+
+        private:
+            const int m_ID;
+            static inline int s_NextId = 0;
         };
+
     }
 }

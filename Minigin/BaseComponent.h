@@ -10,10 +10,10 @@ namespace dae {
 		BaseComponent();
 		virtual ~BaseComponent() = default;
 
-		virtual void Initialize() {};
+		virtual void Initialize() = 0;
 		virtual void Update([[maybe_unused]] const UpdateContext& context) {};
 		virtual void Draw() {};
-		virtual void DrawUI() {};
+		virtual void DrawUI([[maybe_unused]] UpdateContext& context) {};
 		virtual void LateUpdate([[maybe_unused]] const UpdateContext& context) {};
 		virtual void FixedUpdate([[maybe_unused]] const UpdateContext& context) {};
 
@@ -34,7 +34,7 @@ namespace dae {
 		void RootInitialize(GameObject* go);
 		void RootUpdate(const UpdateContext& context);
 		void RootDraw();
-		void RootDrawUI();
+		void RootDrawUI(UpdateContext& context);
 		void RootFixedUpdate(const UpdateContext& context);
 		void RootLateUpdate(const UpdateContext& context);
 	};

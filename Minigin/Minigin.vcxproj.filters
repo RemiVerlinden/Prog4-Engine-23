@@ -58,6 +58,9 @@
     <Filter Include="Engine Files\Input\Buttons">
       <UniqueIdentifier>{f95e694f-2036-4949-a04f-9f2af690584c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Input">
+      <UniqueIdentifier>{74cd566a-5851-42f9-a03f-789a0b6577be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneFactory.h">
@@ -150,9 +153,6 @@
     <ClInclude Include="Utils.hpp">
       <Filter>Application Files</Filter>
     </ClInclude>
-    <ClInclude Include="Week4Exercises.hpp">
-      <Filter>Engine Files\Imgui</Filter>
-    </ClInclude>
     <ClInclude Include="InputStateMouse.h">
       <Filter>Engine Files\Input\InputStates</Filter>
     </ClInclude>
@@ -177,9 +177,6 @@
     <ClInclude Include="InputSystem.h">
       <Filter>Engine Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="InputDebugImguiComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Engine Files\Input\Commands</Filter>
     </ClInclude>
@@ -191,6 +188,15 @@
     </ClInclude>
     <ClInclude Include="InputState.h">
       <Filter>Engine Files\Input\InputStates</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDebugImguiComponent.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveComponent.h">
+      <Filter>Components\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="TrashTheCacheComponent.h">
+      <Filter>Components\HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,26 +278,32 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
       <Filter>Engine Files\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="InputDebugImguiComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="InputDevice.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="InputDeviceGamepad.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="InputDeviceKeyboardMouse.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Engine Files\Input\Commands</Filter>
     </ClCompile>
     <ClCompile Include="CommandHandler.cpp">
-      <Filter>Components</Filter>
+      <Filter>Engine Files\Input\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDebugImguiComponent.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDevice.cpp">
+      <Filter>Engine Files\Input\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDeviceGamepad.cpp">
+      <Filter>Engine Files\Input\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDeviceKeyboardMouse.cpp">
+      <Filter>Engine Files\Input\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Engine Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveComponent.cpp">
+      <Filter>Components\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="TrashTheCacheComponent.cpp">
+      <Filter>Components\HUD</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

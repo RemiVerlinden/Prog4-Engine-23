@@ -7,7 +7,7 @@ namespace dae::Input
 	{
 	public:
 		void Initialize() override;
-		void DrawUI() override;
+		void DrawUI(UpdateContext& context) override;
 	private:
 		void DrawIsDeviceConnectedWindow();
 		void DrawDebugGamepadInputVisualisationWindow();

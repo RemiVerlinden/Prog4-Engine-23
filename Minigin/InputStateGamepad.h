@@ -1,143 +1,80 @@
 #pragma once
-#include "glm\glm.hpp"
-#include "Time.h"
-#include <array>
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include "Xinput.h"
 
 #include "InputState.h"
+#include "glm\glm.hpp"
+
 //-------------------------------------------------------------------------
 
 namespace dae::Input
 {
-	enum class GamepadButton : uint16_t
+	enum Direction : int
 	{
-		DPadUp = 0,
-		DPadDown,
-		DPadLeft,
-		DPadRight,
-		ThumbstickLeft,
-		ThumbstickRight,
-		ShoulderLeft,
-		ShoulderRight,
-		System0,
-		System1,
-		FaceButtonDown,
-		FaceButtonRight,
-		FaceButtonLeft,
-		FaceButtonUp,
+		Left = 0,
+		Right = 1,
+		size = 2
 	};
 
-	//-------------------------------------------------------------------------
 
 	class InputStateGamepad : public InputState
 	{
 		friend class InputDeviceGamepad;
 
-		enum Direction : int
-		{
-			Left = 0,
-			Right = 1,
-			size = 2
-		};
-
-		struct GamepadButtonStates
-		{
-			bool connected = false;
-			XINPUT_GAMEPAD previousButtonState{};
-			XINPUT_GAMEPAD currentButtonState{};
-
-			WORD buttonsPressedThisFrame{};
-			WORD buttonsReleasedThisFrame{};
-
-			XINPUT_BATTERY_INFORMATION batteryInformation{};
-		};
-
 	public:
 
-		InputStateGamepad() = default;
+		InputStateGamepad();
+		~InputStateGamepad();
 
 		// Get the filtered value of the left analog stick once the deadzone has been applied
-		inline glm::vec2 GetLeftAnalogStickValue() const { return m_analogInputFiltered[Left]; }
+		glm::vec2 GetLeftAnalogStickValue() const;
+
+		// Get the raw pointer to the stick, used in the moveCommand class
+		const glm::vec2* GetAnalogStickFilteredPtr(bool rightStick) const;
 
 		// Get the filtered value of the right analog stick once the deadzone has been applied
-		inline glm::vec2 GetRightAnalogStickValue() const { return m_analogInputFiltered[Right]; }
+		glm::vec2 GetRightAnalogStickValue() const;
 
 		// Get the filtered value of the left trigger once the trigger thresholds has been applied
-		inline float GetLeftTriggerValue() const { return m_triggerFiltered[Left]; }
+		float GetLeftTriggerValue() const;
 
 		// Get the filtered value of the right trigger once the trigger thresholds has been applied
-		inline float GetRightTriggerValue() const { return m_triggerFiltered[Right]; }
+		float GetRightTriggerValue() const;
 
 		// Get the raw unfiltered value of the left analog stick
-		inline glm::vec2 GetLeftAnalogStickRawValue() const { return m_analogInputRaw[Left]; }
+		glm::vec2 GetLeftAnalogStickRawValue() const;
 
 		// Get the raw unfiltered value of the right analog stick
-		inline glm::vec2 GetRightAnalogStickRawValue() const { return m_analogInputRaw[Right]; }
+		glm::vec2 GetRightAnalogStickRawValue() const;
 
 		// Get the raw unfiltered value of the left trigger
-		inline float GetLeftTriggerRawValue() const { return m_triggerRaw[Left]; }
+		float GetLeftTriggerRawValue() const;
 
 		// Get the raw unfiltered value of the right trigger
-		inline float GetRightTriggerRawValue() const { return m_triggerRaw[Right]; }
+		float GetRightTriggerRawValue() const;
 
 		//-------------------------------------------------------------------------
 
 		// Was the button just pressed (i.e. went from up to down this frame)
-		virtual bool WasPressed(deviceButton button) const override
-		{
-			return (m_ButtonStates.buttonsPressedThisFrame & GetGamepadButton(button));
-		}
+		virtual bool WasPressed(deviceButton button) const override;
 
 		// Was the button just release (i.e. went from down to up this frame). Also optionally returns how long the button was held for
-		virtual bool WasReleased(deviceButton button) const override
-		{
-			return (m_ButtonStates.buttonsReleasedThisFrame & GetGamepadButton(button));
-		}
+		virtual bool WasReleased(deviceButton button) const override;
 
 		// Is the button being held down?
-		virtual bool IsHeldDown(deviceButton button) const override
-		{ 
-			return (m_ButtonStates.currentButtonState.wButtons & GetGamepadButton(button));
-		}
+		virtual bool IsHeldDown(deviceButton button) const override;
 
-		bool IsHeldDown(WORD button) const
-		{
-			return (m_ButtonStates.currentButtonState.wButtons & button);
-		}
+		bool IsHeldDown(int button) const;
 
-		inline bool IsConnected() const { return m_IsConnected; }
+		bool IsConnected() const;
+		void SetConnection(bool connected) const;
 
 	private:
 
-		inline WORD GetGamepadButton(deviceButton button) const
-		{
-			const int buttonType = static_cast<int>(DeviceButtonType::Gamepad);
-			return std::get<buttonType>(button);
-		}
-
-		bool ProcessInput(Seconds deltaTime, XINPUT_STATE& gamepadState) 
-		{
-			std::swap(m_ButtonStates.previousButtonState, m_ButtonStates.currentButtonState);
-			m_ButtonStates.currentButtonState = gamepadState.Gamepad;
-
-			WORD buttonChanges = m_ButtonStates.currentButtonState.wButtons ^ m_ButtonStates.previousButtonState.wButtons;
-			m_ButtonStates.buttonsPressedThisFrame = buttonChanges & m_ButtonStates.currentButtonState.wButtons;
-			m_ButtonStates.buttonsReleasedThisFrame = buttonChanges & (~m_ButtonStates.currentButtonState.wButtons);
-
-			(deltaTime);
-			return true; 
-		};
+		int GetGamepadButton(deviceButton button) const;
 
 	private:
+		class InputStateGamepadImpl;
 
-		GamepadButtonStates								m_ButtonStates;
-		std::array<glm::vec2, (int)Direction::size>		m_analogInputRaw = { glm::vec2{}, glm::vec2{} };
-		std::array<glm::vec2, Direction::size>			m_analogInputFiltered = { glm::vec2{}, glm::vec2{} };
-		std::array<float, Direction::size>				m_triggerRaw = { 0.0f, 0.0f };
-		std::array<float, Direction::size>				m_triggerFiltered = { 0.0f, 0.0f };
-		bool                                        m_IsConnected = false;
+		InputStateGamepadImpl* m_pImpl;
 	};
+
 }

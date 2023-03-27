@@ -1,8 +1,10 @@
 #pragma once
-#include "Transform.h"
 #include "GameObject.h"
 #include "UpdateContext.h"
 #include <iostream>
+#include <memory>
+#include "MoveComponent.h"
+
 namespace dae
 {
 	class Command
@@ -20,26 +22,48 @@ namespace dae
 	class MoveCommand final : public Command
 	{
 	public:
-		MoveCommand(GameObject* gameObject, glm::vec3 movedir)
+		MoveCommand(GameObject* gameObject, glm::vec2 movedir)
 			: Command(gameObject)
 			, m_MoveDir(movedir)
-			, m_Transform(GetActor()->m_Transform)
+			,m_MoveDirRef(nullptr)
+			,useRef(false)
 		{
+			SetMoveComponent(gameObject);
 		}
 
-		MoveCommand(GameObject* gameObject, glm::vec2 movedir)
-			: MoveCommand(gameObject, { movedir.x,movedir.y,0 })
+		MoveCommand(GameObject* gameObject, const glm::vec2* movedir)
+			: Command(gameObject)
+			, m_MoveDir(0,0)
+			, m_MoveDirRef(movedir)
+			,useRef(true)
 		{
+			SetMoveComponent(gameObject);
 		}
 
 		void Execute(Seconds elapsedTime)
 		{
-			glm::vec3 moveVec = m_MoveDir * speed * elapsedTime.ToFloat();
-			*m_Transform += moveVec;
+			(elapsedTime);
+			glm::vec2 moveVec = (useRef) ? *m_MoveDirRef : m_MoveDir;
+			moveVec.y = -moveVec.y; // in this engine the Y is inverted
+			m_MoveComponent->SetMoveDirection(moveVec);
 		}
 	private:
-		TransformComponent* m_Transform;
-		glm::vec3 m_MoveDir;
-		float speed = 100.f;
+		MoveComponent* m_MoveComponent;
+		
+		bool useRef;
+		const glm::vec2* m_MoveDirRef;
+		glm::vec2 m_MoveDir;
+
+		void SetMoveComponent(GameObject* gameObject)
+		{
+			if (gameObject->HasComponent<MoveComponent>())
+			{
+				m_MoveComponent = gameObject->GetComponent<MoveComponent>();
+			}
+			else
+			{
+				m_MoveComponent = gameObject->AddComponent<MoveComponent>();
+			}
+		}
 	};
 }

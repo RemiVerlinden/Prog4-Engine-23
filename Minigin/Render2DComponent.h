@@ -20,7 +20,7 @@ namespace dae {
 		Render2DComponent();
 		~Render2DComponent() = default;
 
-		virtual void Initialize();
+		virtual void Initialize() override;
 		virtual void Draw();
 
 		void SetTexture(const std::string& filename);

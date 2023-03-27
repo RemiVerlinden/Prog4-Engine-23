@@ -1,9 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include "Xinput.h"
+
 
 #include "Time.h"
 #include "InputDeviceKeyboardMouse.h"
@@ -89,8 +87,6 @@ namespace dae::Input
         InputSystem() = default;
 
     private:
-
-
 
         std::vector<std::unique_ptr<InputDevice>>  m_inputDevices;
         std::unique_ptr<CommandHandler> m_CommandHandler;

@@ -11,11 +11,18 @@
 #include "InputSystem.h"
 #include "InputDebugImguiComponent.h"
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include "Xinput.h"
+#include <iostream>
+
 using namespace dae;
 
 void dae::SceneFactory::CreateScenes()
 {
-
+	std::cout << std::endl << std::endl;
+	std::cout << "INPUT: [WASD] - [DPAD] - [LEFT STICK GAMEPAD]\n";
+	std::cout << "SUPPORT FOR 4 GAMEPADS TOTAL\n";
 	InitDefaultScene();
 	InitFpsDemoScene();
 	InitBonusScene();
@@ -76,38 +83,38 @@ void dae::SceneFactory::InitDefaultScene()
 		fpsComponent->SetColor(255, 255, 255, 255);
 	}
 
-	// orbiting texture 1
-	{
-		go = pScene->MakeGameObject();
-		auto textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("cheff.png");
-		textureComponent->SetPosition(300, 300);
-		textureComponent->SetResolution(50, 50);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+	//// orbiting texture 1
+	//{
+	//	go = pScene->MakeGameObject();
+	//	auto textureComponent = go->AddComponent<Render2DComponent>();
+	//	textureComponent->SetTexture("cheff.png");
+	//	textureComponent->SetPosition(300, 300);
+	//	textureComponent->SetResolution(50, 50);
+	//	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
-		auto orbitComp = go->AddComponent<OrbitComponent>();
-		orbitComp->SetSpeed(-2.6f);
-		orbitComp->SetRadius(50.f);
+	//	auto orbitComp = go->AddComponent<OrbitComponent>();
+	//	orbitComp->SetSpeed(-2.6f);
+	//	orbitComp->SetRadius(50.f);
 
 
-	}
+	//}
 
-	// orbiting texture 2
-	{
-		auto parentGo = go; // previous go from RAII block above
-		go = pScene->MakeGameObject();
+	//// orbiting texture 2
+	//{
+	//	auto parentGo = go; // previous go from RAII block above
+	//	go = pScene->MakeGameObject();
 
-		auto textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("bean.png");
-		textureComponent->SetPosition(0, 0);
-		textureComponent->SetResolution(50, 50);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+	//	auto textureComponent = go->AddComponent<Render2DComponent>();
+	//	textureComponent->SetTexture("bean.png");
+	//	textureComponent->SetPosition(0, 0);
+	//	textureComponent->SetResolution(50, 50);
+	//	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
-		go->SetParent(parentGo.get(), true);
-		auto orbitComp = go->AddComponent<OrbitComponent>();
-		orbitComp->SetSpeed(6.4f);
-		orbitComp->SetRadius(75.f);
-	}
+	//	go->SetParent(parentGo.get(), true);
+	//	auto orbitComp = go->AddComponent<OrbitComponent>();
+	//	orbitComp->SetSpeed(6.4f);
+	//	orbitComp->SetRadius(75.f);
+	//}
 
 	{
 		go = pScene->MakeGameObject();
@@ -120,51 +127,47 @@ void dae::SceneFactory::InitDefaultScene()
 		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
 		dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
 
-		dae::Input::deviceButton button{ WORD(XINPUT_GAMEPAD_DPAD_RIGHT) };
+		using namespace dae::Input;
 
-		dae::Input::InputAction inputAction;
-		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
-		inputAction.device = inputSystem.GetGamepadDevice(0);
-		inputAction.pressType = dae::Input::ButtonPressType::Hold;
+		auto bindMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, glm::vec2 dir)
+		{
 
-		commandHandler->BindNewAction(button, inputAction);
+			dae::Input::InputAction inputAction;
+			inputAction.command = std::make_unique<MoveCommand>(go.get(), dir);
+			inputAction.device = pDevice;
+			inputAction.pressType = pressType;
 
-		button = WORD(XINPUT_GAMEPAD_DPAD_LEFT);
-		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ -1,0 });
-		commandHandler->BindNewAction(button, inputAction);
-		button = WORD(XINPUT_GAMEPAD_DPAD_UP);
-		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
+			commandHandler->BindNewAction(button, inputAction);
+		};
 
-		commandHandler->BindNewAction(button, inputAction);
-		button = WORD(XINPUT_GAMEPAD_DPAD_DOWN);
-		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
-
-		commandHandler->BindNewAction(button, inputAction);
-
-		button = SDL_Scancode(SDL_SCANCODE_S);
-		inputAction.command = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
-		inputAction.device = inputSystem.GetKeyboardMouseDevice();
-		commandHandler->BindNewAction(button, inputAction);
-		//CommandTriggerCondition c;
-		//c.gamepadID = 0;
-		//c.pCommand = 
-	//	InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
-
-		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
-		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_RIGHT, XINPUT_KEYSTROKE_REPEAT }, c);
-
-		//c.gamepadID = 0;
-		//InputManager::GetInstance().AddKeybind({XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT}, c);
+		auto gamepadDevice = inputSystem.GetGamepadDevice(0);
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_RIGHT, ButtonPressType::Hold, glm::vec2{ 1,0 });
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_LEFT, ButtonPressType::Hold, glm::vec2{ -1,0 });
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_UP, ButtonPressType::Hold, glm::vec2{ 0,1 });
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
 
-		//c.gamepadID = 0;
-		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_A, ButtonPressType::Hold, glm::vec2{ -1,0 });
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_D, ButtonPressType::Hold, glm::vec2{ 1,0 });
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_W, ButtonPressType::Hold, glm::vec2{ 0,1 });
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_SCANCODE_S, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
+		auto bindAnalogStickMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, const glm::vec2* dir)
+		{
+
+			dae::Input::InputAction inputAction;
+			inputAction.command = std::make_unique<MoveCommand>(go.get(), dir);
+			inputAction.device = pDevice;
+			inputAction.pressType = pressType;
+
+			commandHandler->BindNewAction(button, inputAction);
+		};
+
+		bindAnalogStickMove(gamepadDevice, XINPUT_GAMEPAD_LEFT_STICK, ButtonPressType::Hold, gamepadDevice->GetGamepadState().GetAnalogStickFilteredPtr(false));
 	}
 
 	{
-		auto parentGo = go; // previous go from RAII block above
+		auto parentGo = go;
 		go = pScene->MakeGameObject();
 
 		auto textureComponent = go->AddComponent<Render2DComponent>();
@@ -173,23 +176,47 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetResolution(50, 50);
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
-		//CommandTriggerCondition c;
-		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ -1,0 });
-		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_LEFT, XINPUT_KEYSTROKE_REPEAT }, c);
 
-		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 1,0 });
-		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_RIGHT, XINPUT_KEYSTROKE_REPEAT }, c);
+		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
+		dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
 
-		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,-1 });
-		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_UP, XINPUT_KEYSTROKE_REPEAT }, c);
+		using namespace dae::Input;
+
+		auto bindMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, glm::vec2 dir)
+		{
+
+			dae::Input::InputAction inputAction;
+			inputAction.command = std::make_unique<MoveCommand>(go.get(), dir);
+			inputAction.device = pDevice;
+			inputAction.pressType = pressType;
+
+			commandHandler->BindNewAction(button, inputAction);
+		};
+
+		auto gamepadDevice = inputSystem.GetGamepadDevice(1);
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_RIGHT, ButtonPressType::Hold, glm::vec2{ 1,0 });
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_LEFT, ButtonPressType::Hold, glm::vec2{ -1,0 });
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_UP, ButtonPressType::Hold, glm::vec2{ 0,1 });
+		bindMove(gamepadDevice, XINPUT_GAMEPAD_DPAD_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
 
-		//c.gamepadID = 0;
-		//c.pCommand = std::make_unique<MoveCommand>(go.get(), glm::vec2{ 0,1 });
-		//InputManager::GetInstance().AddKeybind({ XINPUT_GAMEPAD_DPAD_DOWN, XINPUT_KEYSTROKE_REPEAT }, c);
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_LEFT), ButtonPressType::Hold, glm::vec2{ -1,0 });
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_RIGHT), ButtonPressType::Hold, glm::vec2{ 1,0 });
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_UP), ButtonPressType::Hold, glm::vec2{ 0,1 });
+		bindMove(inputSystem.GetKeyboardMouseDevice(), SDL_Scancode(SDL_SCANCODE_DOWN), ButtonPressType::Hold, glm::vec2{ 0,-1 });
+
+		auto bindAnalogStickMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, const glm::vec2* dir)
+		{
+
+			dae::Input::InputAction inputAction;
+			inputAction.command = std::make_unique<MoveCommand>(go.get(), dir);
+			inputAction.device = pDevice;
+			inputAction.pressType = pressType;
+
+			commandHandler->BindNewAction(button, inputAction);
+		};
+
+		bindAnalogStickMove(gamepadDevice, XINPUT_GAMEPAD_LEFT_STICK, ButtonPressType::Hold, gamepadDevice->GetGamepadState().GetAnalogStickFilteredPtr(false));
 	}
 
 	{

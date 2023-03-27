@@ -11,6 +11,9 @@ namespace dae
 		TransformComponent() = default;
 		~TransformComponent() = default;
 
+		void Initialize() override {};
+
+
 		void SetLocalPosition(float x, float y, float z);
 		void SetLocalPosition(const glm::vec3& pos);
 		void TranslatePosition(float x, float y, float z);

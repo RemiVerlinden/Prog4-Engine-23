@@ -71,11 +71,11 @@ void Scene::Render() const
 		object->Render();
 	}
 }
-void Scene::RenderUI() const
+void Scene::RenderUI(UpdateContext& context) const
 {
 	for (const auto& object : m_objects)
 	{
-		object->RenderUI();
+		object->RenderUI(context);
 	}
 }
 
