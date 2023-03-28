@@ -14,8 +14,8 @@ namespace dae
 		Scene& CreateScene(const std::string& name);
 
 		//=========================================================
-		const std::shared_ptr<Scene> AddGameScene(const std::string& name);
-		const std::shared_ptr<Scene> GetGameScene(const std::string& name);
+		Scene* AddGameScene(const std::string& name);
+		Scene* GetGameScene(const std::string& name);
 		void RemoveGameScene(const std::string& name);
 		void SetActiveGameScene(const std::string& name);
 		void CheckNewActiveGameScene();
@@ -37,8 +37,8 @@ namespace dae
 
 
 		//=========================================================
-		std::shared_ptr<Scene> m_pActiveScene;
-		std::shared_ptr<Scene> m_pNewActiveScene;
+		Scene* m_pActiveScene;
+		Scene* m_pNewActiveScene;
 		//=========================================================
 	};
 }

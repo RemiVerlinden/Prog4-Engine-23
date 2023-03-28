@@ -177,9 +177,6 @@
     <ClInclude Include="Command.h">
       <Filter>Engine Files\Input\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="XInputButtons.h">
-      <Filter>Engine Files\Input\Buttons</Filter>
-    </ClInclude>
     <ClInclude Include="CommandHandler.h">
       <Filter>Engine Files\Input\Commands</Filter>
     </ClInclude>
@@ -194,6 +191,27 @@
     </ClInclude>
     <ClInclude Include="TrashTheCacheComponent.h">
       <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="PrefabFunctions.h">
+      <Filter>Application Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TemplateComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TagComponent.h">
+      <Filter>Components\General</Filter>
+    </ClInclude>
+    <ClInclude Include="IDComponent.h">
+      <Filter>Components\General</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceButtons.hpp">
+      <Filter>Engine Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDeviceKeyboard.h">
+      <Filter>Engine Files\Input\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDeviceMouse.h">
+      <Filter>Engine Files\Input\Devices</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -281,9 +299,6 @@
     <ClCompile Include="InputDebugImguiComponent.cpp">
       <Filter>Components\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="InputDevice.cpp">
-      <Filter>Engine Files\Input\Devices</Filter>
-    </ClCompile>
     <ClCompile Include="InputDeviceGamepad.cpp">
       <Filter>Engine Files\Input\Devices</Filter>
     </ClCompile>
@@ -298,6 +313,15 @@
     </ClCompile>
     <ClCompile Include="TrashTheCacheComponent.cpp">
       <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="TemplateComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TagComponent.cpp">
+      <Filter>Components\General</Filter>
+    </ClCompile>
+    <ClCompile Include="IDComponent.cpp">
+      <Filter>Components\General</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

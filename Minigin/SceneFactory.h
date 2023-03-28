@@ -12,6 +12,8 @@ namespace dae
 	{
 		void CreateScenes();
 
+		void InitSceneKeybinds();
+
 		void InitDefaultScene();
 		void InitFpsDemoScene();
 		void InitBonusScene();

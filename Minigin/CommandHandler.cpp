@@ -26,7 +26,7 @@ void dae::Input::CommandHandler::Update(Seconds elapsedTime)
 				}
 				case DeviceCategory::KeyboardMouse:
 				{
-					DeviceButtonType buttonType = ((std::holds_alternative<SDL_Scancode>(button)) ? DeviceButtonType::Keyboard : DeviceButtonType::Mouse);
+					DeviceButtonType buttonType = ((std::holds_alternative<KeyboardButton>(button)) ? DeviceButtonType::Keyboard : DeviceButtonType::Mouse);
 
 					switch (buttonType)
 					{

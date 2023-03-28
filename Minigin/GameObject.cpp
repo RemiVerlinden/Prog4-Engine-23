@@ -6,19 +6,28 @@
 #include "Scene.h"
 
 #include "Transform.h"
+#include "IDComponent.h"
+#include "TagComponent.h"
 
 using namespace dae;
 
-uint64_t dae::GameObject::m_GameObjectCount{0};
+dae::GameObject::GameObject(Scene* scene) : GameObject(scene, "No Name Defined") {};
 
-dae::GameObject::GameObject(Scene* scene) :m_Scene(scene), m_Parent{ nullptr }, m_MarkedForDestroy{false}
+dae::GameObject::GameObject(Scene* scene, std::string name) :m_Scene(scene), m_Parent{ nullptr }, m_MarkedForDestroy{ false }
 {
 	m_Transform = AddComponent<TransformComponent>();
+	AddComponent<IDComponent>();
+	auto tagComponent = AddComponent<TagComponent>();
+
+	tagComponent->m_Tag = name;
 
 	++m_GameObjectCount;
 };
 
-dae::GameObject::~GameObject() = default;
+dae::GameObject::~GameObject()
+{
+	--m_GameObjectCount;
+}
 
 void dae::GameObject::Update(const UpdateContext& context)
 {

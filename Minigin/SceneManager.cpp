@@ -29,22 +29,24 @@ void dae::SceneManager::Initialize()
 
 }
 
-const std::shared_ptr<dae::Scene> dae::SceneManager::AddGameScene(const std::string& name)
+dae::Scene* dae::SceneManager::AddGameScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
+
+	Scene* pScene = scene.get();
 	m_Scenes.push_back(scene);
 
-	return scene;
+	return pScene;
 }
 
-const std::shared_ptr<dae::Scene> dae::SceneManager::GetGameScene(const std::string& sceneName)
+dae::Scene* dae::SceneManager::GetGameScene(const std::string& sceneName)
 {
 	auto checkMatchingName = [sceneName](std::shared_ptr<Scene>& scene) { return scene->GetTag() == sceneName; };
 	auto it = find_if(m_Scenes.begin(), m_Scenes.end(), checkMatchingName);
 
 	if (it != m_Scenes.end())
 	{
-		return *it;
+		return it->get();
 	}
 
 	return nullptr;
@@ -68,7 +70,7 @@ void dae::SceneManager::SetActiveGameScene(const std::string& name)
 
 	if (it != m_Scenes.end())
 	{
-		m_pNewActiveScene = *it;
+		m_pNewActiveScene = it->get();
 	}
 }
 
@@ -93,10 +95,10 @@ void dae::SceneManager::NextScene()
 {
 	for (size_t i = 0; i < m_Scenes.size(); ++i)
 	{
-		if (m_Scenes[i] == m_pActiveScene)
+		if (m_Scenes[i].get() == m_pActiveScene)
 		{
 			auto nextScene = (++i) % m_Scenes.size();
-			m_pNewActiveScene = m_Scenes[nextScene];
+			m_pNewActiveScene = m_Scenes[nextScene].get();
 			return;
 		}
 	}
@@ -106,11 +108,11 @@ void dae::SceneManager::PreviousScene()
 {
 	for (size_t i = 0; i < m_Scenes.size(); ++i)
 	{
-		if (m_Scenes[i] == m_pActiveScene)
+		if (m_Scenes[i].get() == m_pActiveScene)
 		{
 			if (i == 0) i = m_Scenes.size();
 			--i;
-			m_pNewActiveScene = m_Scenes[i];
+			m_pNewActiveScene = m_Scenes[i].get();
 			return;
 		}
 	}

@@ -1,5 +1,8 @@
 #include "Scene.h"
 #include "GameObject.h"
+#include "IDComponent.h"
+#include "TagComponent.h"
+#include "SceneManager.h"
 
 using namespace dae;
 
@@ -79,11 +82,39 @@ void Scene::RenderUI(UpdateContext& context) const
 	}
 }
 
-std::shared_ptr<GameObject> Scene::MakeGameObject()
+GameObject* Scene::MakeGameObject()
 {
 	std::shared_ptr<GameObject> go{ std::make_shared<GameObject>(this) };
 
+	GameObject* ptr = go.get();
+
 	Add(go);
 
-	return go;
+	return ptr;
+}
+
+GameObject* dae::Scene::FindGameObjectByID(uint64_t ID)
+{
+	for (const auto& object : m_objects)
+	{
+		IDComponent* pIDComponent = object->GetComponent<IDComponent>();
+
+		if (pIDComponent->GetID() == ID)
+			return object.get();
+	}
+
+	return nullptr;
+}
+
+GameObject* dae::Scene::FindGameObjectByTag(std::string tag)
+{
+	for (const auto& object : m_objects)
+	{
+		TagComponent* pTagComponent = object->GetComponent<TagComponent>();
+
+		if (pTagComponent->m_Tag == tag)
+			return object.get();
+	}
+
+	return nullptr;
 }

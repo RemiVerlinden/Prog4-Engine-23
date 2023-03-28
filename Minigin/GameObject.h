@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_set>
 #include <assert.h>
+#include <string>
 
 namespace dae
 {
@@ -24,6 +25,7 @@ namespace dae
 
 		void Destroy();
 		inline bool IsMarkedForDestroy() { return m_MarkedForDestroy; }
+
 		//===============================================
 		template<typename ComponentType, typename... Args>
 		ComponentType* AddComponent(Args&&... args);
@@ -48,6 +50,7 @@ namespace dae
 		static uint64_t GetGameObjectCount() { return m_GameObjectCount; }
 
 		GameObject(Scene* scene);
+		GameObject(Scene* scene, std::string tag);
 
 		~GameObject();
 
@@ -68,7 +71,7 @@ namespace dae
 		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 		bool											m_MarkedForDestroy;
 
-		static uint64_t m_GameObjectCount;
+		inline static uint64_t m_GameObjectCount = 0;
 	};
 
 

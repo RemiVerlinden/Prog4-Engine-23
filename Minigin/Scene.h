@@ -8,7 +8,7 @@ namespace dae
 	class GameObject;
 	class Scene final
 	{
-		friend const std::shared_ptr<dae::Scene> SceneManager::AddGameScene(const std::string& name);
+		friend dae::Scene* SceneManager::AddGameScene(const std::string& name);
 	public:
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
@@ -17,14 +17,16 @@ namespace dae
 		void Render() const;
 		void RenderUI(UpdateContext& context) const;
 
-		//========================================================
 		void LateUpdate(const UpdateContext& context);
 		void FixedUpdate(const UpdateContext& context);
 
+		//========================================================
 		std::string GetTag() { return m_Tag; };
 		void OnSceneActivated() {  }
 		void OnSceneDeactivated() {  }
-		std::shared_ptr<GameObject> MakeGameObject();
+		GameObject* MakeGameObject();
+		GameObject* FindGameObjectByID( uint64_t ID);
+		GameObject* FindGameObjectByTag( std::string tag);
 		//========================================================
 
 		~Scene();

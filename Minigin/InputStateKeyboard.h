@@ -29,7 +29,7 @@ namespace dae::Input
 
 		// Was the button just pressed (i.e. went from up to down this frame)
 		virtual bool WasPressed(deviceButton button) const override
-		{ 
+		{  
 			return !m_PrevKeyboardState[GetSDL_Scancode(button)] && m_KeyboardState[GetSDL_Scancode(button)];
 		}
 
@@ -69,7 +69,7 @@ namespace dae::Input
 		inline SDL_Scancode GetSDL_Scancode(deviceButton button) const
 		{
 			const int buttonType = static_cast<int>(DeviceButtonType::Keyboard);
-			return std::get<buttonType>(button);
+			return static_cast<SDL_Scancode>(std::get<buttonType>(button));
 		}
 
 		void UpdatePreviousKeyboardState()

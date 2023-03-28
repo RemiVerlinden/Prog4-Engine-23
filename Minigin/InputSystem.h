@@ -36,44 +36,20 @@ namespace dae::Input
 
         inline bool HasConnectedKeyboardAndMouse() { return GetKeyboardMouseDevice() != nullptr; }
 
-        inline InputStateMouse const* GetMouseState() const
-        {
-            if (auto pDevice = GetKeyboardMouseDevice())
-            {
-                return &pDevice->GetMouseState();
-            }
-
-            return &s_emptyMouseState;
-        }
-
-        inline InputStateKeyboard const* GetKeyboardState() const
-        {
-            if (auto pDevice = GetKeyboardMouseDevice())
-            {
-                return &pDevice->GetKeyboardState();
-            }
-
-            return &s_emptyKeyboardState;
-        }
+        InputDeviceKeyboardMouse* GetKeyboardMouseDevice() const;
+        InputStateKeyboard const* GetKeyboardState() const;
+        InputStateMouse const* GetMouseState() const;
 
         // Gamepads
         //-------------------------------------------------------------------------
 
         uint32_t GetNumConnectedGamepads() const;
 
-        inline InputStateGamepad const* GetGamepadState(uint8_t GamepadIdx = 0) const
-        {
-            if (auto pDevice = GetGamepadDevice(GamepadIdx))
-            {
-                return &pDevice->GetGamepadState();
-            }
-
-            return &s_emptyGamepadState;
-        }
-
-        InputDeviceKeyboardMouse* GetKeyboardMouseDevice() const;
+        InputStateGamepad const* GetGamepadState(uint8_t GamepadIdx = 0) const;
         InputDeviceGamepad* GetGamepadDevice(uint8_t GamepadIdx = 0) const;
 
+        // CommandHandler
+        //-------------------------------------------------------------------------
         CommandHandler* GetCommandHandler() const { return m_CommandHandler.get(); }
 
     private:

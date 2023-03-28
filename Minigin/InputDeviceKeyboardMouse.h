@@ -29,6 +29,5 @@ namespace dae
             InputStateMouse                                         m_mouseState;
             InputStateKeyboard                                      m_keyboardState;
 		};
-
 	}
-}
+}// Mutable, CRTF, structured bindinng, std::tuple

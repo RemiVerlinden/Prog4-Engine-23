@@ -5,17 +5,11 @@
 #include "InputDevice.h"
 #include "Time.h"
 #include "InputState.h"
+#include "DeviceButtons.hpp"
+
 
 namespace dae::Input
 {
-	enum class ButtonPressType
-	{
-		Press,
-		Hold,
-		Release
-	};
-
-
 	struct InputAction
 	{
 		InputDevice* device;

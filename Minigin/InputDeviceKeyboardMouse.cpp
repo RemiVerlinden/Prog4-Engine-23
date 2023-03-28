@@ -42,17 +42,6 @@ namespace dae
             m_keyboardState.ProcessInput(deltaTime);
 
 
-
-			if (m_keyboardState.WasReleased(SDL_SCANCODE_PAGEUP))
-			{
-				SceneManager::GetInstance().NextScene();
-			}
-			if(m_keyboardState.WasReleased(SDL_SCANCODE_PAGEDOWN))
-			{
-				SceneManager::GetInstance().PreviousScene();
-			}
-
-
             return true;
         }
     }

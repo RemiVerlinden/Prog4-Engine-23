@@ -1,11 +1,11 @@
 #pragma once
 #include <variant>
 #include <SDL.h>
-
+#include "DeviceButtons.hpp"
 
 namespace dae::Input
 {
-	using deviceButton = std::variant<int, SDL_Scancode, uint8_t>; // first one is for XINPUT [XINPUT_GAMEPAD_...],  second one is for SDL keyboard [SDL_SCANCODE_...], thrid one is for SDL mouse [SDL_MOUSE_...]
+	using deviceButton = std::variant<ControllerButton, KeyboardButton, MouseButton>; // first one is for XINPUT [XINPUT_GAMEPAD_...],  second one is for SDL keyboard [SDL_SCANCODE_...], thrid one is for SDL mouse [SDL_MOUSE_...]
 
 	enum class DeviceButtonType : int // simple helper for the std::variant defined above
 	{

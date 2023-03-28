@@ -68,6 +68,26 @@ namespace dae::Input
 		return doContinue;
 	}
 
+	InputStateMouse const* InputSystem::GetMouseState() const
+	{
+		if (auto pDevice = GetKeyboardMouseDevice())
+		{
+			return &pDevice->GetMouseState();
+		}
+
+		return &s_emptyMouseState;
+	}
+
+	InputStateKeyboard const* InputSystem::GetKeyboardState() const
+	{
+		if (auto pDevice = GetKeyboardMouseDevice())
+		{
+			return &pDevice->GetKeyboardState();
+		}
+
+		return &s_emptyKeyboardState;
+	}
+
 	//-------------------------------------------------------------------------
 
 	InputDeviceKeyboardMouse* InputSystem::GetKeyboardMouseDevice() const
@@ -101,6 +121,16 @@ namespace dae::Input
 		}
 
 		return numGamepads;
+	}
+
+	InputStateGamepad const* InputSystem::GetGamepadState(uint8_t GamepadIdx) const
+	{
+		if (auto pDevice = GetGamepadDevice(GamepadIdx))
+		{
+			return &pDevice->GetGamepadState();
+		}
+
+		return &s_emptyGamepadState;
 	}
 
 	InputDeviceGamepad* InputSystem::GetGamepadDevice(uint8_t GamepadIdx) const

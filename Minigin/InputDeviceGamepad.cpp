@@ -25,11 +25,11 @@ namespace dae::Input
 		struct GamepadButtonStates
 		{
 			bool connected = false;
-			XINPUT_GAMEPAD previousButtonState{};
-			XINPUT_GAMEPAD currentButtonState{};
+			ControllerButton previousButtonState{};
+			ControllerButton currentButtonState{};
 
-			WORD buttonsPressedThisFrame{};
-			WORD buttonsReleasedThisFrame{};
+			ControllerButton buttonsPressedThisFrame{};
+			ControllerButton buttonsReleasedThisFrame{};
 
 			XINPUT_BATTERY_INFORMATION batteryInformation{};
 		};
@@ -67,17 +67,17 @@ namespace dae::Input
 
 		bool IsHeldDown(deviceButton button) const
 		{
-			return (m_ButtonStates.currentButtonState.wButtons & GetGamepadButton(button));
+			return (m_ButtonStates.currentButtonState & GetGamepadButton(button));
 		}
 
 		bool IsHeldDown(int button) const
 		{
-			return (m_ButtonStates.currentButtonState.wButtons & button);
+			return (m_ButtonStates.currentButtonState & button);
 		}
 
 		inline bool IsConnected() const { return m_IsConnected; }
 
-		inline int GetGamepadButton(deviceButton button) const
+		inline ControllerButton GetGamepadButton(deviceButton button) const
 		{
 			const int buttonType = static_cast<int>(DeviceButtonType::Gamepad);
 			return std::get<buttonType>(button);
@@ -86,29 +86,45 @@ namespace dae::Input
 		bool ProcessInput(Seconds deltaTime, XINPUT_STATE& gamepadState)
 		{
 			std::swap(m_ButtonStates.previousButtonState, m_ButtonStates.currentButtonState);
-			m_ButtonStates.currentButtonState = gamepadState.Gamepad;
+			m_ButtonStates.currentButtonState = static_cast<ControllerButton>(gamepadState.Gamepad.wButtons);
 
-			ProcesStickInput(m_ButtonStates.currentButtonState);
+			CheckSticksInUse(m_ButtonStates.currentButtonState);
+			CheckTriggersInUse(m_ButtonStates.currentButtonState);
 
-			WORD buttonChanges = m_ButtonStates.currentButtonState.wButtons ^ m_ButtonStates.previousButtonState.wButtons;
-			m_ButtonStates.buttonsPressedThisFrame = buttonChanges & m_ButtonStates.currentButtonState.wButtons;
-			m_ButtonStates.buttonsReleasedThisFrame = buttonChanges & (~m_ButtonStates.currentButtonState.wButtons);
+			ControllerButton buttonChanges = m_ButtonStates.currentButtonState ^ m_ButtonStates.previousButtonState;
+			m_ButtonStates.buttonsPressedThisFrame = (buttonChanges & m_ButtonStates.currentButtonState);
+			m_ButtonStates.buttonsReleasedThisFrame = (buttonChanges & (~m_ButtonStates.currentButtonState));
 
 
 			(deltaTime);
 			return true;
 		};
 
-		void ProcesStickInput(XINPUT_GAMEPAD& gamepadState)
+		void CheckSticksInUse(ControllerButton& gamepadState)
 		{
 
 			glm::vec2& left = m_analogInputFiltered[Left];
 			glm::vec2& right = m_analogInputFiltered[Right];
 
 			if ((left.x + left.y) != 0.f)
-				gamepadState.wButtons |= XINPUT_GAMEPAD_LEFT_STICK;
+				gamepadState |= ControllerButton::THUMBSTICK_LEFT_MOVE;
 			if ((right.x + right.y) != 0.f)
-				gamepadState.wButtons |= XINPUT_GAMEPAD_RIGHT_STICK;
+				gamepadState |= ControllerButton::THUMBSTICK_RIGHT_MOVE;
+		}
+
+		void CheckTriggersInUse(ControllerButton& gamepadState) 
+		{
+			float& left = m_triggerFiltered[Left];
+			float& right = m_triggerFiltered[Right];
+
+			if (left > 0.f)
+			{
+				gamepadState |= ControllerButton::TRIGGER_LEFT;
+			}
+			if (right > 0.f)
+			{
+				gamepadState |= ControllerButton::TRIGGER_RIGHT;
+			}
 		}
 
 	};
