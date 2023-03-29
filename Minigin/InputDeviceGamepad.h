@@ -2,12 +2,6 @@
 #include "InputDevice.h"
 #include "InputStateGamepad.h"
 
-// these are not in a good spot, I dont know where to put these defines yet
-//-------------------------------------------------------------------------
-
-#define XINPUT_GAMEPAD_LEFT_STICK    0x0400
-#define XINPUT_GAMEPAD_RIGHT_STICK   0x0800
-
 //-------------------------------------------------------------------------
 
 namespace dae
