@@ -34,7 +34,7 @@ dae::Scene* dae::SceneManager::AddGameScene(const std::string& name)
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
 
 	Scene* pScene = scene.get();
-	m_Scenes.push_back(scene);
+	m_Scenes.push_back(std::move(scene));
 
 	return pScene;
 }

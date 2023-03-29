@@ -61,6 +61,12 @@
     <Filter Include="Components\Input">
       <UniqueIdentifier>{74cd566a-5851-42f9-a03f-789a0b6577be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Observer">
+      <UniqueIdentifier>{82c2ecda-79a6-4542-833c-f55e9c641fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Gameplay">
+      <UniqueIdentifier>{b7a6ed66-fb9d-4534-9a98-b56eff85f053}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneFactory.h">
@@ -213,6 +219,12 @@
     <ClInclude Include="InputDeviceMouse.h">
       <Filter>Engine Files\Input\Devices</Filter>
     </ClInclude>
+    <ClInclude Include="SubjectComponent.h">
+      <Filter>Components\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Components\Gameplay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneFactory.cpp">
@@ -322,6 +334,12 @@
     </ClCompile>
     <ClCompile Include="IDComponent.cpp">
       <Filter>Components\General</Filter>
+    </ClCompile>
+    <ClCompile Include="SubjectComponent.cpp">
+      <Filter>Components\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Components\Gameplay</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

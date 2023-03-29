@@ -2,7 +2,14 @@
 #include <chrono>
 #include <thread>
 #include <math.h>
+#include <vector>
+#include <utility>
 #include "Time.h"
+
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN 
+#include <windows.h>
+#endif
 
 namespace dae
 {
@@ -61,7 +68,7 @@ namespace dae
 		//------------------------------------------------------------------------------------
 		// https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/
 		//------------------------------------------------------------------------------------
-		void preciseSleep(const Nanoseconds& sleepTime) {
+		void preciseSleep(Nanoseconds sleepTime) {
 			using namespace std::chrono;
 
 			static int64_t estimate = Milliseconds(5).ToNanoseconds();
@@ -91,5 +98,74 @@ namespace dae
 			while ((high_resolution_clock::now() - start).count() < nanoSeconds);
 		}
 #endif
+		//-------------------------------------------------------------------------------
+
+
+		//-------------------------------------------------------------------------------
+#pragma region RingBuffer Template
+		template <typename Element>
+		class RingBuffer
+		{
+		public:	
+			RingBuffer(const size_t capacity) : buffer(capacity) {}
+
+			void push(Element&& value)
+			{
+				buffer[tail] = std::forward<Element>(value);
+				tail = (tail + 1) % buffer.size();
+				if (head == tail) {
+					head = (head + 1) % buffer.size();
+				}
+			}
+
+			Element& front()
+			{
+				return buffer[head];
+			}
+
+			const Element& front() const
+			{
+				return buffer[head];
+			}
+
+			Element& back()
+			{
+				return buffer[(tail + buffer.size() - 1) % buffer.size()];
+			}
+
+			const Element& back() const
+			{
+				return buffer[(tail + buffer.size() - 1) % buffer.size()];
+			}
+
+			void pop()
+			{
+				head = (head + 1) % buffer.size();
+			}
+
+			bool empty() const
+			{
+				return head == tail;
+			}
+
+			size_t size() const
+			{
+				return tail >= head ? tail - head : buffer.size() - head + tail;
+			}
+
+			size_t capacity() const
+			{
+				return buffer.size();
+			}
+
+		private:
+			std::vector<Element> buffer;
+			size_t head = 0;
+			size_t tail = 0;
+		};
+		//-------------------------------------------------------------------------------
+
+#pragma endregion
+
 	}
 }

@@ -66,6 +66,7 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
 		textureComponent->SetTexture("demo/background.tga");
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::background);
 	}
 
 

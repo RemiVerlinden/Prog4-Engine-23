@@ -15,7 +15,7 @@ namespace dae::Input
 	};
 
 
-	class InputStateGamepad : public InputState
+	class InputStateGamepad final : public InputState
 	{
 		friend class InputDeviceGamepad;
 

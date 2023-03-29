@@ -76,7 +76,7 @@ namespace dae
 		}
 	};
 
-	class ChangeSceneCommand : public Command
+	class ChangeSceneCommand final : public Command
 	{
 	public:
 		ChangeSceneCommand(bool nextScene) :m_NextScene(nextScene) {}

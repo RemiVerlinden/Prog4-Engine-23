@@ -203,6 +203,7 @@
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CommandHandler.h" />
     <ClInclude Include="DeviceButtons.hpp" />
+    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IDComponent.h" />
     <ClInclude Include="InputState.h" />
     <ClInclude Include="InputSystem.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="InputDeviceMouse.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="PrefabFunctions.h" />
+    <ClInclude Include="SubjectComponent.h" />
     <ClInclude Include="TagComponent.h" />
     <ClInclude Include="TemplateComponent.h" />
     <ClInclude Include="TrashTheCacheComponent.h" />
@@ -257,6 +259,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="IDComponent.cpp" />
     <ClCompile Include="InputDebugImguiComponent.cpp" />
     <ClCompile Include="InputDeviceGamepad.cpp" />
@@ -272,6 +275,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SubjectComponent.cpp" />
     <ClCompile Include="TagComponent.cpp" />
     <ClCompile Include="TemplateComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />

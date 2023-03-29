@@ -1,6 +1,5 @@
 #include <stdexcept>
-#define WIN32_LEAN_AND_MEAN 
-#include <windows.h>
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -62,8 +61,8 @@ dae::Minigin::Minigin(const std::string& dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		static_cast<int>(640),
+		static_cast<int>(480),
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr)

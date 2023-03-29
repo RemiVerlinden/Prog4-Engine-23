@@ -11,7 +11,7 @@
 namespace dae::Input
 {
 
-	class InputStateKeyboard : public InputState
+	class InputStateKeyboard final : public InputState
 	{
 		friend class InputDeviceKeyboardMouse;
 

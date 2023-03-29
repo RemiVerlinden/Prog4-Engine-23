@@ -14,7 +14,7 @@ namespace dae::Input
 
     // input system, manages all hardware devices and updates their state
 
-    class InputSystem : public Singleton<InputSystem>  // This should be called InputManager but NO
+    class InputSystem final : public Singleton<InputSystem>  // This should be called InputManager but NO
     {
 
         friend class InputDebugImguiComponent;

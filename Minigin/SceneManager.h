@@ -11,7 +11,6 @@ namespace dae
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		Scene& CreateScene(const std::string& name);
 
 		//=========================================================
 		Scene* AddGameScene(const std::string& name);
