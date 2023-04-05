@@ -7,7 +7,7 @@ namespace dae {
 	class BaseComponent
 	{
 	public:
-		BaseComponent();
+		BaseComponent(const std::string& name = "");
 		virtual ~BaseComponent() = default;
 
 		virtual void Initialize() = 0;
@@ -18,6 +18,9 @@ namespace dae {
 		virtual void FixedUpdate([[maybe_unused]] const UpdateContext& context) {};
 
 		static uint64_t GetComponentCount() { return m_ComponentCount; }
+		
+		std::string GetComponentTag() const { return m_ComponentTag; }
+		void SetComponentTag(const std::string& tag) { m_ComponentTag = tag; }
 
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
@@ -26,9 +29,10 @@ namespace dae {
 
 	protected:
 		GameObject*						m_GameObject;
-		static uint64_t					m_ComponentCount;
 
 	private:
+		static uint64_t					m_ComponentCount;
+		std::string						m_ComponentTag;
 		friend GameObject;
 
 		void RootInitialize(GameObject* go);

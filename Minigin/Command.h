@@ -5,7 +5,7 @@
 #include <memory>
 #include "MoveComponent.h"
 #include "SceneManager.h"
-
+#include "HealthComponent.h"
 namespace dae
 {
 	class Command
@@ -23,7 +23,7 @@ namespace dae
 		virtual ~GameObjectCommand() = default;
 	protected:
 		GameObjectCommand(GameObject* gameObject) : m_GameObject{ gameObject } {}
-		GameObject* GetActor() { return m_GameObject; }
+		GameObject* GetGameObject() { return m_GameObject; }
 	private:
 		GameObject* m_GameObject;
 	};
@@ -90,5 +90,44 @@ namespace dae
 
 	private:
 		bool m_NextScene;
+	};
+
+	class DamageCommand final : public GameObjectCommand
+	{
+	public:
+		DamageCommand(GameObject* object, int amount) :GameObjectCommand(object), m_DamageAmount(amount) 
+		{
+			SetHealthComponent(object);
+		};
+		virtual void Execute([[maybe_unused]] Seconds elapsedTime)
+		{
+			m_HealthComponent->Damage(m_DamageAmount);
+		};
+	private:
+		HealthComponent* m_HealthComponent;
+		int m_DamageAmount;
+
+		void SetHealthComponent(GameObject* object)
+		{
+			if (object->HasComponent<HealthComponent>())
+			{
+				m_HealthComponent = object->GetComponent<HealthComponent>();
+			}
+			else
+			{
+				m_HealthComponent = object->AddComponent<HealthComponent>();
+			}
+		}
+	};
+
+	class KillCommand final : public GameObjectCommand
+	{
+	public:
+		KillCommand(GameObject* object) :GameObjectCommand(object){};
+		virtual void Execute([[maybe_unused]] Seconds elapsedTime)
+		{
+			GetGameObject()->Destroy();
+		};
+	private:
 	};
 }

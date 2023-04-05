@@ -82,9 +82,9 @@ void Scene::RenderUI(UpdateContext& context) const
 	}
 }
 
-GameObject* Scene::MakeGameObject()
+GameObject* Scene::MakeGameObject(const std::string& tag )
 {
-	std::shared_ptr<GameObject> go{ std::make_shared<GameObject>(this) };
+	std::shared_ptr<GameObject> go{ std::make_shared<GameObject>(this, tag) };
 
 	GameObject* ptr = go.get();
 

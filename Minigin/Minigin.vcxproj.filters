@@ -61,9 +61,6 @@
     <Filter Include="Components\Input">
       <UniqueIdentifier>{74cd566a-5851-42f9-a03f-789a0b6577be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Observer">
-      <UniqueIdentifier>{82c2ecda-79a6-4542-833c-f55e9c641fde}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components\Gameplay">
       <UniqueIdentifier>{b7a6ed66-fb9d-4534-9a98-b56eff85f053}</UniqueIdentifier>
     </Filter>
@@ -219,11 +216,23 @@
     <ClInclude Include="InputDeviceMouse.h">
       <Filter>Engine Files\Input\Devices</Filter>
     </ClInclude>
-    <ClInclude Include="SubjectComponent.h">
-      <Filter>Components\Observer</Filter>
-    </ClInclude>
     <ClInclude Include="HealthComponent.h">
       <Filter>Components\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Application Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Engine Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="EventListener.h">
+      <Filter>Engine Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="EventType.h">
+      <Filter>Engine Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreboardComponent.h">
+      <Filter>Components\HUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -335,11 +344,17 @@
     <ClCompile Include="IDComponent.cpp">
       <Filter>Components\General</Filter>
     </ClCompile>
-    <ClCompile Include="SubjectComponent.cpp">
-      <Filter>Components\Observer</Filter>
-    </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
       <Filter>Components\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Engine Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="EventListener.cpp">
+      <Filter>Engine Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreboardComponent.cpp">
+      <Filter>Components\HUD</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

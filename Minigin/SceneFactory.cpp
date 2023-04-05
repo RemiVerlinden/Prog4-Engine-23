@@ -11,7 +11,7 @@
 #include "InputSystem.h"
 #include "InputDebugImguiComponent.h"
 #include "TrashTheCacheComponent.h"
-
+#include "ScoreboardComponent.h"
 #include <iostream>
 #include "DeviceButtons.hpp"
 
@@ -145,7 +145,7 @@ void dae::SceneFactory::InitDefaultScene()
 	//}
 
 	{
-		go = pScene->MakeGameObject();
+		go = pScene->MakeGameObject("Player1");
 		auto textureComponent = go->AddComponent<Render2DComponent>();
 		textureComponent->SetTexture("cheff.png");
 		textureComponent->SetPosition(300, 300);
@@ -202,7 +202,7 @@ void dae::SceneFactory::InitDefaultScene()
 	}
 
 	{
-		go = pScene->MakeGameObject();
+		go = pScene->MakeGameObject("Player2");
 
 		auto textureComponent = go->AddComponent<Render2DComponent>();
 		textureComponent->SetTexture("bean.png");
@@ -244,6 +244,8 @@ void dae::SceneFactory::InitDefaultScene()
 		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_UP, ButtonPressType::Hold, glm::vec2{ 0,1 });
 		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
+
+
 		// GAMEPAD ANALOG STICK
 
 		auto bindAnalogStickMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, const glm::vec2* dir)
@@ -259,12 +261,26 @@ void dae::SceneFactory::InitDefaultScene()
 
 		// GAMEPAD ANALOG STICK
 		bindAnalogStickMove(gamepadDevice, ControllerButton::THUMBSTICK_LEFT_MOVE, ButtonPressType::Hold, gamepadDevice->GetGamepadState().GetAnalogStickFilteredPtr(false));
+
+		// KEYBOARD DAMAGE PLAYER
+		auto bindDoDamage = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, int damageAmount)
+		{
+			dae::Input::InputAction inputAction;
+			inputAction.command = std::make_unique<DamageCommand>(go, damageAmount);
+			inputAction.device = pDevice;
+			inputAction.pressType = pressType;
+
+			commandHandler->BindNewAction(button, inputAction);
+		};
+
+		bindDoDamage(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_F, ButtonPressType::Press, 33);
 	}
 
 	{
 		go = pScene->MakeGameObject();
 
 		go->AddComponent<dae::Input::InputDebugImguiComponent>();
+		go->AddComponent<dae::ScoreBoardComponent>();
 	}
 }
 

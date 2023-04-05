@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "BaseComponent.h"
-
+#include <iostream>
 namespace dae
 {
 	class UpdateContext;
@@ -9,7 +9,8 @@ namespace dae
 	{
 	public:
 		TransformComponent() = default;
-		~TransformComponent() = default;
+		~TransformComponent() { std::cout << "Transform destroyed"; }
+		//~TransformComponent() = default;
 
 		void Initialize() override {};
 

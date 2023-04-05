@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "EventManager.h"
 
 
 #include "scene.h"
@@ -15,7 +16,6 @@
 #include "Timers.h"
 #include <iostream>
 #include "UpdateContext.h"
-
 #include "Utils.hpp"
 
 SDL_Window* g_window{};
@@ -87,6 +87,8 @@ dae::Minigin::~Minigin()
 
 void dae::Minigin::Run(const std::function<void()>& load)
 {
+	auto& eventManager = EventManager::GetInstance();
+	(eventManager);
 
 	auto& input = Input::InputSystem::GetInstance();
 	Input::InputSystem::GetInstance().Initialize();
@@ -95,7 +97,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-
 
 	//==========TIMER-VARIABLES=========
 
@@ -106,7 +107,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	sceneManager.Initialize(); // IMPORTANT
 
-	bool doContinue = true;
+	bool								doContinue = true;
 	while (doContinue)
 	{
 		Milliseconds frameTime = 0;

@@ -2,7 +2,8 @@
 #include "BaseComponent.h"
 
 
-dae::BaseComponent::BaseComponent() 
+dae::BaseComponent::BaseComponent(const std::string& name) 
+	:m_ComponentTag(name)
 {
 
 }

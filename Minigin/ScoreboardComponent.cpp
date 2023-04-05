@@ -1,0 +1,95 @@
+#include "ScoreboardComponent.h"
+#include "ImguiWrapper.h"
+#include "GameObject.h"
+#include "ResourceManager.h"
+#include "TextComponent.h"
+#include "EventManager.h"
+
+void dae::ScoreBoardComponent::Initialize()
+{
+	EventSubscribe(OnDeath);
+
+	m_Font = dae::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 36);
+
+	int hardCodedTotalPlayers = 2;
+	for (size_t i = 0; i < hardCodedTotalPlayers; i++)
+	{
+		PlayerHUD playerHUD;
+		playerHUD.info.lives = 3;
+		playerHUD.info.health = 100;
+		playerHUD.info.score = 0;
+		playerHUD.m_LivesText = m_GameObject->AddComponent<TextComponent>(playerHUD.info.GetLivesString(), m_Font);
+		playerHUD.m_HealthText = m_GameObject->AddComponent<TextComponent>(playerHUD.info.GetHealthString(), m_Font);
+		playerHUD.m_ScoreText = m_GameObject->AddComponent<TextComponent>(playerHUD.info.GetScoreString(), m_Font);	
+
+		m_PlayerVec.push_back(playerHUD);
+	}
+}
+
+
+void dae::ScoreBoardComponent::DrawUI([[maybe_unused]] UpdateContext& context)
+{
+	ImGui::Begin("Scoreboard");
+
+	ImGui::Text("Player 1 Lives %d", m_PlayerVec[0].info.lives);
+
+	ImGui::End();
+}
+
+void dae::ScoreBoardComponent::OnEvent(const Event& sent)
+{
+	switch (sent.GetEventType())
+	{
+		case EventType::OnDeath:
+		{
+			const OnDeathEvent& event = reinterpret_cast<const OnDeathEvent&>(sent);
+			if (event.GetObjectName() == "Player1")
+			{
+				PlayerDied(0);
+			}
+			else if (event.GetObjectName() == "Player2")
+			{
+				PlayerDied(1);
+			}
+			break;
+		}
+		case OnDamage:
+		{
+			const OnDamageEvent& event = reinterpret_cast<const OnDamageEvent&>(sent);
+			if (event.GetObjectName() == "Player1")
+			{
+				PlayerDamaged(0, event.GetCurrentHealth());
+			}
+			else if (event.GetObjectName() == "Player2")
+			{
+				PlayerDamaged(1, event.GetCurrentHealth());
+			}
+			break;
+		}
+	}
+}
+
+void dae::ScoreBoardComponent::PlayerDied(int playerID)
+{
+	PlayerHUD& playerHUD = m_PlayerVec[playerID];
+	PlayerInfo& playerInfo = m_PlayerVec[playerID].info;
+
+	--playerInfo.lives;
+
+	playerHUD.m_LivesText->SetText(playerInfo.GetLivesString());
+
+	if (playerInfo.lives > 0 )
+	{
+		PlayerResurrectEvent resurrectEvent{ playerID, playerInfo.lives };
+		EventManager::GetInstance().SendEvent(resurrectEvent);
+	}
+}
+
+void dae::ScoreBoardComponent::PlayerDamaged(int playerID, int newHealth)
+{
+	PlayerHUD& playerHUD = m_PlayerVec[playerID];
+	playerHUD.info.health = newHealth;
+	playerHUD.m_HealthText->SetText(playerHUD.info.GetHealthString());
+}
+
+

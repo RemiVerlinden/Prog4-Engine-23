@@ -4,13 +4,27 @@
 #include "glm\glm.hpp"
 #include "InputSystem.h"
 #include "InputDeviceGamepad.h"
-
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "Xinput.h"
 
+#include "EventManager.h"
+
 namespace dae::Input
 {
+
+	void InputDebugImguiComponent::OnEvent(const Event& sent)
+	{
+		switch (sent.GetEventType())
+		{
+			case EventType::OnDeath:
+			++DeathCounter;
+			default:
+				break;
+		}
+	}
+
+#pragma region BOILERPLATE
 
 	namespace
 	{
@@ -152,7 +166,7 @@ namespace dae::Input
 
 	void dae::Input::InputDebugImguiComponent::Initialize()
 	{
-
+		EventSubscribe(OnDeath);
 	}
 
 	void dae::Input::InputDebugImguiComponent::DrawUI([[maybe_unused]] UpdateContext& context)
@@ -161,6 +175,7 @@ namespace dae::Input
 
 		DrawDebugGamepadInputVisualisationWindow();
 	}
+
 
 	void dae::Input::InputDebugImguiComponent::DrawIsDeviceConnectedWindow()
 	{
@@ -196,6 +211,13 @@ namespace dae::Input
 				ImGui::Text("not connected.");
 			}
 		}
+
+		if(ImGui::Button("Nuck Figger Naggots"))
+		{
+			EventManager::GetInstance().SendEvent(dae::OnDeathEvent{"Player1"});
+		}
+		ImGui::Text("%d", DeathCounter);
+
 		ImGui::End();
 	}
 
@@ -316,4 +338,6 @@ namespace dae::Input
 
 		}
 	}
+
+#pragma endregion
 }

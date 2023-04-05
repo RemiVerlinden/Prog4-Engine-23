@@ -9,20 +9,17 @@ namespace dae
 	public:
 		void Initialize() {};
 
-		void FixedUpdate([[maybe_unused]] const UpdateContext& context) override {};
-		void Update([[maybe_unused]] const UpdateContext& context) override {};
-		void LateUpdate([[maybe_unused]] const UpdateContext& context) override {};
-
-		void Draw() override {};
-		void DrawUI([[maybe_unused]] UpdateContext& context) override {};
-
-
-		HealthComponent(const HealthComponent& other) = delete;
-		HealthComponent(HealthComponent&& other) = delete;
-		HealthComponent& operator=(const HealthComponent& other) = delete;
-		HealthComponent& operator=(HealthComponent&& other) = delete;
+		void SetHealth(int maxHealth);
+		void Damage(int damageAmount);
+		void Heal(int healAmount);
 	private:
+		struct Health
+		{
+			int max = 100;
+			int current = max;
+		};
 
+		Health m_Health;
 	};
 }
 
