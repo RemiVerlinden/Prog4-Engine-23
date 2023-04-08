@@ -53,7 +53,7 @@ void dae::Input::CommandHandler::BindNewAction(deviceButton button, InputAction&
 
 	DeviceActionBinds& deviceBinds = m_ActionBindPerDevice[deviceID];
 
-	deviceBinds.emplace(std::move(std::make_pair(button, std::move(inputAction))));
+	deviceBinds.emplace(std::make_pair(button, std::move(inputAction)));
 
 }
 
