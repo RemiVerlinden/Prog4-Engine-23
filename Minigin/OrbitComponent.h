@@ -5,10 +5,6 @@
 
 namespace dae {
 	class UpdateContext;
-	class Font;
-	class Texture2D;
-	class GameTime;
-	class TextComponent;
 class OrbitComponent final : public BaseComponent
 {
 	public:

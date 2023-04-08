@@ -15,8 +15,8 @@ namespace dae {
 	class FpsComponent final : public BaseComponent
 	{
 	public:
-		FpsComponent(std::shared_ptr<Font> font);
-		~FpsComponent();
+		FpsComponent() = default;
+		~FpsComponent() = default;
 
 		virtual void Initialize() override;
 		virtual void Update( const UpdateContext& context) override;
@@ -24,6 +24,8 @@ namespace dae {
 
 		void SetPosition(const float x, const float y);
 		void SetColor(int r, int g, int b, int a);
+		void SetFont(std::shared_ptr<Font> font);
+
 		FpsComponent(const FpsComponent& other) = delete;
 		FpsComponent(FpsComponent&& other) = delete;
 		FpsComponent& operator=(const FpsComponent& other) = delete;

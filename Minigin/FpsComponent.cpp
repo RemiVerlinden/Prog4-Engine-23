@@ -10,18 +10,13 @@
 #include "GameObject.h"
 #include "UpdateContext.h"
 
-dae::FpsComponent::FpsComponent( std::shared_ptr<Font> font)
-{
-	m_Font = font;
-}
-
-dae::FpsComponent::~FpsComponent()
-{
-}
 
 void dae::FpsComponent::Initialize()
 {
-	m_TextComponent = m_GameObject->AddComponent<TextComponent>(m_Font);
+	m_TextComponent = m_GameObject->AddComponent<TextComponent>("SubComponent of FpsComponent: TextComponent");
+	if (m_Font)
+		m_TextComponent->SetFont(m_Font);
+
 	m_TextComponent->SetText(std::format("{} FPS", m_FramesPerSecond));
 }
 
@@ -88,5 +83,18 @@ void dae::FpsComponent::SetPosition(const float x, const float y)
 void dae::FpsComponent::SetColor(int r, int g, int b, int a)
 {
 	m_TextComponent->SetColor(r, g, b, a);
+}
+
+void dae::FpsComponent::SetFont(std::shared_ptr<Font> font)
+{
+	if (m_TextComponent)
+	{
+		m_TextComponent->SetFont(font);
+		m_Font = font;
+	}
+	else
+	{
+		m_Font = font;
+	}
 }
 

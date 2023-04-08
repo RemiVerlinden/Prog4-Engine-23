@@ -8,19 +8,38 @@
 void dae::ScoreBoardComponent::Initialize()
 {
 	EventSubscribe(OnDeath);
+	EventSubscribe(OnDamage);
 
-	m_Font = dae::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 36);
+	m_Font = dae::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 20);
 
 	int hardCodedTotalPlayers = 2;
+	glm::vec2 textPos{0,300};
 	for (size_t i = 0; i < hardCodedTotalPlayers; i++)
 	{
+		textPos.y += i * 30;
+		textPos.x = 0;
+
 		PlayerHUD playerHUD;
 		playerHUD.info.lives = 3;
 		playerHUD.info.health = 100;
 		playerHUD.info.score = 0;
-		playerHUD.m_LivesText = m_GameObject->AddComponent<TextComponent>(playerHUD.info.GetLivesString(), m_Font);
-		playerHUD.m_HealthText = m_GameObject->AddComponent<TextComponent>(playerHUD.info.GetHealthString(), m_Font);
-		playerHUD.m_ScoreText = m_GameObject->AddComponent<TextComponent>(playerHUD.info.GetScoreString(), m_Font);	
+
+		playerHUD.m_LivesText = m_GameObject->AddComponent<TextComponent>(std::format("Player{}_LivesText", i));
+		playerHUD.m_LivesText->SetText(playerHUD.info.GetLivesString());
+		playerHUD.m_LivesText->SetFont(m_Font);
+		playerHUD.m_LivesText->SetPosition(textPos);
+		textPos.x += 100;
+
+		playerHUD.m_HealthText = m_GameObject->AddComponent<TextComponent>(std::format("Player{}_HealthText", i));
+		playerHUD.m_HealthText->SetText(playerHUD.info.GetHealthString());
+		playerHUD.m_HealthText->SetFont(m_Font);
+		playerHUD.m_HealthText->SetPosition(textPos);
+		textPos.x += 100;
+
+		playerHUD.m_ScoreText = m_GameObject->AddComponent<TextComponent>(std::format("Player{}_ScoreText", i));
+		playerHUD.m_ScoreText->SetText(playerHUD.info.GetScoreString());
+		playerHUD.m_ScoreText->SetFont(m_Font);
+		playerHUD.m_ScoreText->SetPosition(textPos);
 
 		m_PlayerVec.push_back(playerHUD);
 	}

@@ -15,15 +15,15 @@ void dae::HealthComponent::Damage(int damageAmount)
 
 
 	m_Health.current -= damageAmount;
+	
+	
 	if (m_Health.current <= 0)
 	{
 		eventManager.SendEvent(OnDeathEvent{ tagComp->m_Tag });
+		m_Health.current = 0;
 		m_GameObject->Destroy();
 	}
-	else
-	{
-		eventManager.SendEvent(OnDamageEvent{tagComp->m_Tag, m_Health.current, damageAmount});
-	}
+	eventManager.SendEvent(OnDamageEvent{tagComp->m_Tag, m_Health.current, damageAmount});
 }
 
 void dae::HealthComponent::Heal(int healAmount)

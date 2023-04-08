@@ -234,6 +234,9 @@
     <ClInclude Include="ScoreboardComponent.h">
       <Filter>Components\HUD</Filter>
     </ClInclude>
+    <ClInclude Include="BindInputCommandComponent.h">
+      <Filter>Components\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneFactory.cpp">

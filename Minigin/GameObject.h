@@ -4,6 +4,8 @@
 #include <unordered_set>
 #include <assert.h>
 #include <string>
+#include <format>
+#include "TagComponent.h"
 
 namespace dae
 {
@@ -27,15 +29,23 @@ namespace dae
 		inline bool IsMarkedForDestroy() { return m_MarkedForDestroy; }
 
 		//===============================================
-		template<typename ComponentType, typename... Args>
-		ComponentType* AddComponent(Args&&... args);
+		template<typename ComponentType>
+		//template<typename ComponentType, typename... Args>
+		ComponentType* AddComponent(const std::string& componentTag = "");
 
 
 		template<typename ComponentType>
-		ComponentType* GetComponent();
+		ComponentType* GetComponent(const std::string& componentTag = "");
 
 		template<typename ComponentType>
 		bool HasComponent();
+
+		template<typename ComponentType>
+		bool HasComponentWithTag(const std::string& componentTag);
+
+		template<typename ComponentType>
+		int GetComponentCount();
+
 
 		template<typename ComponentType>
 		void RemoveComponent();
@@ -48,6 +58,7 @@ namespace dae
 		GameObject* GetChildAt(unsigned int index);
 
 		static uint64_t GetGameObjectCount() { return m_GameObjectCount; }
+		const std::string& GetTag() { return m_Tag; }
 
 		GameObject(Scene* scene);
 		GameObject(Scene* scene, std::string tag);
@@ -65,8 +76,9 @@ namespace dae
 		TransformComponent* m_Transform;
 
 	private:
-		Scene*											m_Scene;
-		GameObject*										m_Parent;
+		std::string										m_Tag;
+		Scene* m_Scene;
+		GameObject* m_Parent;
 		std::vector<GameObject*>						m_Children;
 		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 		bool											m_MarkedForDestroy;
@@ -79,26 +91,34 @@ namespace dae
 
 
 
-	template<typename ComponentType, typename... Args>
-	[[maybe_unused]] ComponentType* GameObject::AddComponent(Args&&... args)
+	//template<typename ComponentType, typename... Args>
+	template<typename ComponentType>
+	[[maybe_unused]] ComponentType* GameObject::AddComponent(const std::string& componentTag)
 	{
 		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
 
-		m_Components.push_back(std::make_unique<ComponentType>(std::forward<Args>(args)...));
+		if (HasComponentWithTag<ComponentType>(componentTag))
+		{
+			const std::string& objectTag = GetComponent<TagComponent>()->m_Tag;
+			assert(false && std::format("GameObject::AddComponent -> Component with tag:[{}] already present on GameObject With Tag[{}]", componentTag, objectTag).c_str());
+		}
 
-		ComponentType* newComponent = GetComponent<ComponentType>();
+		m_Components.emplace_back(std::make_unique<ComponentType>());
+		m_Components.back()->SetComponentTag(componentTag);
+
+		ComponentType* newComponent = GetComponent<ComponentType>(componentTag);
 		dynamic_cast<BaseComponent*>(newComponent)->RootInitialize(this);
 		return newComponent;
 	}
 
 	template<typename ComponentType>
-	ComponentType* GameObject::GetComponent()
+	ComponentType* GameObject::GetComponent(const std::string& componentTag)
 	{
 		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
 
-		if(!HasComponent<ComponentType>())
+		if (!HasComponent<ComponentType>())
 		{
-			assert("GameObject::GetComponent -> no component of this type found in GameObject.");
+			assert(false && "GameObject::GetComponent -> no component of this type found in GameObject.");
 		}
 
 		for (const std::unique_ptr<BaseComponent>& component : m_Components)
@@ -106,7 +126,8 @@ namespace dae
 			ComponentType* castedComponent = dynamic_cast<ComponentType*>(component.get());
 			if (castedComponent != nullptr)
 			{
-				return castedComponent;
+				if (component->GetComponentTag() == componentTag)
+					return castedComponent;
 			}
 		}
 		return nullptr;
@@ -128,11 +149,45 @@ namespace dae
 	}
 
 	template<typename ComponentType>
+	bool GameObject::HasComponentWithTag(const std::string& tag)
+	{
+		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
+
+		for (const std::unique_ptr<BaseComponent>& component : m_Components)
+		{
+			if (dynamic_cast<ComponentType*>(component.get()) != nullptr)
+			{
+				if (component->GetComponentTag() == tag)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	template<typename ComponentType>
+	int GameObject::GetComponentCount()
+	{
+		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
+
+		int componentCount = 0;
+		for (const std::unique_ptr<BaseComponent>& component : m_Components)
+		{
+			if (dynamic_cast<ComponentType*>(component.get()) != nullptr)
+			{
+				++componentCount;
+			}
+		}
+		return componentCount;
+	}
+
+
+
+	template<typename ComponentType>
 	void GameObject::RemoveComponent()
 	{
 		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
 
-		if(!HasComponent<ComponentType>())
+		if (!HasComponent<ComponentType>())
 		{
 			assert("GameObject::RemoveComponent -> no component of this type found in GameObject.");
 		}

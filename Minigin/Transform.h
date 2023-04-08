@@ -9,8 +9,7 @@ namespace dae
 	{
 	public:
 		TransformComponent() = default;
-		~TransformComponent() { std::cout << "Transform destroyed"; }
-		//~TransformComponent() = default;
+		~TransformComponent() = default;
 
 		void Initialize() override {};
 

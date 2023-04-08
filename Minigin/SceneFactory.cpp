@@ -85,7 +85,9 @@ void dae::SceneFactory::InitDefaultScene()
 		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 36);
 		go = pScene->MakeGameObject();
 
-		auto textComponent = go->AddComponent<TextComponent>("Programming 4 Assignment", font);
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("Programming 4 Assignment");
+		textComponent->SetFont(font);
 		textComponent->SetPosition(80, 20);
 	}
 
@@ -95,7 +97,9 @@ void dae::SceneFactory::InitDefaultScene()
 		go = pScene->MakeGameObject();
 
 		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 36);
-		auto textComponent = go->AddComponent<TextComponent>("Press [PAGE UP|DOWN] to change scene", font);
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("Press [PAGE UP|DOWN] to change scene");
+		textComponent->SetFont(font);
 		textComponent->SetPosition(60, 420);
 		textComponent->SetColor(255, 160, 100, 255);
 
@@ -106,7 +110,8 @@ void dae::SceneFactory::InitDefaultScene()
 		go = pScene->MakeGameObject();
 		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 42);
 		//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-		FpsComponent* fpsComponent = go->AddComponent<FpsComponent>(font);
+		FpsComponent* fpsComponent = go->AddComponent<FpsComponent>();
+		fpsComponent->SetFont(font);
 		go->SetPosition(270, 80);
 		fpsComponent->SetColor(255, 255, 255, 255);
 	}
@@ -292,7 +297,8 @@ void dae::SceneFactory::InitFpsDemoScene()
 	GameObject* fpsGO = pScene->MakeGameObject();
 
 
-	FpsComponent* fpsComponent = fpsGO->AddComponent<FpsComponent>(font);
+	FpsComponent* fpsComponent = fpsGO->AddComponent<FpsComponent>();
+	fpsComponent->SetFont(font);
 	fpsComponent->SetPosition(200, 180);
 	fpsComponent->SetColor(200, 255, 255, 170);
 

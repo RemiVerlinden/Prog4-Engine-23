@@ -12,17 +12,18 @@ namespace dae{
 	class TextComponent final : public BaseComponent
 	{
 	public:
-		TextComponent( std::shared_ptr<Font> font);
-		TextComponent(const std::string& text, std::shared_ptr<Font> font);
+		TextComponent();
 		~TextComponent() = default;
 
-		void Initialize() override {};
+		void Initialize() override;
 
 		virtual void Update(const UpdateContext& context) override;
 		virtual void Draw() override;
 
 		void SetText(const std::string& text);
+		void SetFont(std::shared_ptr<Font> font);
 		void SetPosition(const float x, const float y);
+		void SetPosition(const glm::vec2& pos);
 		inline glm::vec3 GetPosition();
 		void SetColor(int r, int g, int b, int a);
 
@@ -37,5 +38,6 @@ namespace dae{
 		SDL_Color					m_FontColor;
 		std::shared_ptr<Font>		m_font;
 		std::shared_ptr<Texture2D>	m_textTexture;
+		glm::vec3					offset;
 	};
 }

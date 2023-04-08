@@ -5,26 +5,32 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include <iostream>
-
+#include "ResourceManager.h"
 #include "GameObject.h"
 
-dae::TextComponent::TextComponent(std::shared_ptr<Font> font) 
-	: TextComponent("",font) 
-{}
 
-dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font)
-	: m_needsUpdate(true)
-	, m_text(text)
-	, m_FontColor{255,255,255,255}
-	, m_font(std::move(font))
+dae::TextComponent::TextComponent()
+	: m_needsUpdate(false)
+	, m_text("CALL SetText()")
+	, m_FontColor{ 255,255,255,255 }
+	, m_font(nullptr)
 	, m_textTexture(nullptr)
-{}
+{
+}
 
 void dae::TextComponent::SetColor(int r, int g, int b, int a)
 {
 	m_FontColor = { (Uint8)r,(Uint8)g,(Uint8)b,(Uint8)a };
 }
 
+
+void dae::TextComponent::Initialize()
+{
+	if (!m_font)
+	{
+		SetFont(ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 32));
+	}
+}
 
 void dae::TextComponent::Update([[maybe_unused]] const UpdateContext& context)
 {
@@ -50,7 +56,7 @@ void dae::TextComponent::Draw()
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_GameObject->m_Transform->GetWorldPosition();
+		const auto& pos = m_GameObject->m_Transform->GetWorldPosition() + offset;
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
@@ -59,12 +65,26 @@ void dae::TextComponent::Draw()
 void dae::TextComponent::SetText(const std::string& text)
 {
 	m_text = text;
+	if (m_font)
+		m_needsUpdate = true;
+
+}
+
+void dae::TextComponent::SetFont(std::shared_ptr<Font> font)
+{
+	m_font = font;
 	m_needsUpdate = true;
 }
 
 void dae::TextComponent::SetPosition(const float x, const float y)
 {
-	m_GameObject->m_Transform->SetLocalPosition(x, y, 0.0f);
+	offset.x = x;
+	offset.y = y;
+}
+
+void dae::TextComponent::SetPosition(const glm::vec2& pos)
+{
+	SetPosition(pos.x, pos.y);
 }
 
 inline glm::vec3 dae::TextComponent::GetPosition()
