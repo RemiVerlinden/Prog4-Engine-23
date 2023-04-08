@@ -14,7 +14,7 @@ namespace dae::Input
 
 	//-------------------------------------------------------------------------
 
-	bool InputSystem::Initialize()
+	bool InputSystem::Initialize() // Currently only account for 4 gamepads, always create ONE keyboard and mouse device for now so I have no Idea how to handle multiple keyboards and mice
 	{
 
 		m_CommandHandler = std::make_unique<CommandHandler>();
@@ -29,7 +29,8 @@ namespace dae::Input
 		//-------------------------------------------------------------------------
 
 		// Create a keyboard and mouse device
-		m_inputDevices.push_back(std::move(std::make_unique<InputDeviceKeyboardMouse>(InputDeviceKeyboardMouse())));
+		m_inputDevices.emplace_back(std::make_unique<InputDeviceMouse>(InputDeviceMouse(m_SDLEventQueue)));
+		m_inputDevices.emplace_back(std::make_unique<InputDeviceKeyboard>(InputDeviceKeyboard(m_SDLEventQueue)));
 
 		//-------------------------------------------------------------------------
 		for (auto& pDevice : m_inputDevices)
@@ -55,12 +56,15 @@ namespace dae::Input
 
 		static dae::CyclicTimer<EngineClock> cyclicTimer{ 1000.f / context.GetMaxInputPollingRate() };
 
+
 		if (cyclicTimer.Update())
 		{
+			 doContinue = m_SDLEventQueue.PollEvents();
 			for (auto& pInputDevice : m_inputDevices)
 			{
-				doContinue = static_cast<bool>(pInputDevice->ProcessInput(deltaTime) & doContinue);
+				pInputDevice->ProcessInput(deltaTime);
 			}
+			m_SDLEventQueue.EmptyQueue();
 		}
 
 		m_CommandHandler.get()->Update(deltaTime);
@@ -70,7 +74,7 @@ namespace dae::Input
 
 	InputStateMouse const* InputSystem::GetMouseState() const
 	{
-		if (auto pDevice = GetKeyboardMouseDevice())
+		if (auto pDevice = GetMouseDevice())
 		{
 			return &pDevice->GetMouseState();
 		}
@@ -80,7 +84,7 @@ namespace dae::Input
 
 	InputStateKeyboard const* InputSystem::GetKeyboardState() const
 	{
-		if (auto pDevice = GetKeyboardMouseDevice())
+		if (auto pDevice = GetKeyboardDevice())
 		{
 			return &pDevice->GetKeyboardState();
 		}
@@ -90,13 +94,26 @@ namespace dae::Input
 
 	//-------------------------------------------------------------------------
 
-	InputDeviceKeyboardMouse* InputSystem::GetKeyboardMouseDevice() const
+	InputDeviceMouse* InputSystem::GetMouseDevice() const
 	{
 		for (auto& pDevice : m_inputDevices)
 		{
-			if (pDevice->GetDeviceCategory() == DeviceCategory::KeyboardMouse)
+			if (pDevice->GetDeviceCategory() == DeviceCategory::Mouse)
 			{
-				return static_cast<InputDeviceKeyboardMouse*>(pDevice.get());
+				return static_cast<InputDeviceMouse*>(pDevice.get());
+			}
+		}
+
+		return nullptr;
+	}
+
+	InputDeviceKeyboard* InputSystem::GetKeyboardDevice() const
+	{
+		for (auto& pDevice : m_inputDevices)
+		{
+			if (pDevice->GetDeviceCategory() == DeviceCategory::Keyboard)
+			{
+				return static_cast<InputDeviceKeyboard*>(pDevice.get());
 			}
 		}
 

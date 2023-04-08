@@ -83,7 +83,7 @@ namespace dae::Input
 			return std::get<buttonType>(button);
 		}
 
-		bool ProcessInput(Seconds deltaTime, XINPUT_STATE& gamepadState)
+		void ProcessInput(Seconds deltaTime, XINPUT_STATE& gamepadState)
 		{
 			std::swap(m_ButtonStates.previousButtonState, m_ButtonStates.currentButtonState);
 			m_ButtonStates.currentButtonState = static_cast<ControllerButton>(gamepadState.Gamepad.wButtons);
@@ -97,7 +97,6 @@ namespace dae::Input
 
 
 			(deltaTime);
-			return true;
 		};
 
 		void CheckSticksInUse(ControllerButton& gamepadState)
@@ -147,6 +146,7 @@ namespace dae::Input
 
 		const GamepadSettings& GetSettings() const { return m_settings; }
 		const InputStateGamepad& GetGamepadState() const { return m_GamepadState; }
+		const InputState& GetDeviceInputState() const { return m_GamepadState; };
 
 		bool IsConnected() const { return m_GamepadState.IsConnected(); }
 		void SetConnection(bool connection) { m_GamepadState.SetConnection(connection); }
@@ -169,7 +169,7 @@ namespace dae::Input
 		void Shutdown();
 
 
-		bool ProcessInput(Seconds deltaTime)
+		void ProcessInput(Seconds deltaTime)
 		{
 			XINPUT_STATE gamepadState;
 			DWORD result = XInputGetState(m_GamepadIndex, &gamepadState);
@@ -182,8 +182,6 @@ namespace dae::Input
 
 				m_GamepadStateImpl->ProcessInput(deltaTime, gamepadState);
 			}
-
-			return true;
 		};
 
 		void SetTriggerValues(float leftRawValue, float rightRawValue)
@@ -287,6 +285,11 @@ namespace dae::Input
 		return m_pImpl->GetGamepadState();
 	}
 
+	const InputState& InputDeviceGamepad::GetDeviceInputState() const
+	{
+		return m_pImpl->GetDeviceInputState();
+	}
+
 	bool InputDeviceGamepad::IsConnected() const
 	{
 		return m_pImpl->IsConnected();
@@ -312,9 +315,9 @@ namespace dae::Input
 		m_pImpl->SetConnection(false);
 	}
 
-	bool InputDeviceGamepad::ProcessInput(Seconds deltaTime)
+	void InputDeviceGamepad::ProcessInput(Seconds deltaTime)
 	{
-		return m_pImpl->ProcessInput(deltaTime);
+		m_pImpl->ProcessInput(deltaTime);
 	}
 
 	void InputDeviceGamepad::SetTriggerValues(float leftRawValue, float rightRawValue)

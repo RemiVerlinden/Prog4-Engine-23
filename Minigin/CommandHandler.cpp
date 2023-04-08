@@ -1,6 +1,7 @@
 #include "CommandHandler.h"
 #include "InputDeviceGamepad.h"
-#include "InputDeviceKeyboardMouse.h"
+#include "InputDeviceMouse.h"
+#include "InputDeviceKeyboard.h"
 #include "InputState.h"
 
 void dae::Input::CommandHandler::Update(Seconds elapsedTime)
@@ -15,48 +16,20 @@ void dae::Input::CommandHandler::Update(Seconds elapsedTime)
 			deviceButton button = actionBind.first;
 			const InputAction& inputAction = actionBind.second;
 
-			const InputState* deviceInputState = nullptr;
-
-			switch (inputAction.device->GetDeviceCategory())
-			{
-				case DeviceCategory::Gamepad:
-				{
-					deviceInputState = &static_cast<InputDeviceGamepad*>(inputAction.device)->GetGamepadState();
-					break;
-				}
-				case DeviceCategory::KeyboardMouse:
-				{
-					DeviceButtonType buttonType = ((std::holds_alternative<KeyboardButton>(button)) ? DeviceButtonType::Keyboard : DeviceButtonType::Mouse);
-
-					switch (buttonType)
-					{
-						case DeviceButtonType::Keyboard:
-							deviceInputState = &static_cast<InputDeviceKeyboardMouse*>(inputAction.device)->GetKeyboardState();
-							break;
-
-						case DeviceButtonType::Mouse:
-							deviceInputState = &static_cast<InputDeviceKeyboardMouse*>(inputAction.device)->GetMouseState();
-							break;
-					}
-					break;
-				}
-				default:
-					deviceInputState = &static_cast<InputDeviceKeyboardMouse*>(inputAction.device)->GetMouseState();
-					break;
-			}
+			const InputState& deviceInputState = inputAction.device->GetDeviceInputState();
 
 			bool executeCommand = false;
 
 			switch (inputAction.pressType)
 			{
 				case ButtonPressType::Press:
-					executeCommand = deviceInputState->WasPressed(button);
+					executeCommand = deviceInputState.WasPressed(button);
 					break;
 				case ButtonPressType::Hold:
-					executeCommand = deviceInputState->IsHeldDown(button);
+					executeCommand = deviceInputState.IsHeldDown(button);
 					break;
 				case ButtonPressType::Release:
-					executeCommand = deviceInputState->WasReleased(button);
+					executeCommand = deviceInputState.WasReleased(button);
 					break;
 			}
 

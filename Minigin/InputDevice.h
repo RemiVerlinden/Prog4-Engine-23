@@ -1,6 +1,6 @@
 #pragma once
 #include "Time.h"
-
+#include "InputState.h"
 //-------------------------------------------------------------------------
 
 namespace dae
@@ -10,7 +10,8 @@ namespace dae
 
         enum class DeviceCategory // might expand in coming weeks (probably not)
         {
-            KeyboardMouse,
+            Keyboard,
+            Mouse,
             Gamepad
         };
 
@@ -26,9 +27,10 @@ namespace dae
 
             // Get the category for this device (Gamepad/mice), this is necessary since we may have multiple Gamepad devices
             virtual DeviceCategory GetDeviceCategory() const = 0;
+            virtual const InputState& GetDeviceInputState() const = 0;
 
             // Called at the start of the frame to update the current device state
-            virtual bool ProcessInput(Seconds deltaTime) = 0;
+            virtual void ProcessInput(Seconds deltaTime) = 0;
 
             int GetID() { return m_ID; }
 

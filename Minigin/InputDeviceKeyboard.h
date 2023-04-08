@@ -1,6 +1,7 @@
 #pragma once
 #include "InputDevice.h"
 #include "InputStateKeyboard.h"
+#include "SDLEventQueue.h"
 
 namespace dae
 {
@@ -10,25 +11,38 @@ namespace dae
         {
         public:
 
-            InputDeviceKeyboard() = default;
+            InputDeviceKeyboard(SDLEventQueue& eventQueue) :m_EventQueue(eventQueue) {};
 
-            inline const InputStateKeyboard& GetKeyboardState() const { return m_keyboardState; }
+            inline const InputStateKeyboard& GetKeyboardState() const { return m_KeyboardState; }
+            virtual const InputState& GetDeviceInputState() const override { return m_KeyboardState; }
 
         private:
 
-            virtual DeviceCategory GetDeviceCategory() const override { return DeviceCategory::KeyboardMouse; }
+            virtual DeviceCategory GetDeviceCategory() const override { return DeviceCategory::Keyboard; }
 
             virtual void Initialize() override {};
             virtual void Shutdown() override {};
 
-            virtual bool ProcessInput(Seconds deltaTime) override 
+            virtual void ProcessInput([[maybe_unused]] Seconds deltaTime) override 
             {
-                
+                for (const SDL_Event& event : m_EventQueue.GetEvents())
+                {
+                    switch (event.type)
+                    {
+                        case SDL_KEYDOWN:
+                        {
+							break;
+						}
+                        default:
+							break;
+                    }
+                }
+                m_KeyboardState.ProcessInput(deltaTime);
             };
 
         private:
-
-            InputStateKeyboard                                      m_keyboardState;
+            SDLEventQueue&                                          m_EventQueue;
+            InputStateKeyboard                                      m_KeyboardState;
         };
     }
 }// Mutable,

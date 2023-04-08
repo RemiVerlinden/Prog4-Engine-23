@@ -1,11 +1,14 @@
 #pragma once
 #include "Singleton.h"
 #include "Timers.h"
-#include "InputDeviceKeyboardMouse.h"
+#include "InputDeviceMouse.h"
+#include "InputDeviceKeyboard.h"
 #include "InputDeviceGamepad.h"
 #include <vector>
 #include <memory>
 #include "CommandHandler.h"
+#include "SDLEventQueue.h"
+
 //-------------------------------------------------------------------------
 
 namespace dae::Input
@@ -34,9 +37,11 @@ namespace dae::Input
         // Keyboard & Mouse
         //-------------------------------------------------------------------------
 
-        inline bool HasConnectedKeyboardAndMouse() { return GetKeyboardMouseDevice() != nullptr; }
+        inline bool HasConnectedKeyboard() { return GetKeyboardDevice() != nullptr; }
+        inline bool HasConnectedMouse() { return GetMouseDevice() != nullptr; }
 
-        InputDeviceKeyboardMouse* GetKeyboardMouseDevice() const;
+        InputDeviceKeyboard* GetKeyboardDevice() const;
+        InputDeviceMouse* GetMouseDevice() const;
         InputStateKeyboard const* GetKeyboardState() const;
         InputStateMouse const* GetMouseState() const;
 
@@ -50,7 +55,7 @@ namespace dae::Input
 
         // CommandHandler
         //-------------------------------------------------------------------------
-        CommandHandler* GetCommandHandler() const { return m_CommandHandler.get(); }
+        CommandHandler& GetCommandHandler() const { return *m_CommandHandler.get(); }
 
     private:
         friend class Singleton<InputSystem>;
@@ -58,6 +63,7 @@ namespace dae::Input
 
     private:
 
+        inline static SDLEventQueue m_SDLEventQueue; // This is a singleton, but it just feels right to have it static here
         std::vector<std::unique_ptr<InputDevice>>  m_inputDevices;
         std::unique_ptr<CommandHandler> m_CommandHandler;
     };

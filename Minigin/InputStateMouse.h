@@ -10,7 +10,7 @@ namespace dae::Input
 
 	class InputStateMouse final : public InputState
 	{
-		friend class InputDeviceKeyboardMouse;
+		friend class InputDeviceMouse;
 
 	public:
 
@@ -38,7 +38,7 @@ namespace dae::Input
 		// Is the button being held down? Use SDL_BUTTON for input
 		virtual bool IsHeldDown(deviceButton button) const override { return SDL_BUTTON(GetMouseButton(button)) & m_MouseState; }
 
-		void ProcesMouseWheel(SDL_MouseWheelEvent& mouseWheelEvent)
+		void ProcesMouseWheel(const SDL_MouseWheelEvent& mouseWheelEvent)
 		{
 			m_verticalWheelDelta = mouseWheelEvent.preciseY;
 			m_horizontalWheelDelta = mouseWheelEvent.preciseX;

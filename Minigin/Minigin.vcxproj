@@ -217,6 +217,7 @@
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PrefabFunctions.h" />
     <ClInclude Include="ScoreboardComponent.h" />
+    <ClInclude Include="SDLEventQueue.h" />
     <ClInclude Include="TagComponent.h" />
     <ClInclude Include="TemplateComponent.h" />
     <ClInclude Include="TrashTheCacheComponent.h" />
@@ -228,7 +229,6 @@
     <ClInclude Include="ImguiWrapper.h" />
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="InputDeviceGamepad.h" />
-    <ClInclude Include="InputDeviceKeyboardMouse.h" />
     <ClInclude Include="InputStateGamepad.h" />
     <ClInclude Include="InputStateKeyboard.h" />
     <ClInclude Include="InputStateMouse.h" />
@@ -270,7 +270,6 @@
     <ClCompile Include="IDComponent.cpp" />
     <ClCompile Include="InputDebugImguiComponent.cpp" />
     <ClCompile Include="InputDeviceGamepad.cpp" />
-    <ClCompile Include="InputDeviceKeyboardMouse.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />

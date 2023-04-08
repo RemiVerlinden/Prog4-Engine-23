@@ -162,9 +162,6 @@
     <ClInclude Include="InputStateGamepad.h">
       <Filter>Engine Files\Input\InputStates</Filter>
     </ClInclude>
-    <ClInclude Include="InputDeviceKeyboardMouse.h">
-      <Filter>Engine Files\Input\Devices</Filter>
-    </ClInclude>
     <ClInclude Include="InputDeviceGamepad.h">
       <Filter>Engine Files\Input\Devices</Filter>
     </ClInclude>
@@ -236,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="BindInputCommandComponent.h">
       <Filter>Components\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLEventQueue.h">
+      <Filter>Engine Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,9 +324,6 @@
       <Filter>Components\HUD</Filter>
     </ClCompile>
     <ClCompile Include="InputDeviceGamepad.cpp">
-      <Filter>Engine Files\Input\Devices</Filter>
-    </ClCompile>
-    <ClCompile Include="InputDeviceKeyboardMouse.cpp">
       <Filter>Engine Files\Input\Devices</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">

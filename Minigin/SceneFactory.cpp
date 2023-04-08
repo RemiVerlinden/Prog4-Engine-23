@@ -14,7 +14,7 @@
 #include "ScoreboardComponent.h"
 #include <iostream>
 #include "DeviceButtons.hpp"
-
+#include "BindInputCommandComponent.h"
 using namespace dae;
 
 void dae::SceneFactory::CreateScenes()
@@ -33,7 +33,7 @@ void dae::SceneFactory::CreateScenes()
 void dae::SceneFactory::InitSceneKeybinds()
 {
 	dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
-	dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
+	dae::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
 
 	using namespace dae::Input;
 
@@ -45,11 +45,11 @@ void dae::SceneFactory::InitSceneKeybinds()
 		inputAction.device = pDevice;
 		inputAction.pressType = pressType;
 
-		commandHandler->BindNewAction(button, inputAction);
+		commandHandler.BindNewAction(button, inputAction);
 	};
 
-	// GAMEPAD
-	auto inputDevice = inputSystem.GetKeyboardMouseDevice();
+	// KEYBOARD
+	auto inputDevice = inputSystem.GetKeyboardDevice();
 	bindChangeScene(inputDevice, KeyboardButton::KEY_PAGEDOWN, ButtonPressType::Release, false);
 	bindChangeScene(inputDevice, KeyboardButton::KEY_PAGEUP, ButtonPressType::Release, true);
 }
@@ -160,7 +160,7 @@ void dae::SceneFactory::InitDefaultScene()
 
 		// ASSIGN INPUT
 		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
-		dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
+		dae::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
 
 		using namespace dae::Input;
 
@@ -172,10 +172,10 @@ void dae::SceneFactory::InitDefaultScene()
 			inputAction.device = pDevice;
 			inputAction.pressType = pressType;
 
-			commandHandler->BindNewAction(button, inputAction);
+			commandHandler.BindNewAction(button, inputAction);
 		};
 
-
+		auto* pInputCommandComponent = go->AddComponent<BindInputCommandComponent>();
 
 		// GAMEPAD
 		auto gamepadDevice = inputSystem.GetGamepadDevice(0);
@@ -185,10 +185,11 @@ void dae::SceneFactory::InitDefaultScene()
 		bindMove(gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
 		// KEYBOARD
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_A, ButtonPressType::Hold, glm::vec2{ -1,0 });
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_D, ButtonPressType::Hold, glm::vec2{ 1,0 });
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_W, ButtonPressType::Hold, glm::vec2{ 0,1 });
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_S, ButtonPressType::Hold, glm::vec2{ 0,-1 });
+		auto keyboardDevice = inputSystem.GetKeyboardDevice();
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), keyboardDevice, KeyboardButton::KEY_A, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), keyboardDevice, KeyboardButton::KEY_D, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), keyboardDevice, KeyboardButton::KEY_W, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), keyboardDevice, KeyboardButton::KEY_S, ButtonPressType::Hold);
 
 		// GAMEPAD ANALOG STICK
 		auto bindAnalogStickMove = [&go, &commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, const glm::vec2* dir)
@@ -199,7 +200,7 @@ void dae::SceneFactory::InitDefaultScene()
 			inputAction.device = pDevice;
 			inputAction.pressType = pressType;
 
-			commandHandler->BindNewAction(button, inputAction);
+			commandHandler.BindNewAction(button, inputAction);
 		};
 
 		// GAMEPAD ANALOG STICK
@@ -221,7 +222,9 @@ void dae::SceneFactory::InitDefaultScene()
 		// ASSIGN INPUT
 
 		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
-		dae::Input::CommandHandler* commandHandler = inputSystem.GetCommandHandler();
+		dae::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
+
+		auto* pInputCommandComponent = go->AddComponent<BindInputCommandComponent>();
 
 		using namespace dae::Input;
 
@@ -233,7 +236,7 @@ void dae::SceneFactory::InitDefaultScene()
 			inputAction.device = pDevice;
 			inputAction.pressType = pressType;
 
-			commandHandler->BindNewAction(button, inputAction);
+			commandHandler.BindNewAction(button, inputAction);
 		};
 
 		// GAMEPAD
@@ -244,10 +247,11 @@ void dae::SceneFactory::InitDefaultScene()
 		bindMove(gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
 
 		// KEYBOARD
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_LEFT, ButtonPressType::Hold, glm::vec2{ -1,0 });
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_RIGHT, ButtonPressType::Hold, glm::vec2{ 1,0 });
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_UP, ButtonPressType::Hold, glm::vec2{ 0,1 });
-		bindMove(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_DOWN, ButtonPressType::Hold, glm::vec2{ 0,-1 });
+		auto keyboardDevice = inputSystem.GetKeyboardDevice();
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), keyboardDevice, KeyboardButton::KEY_LEFT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), keyboardDevice, KeyboardButton::KEY_RIGHT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), keyboardDevice, KeyboardButton::KEY_UP, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), keyboardDevice, KeyboardButton::KEY_DOWN, ButtonPressType::Hold);
 
 
 
@@ -261,7 +265,7 @@ void dae::SceneFactory::InitDefaultScene()
 			inputAction.device = pDevice;
 			inputAction.pressType = pressType;
 
-			commandHandler->BindNewAction(button, inputAction);
+			commandHandler.BindNewAction(button, inputAction);
 		};
 
 		// GAMEPAD ANALOG STICK
@@ -275,10 +279,10 @@ void dae::SceneFactory::InitDefaultScene()
 			inputAction.device = pDevice;
 			inputAction.pressType = pressType;
 
-			commandHandler->BindNewAction(button, inputAction);
+			commandHandler.BindNewAction(button, inputAction);
 		};
 
-		bindDoDamage(inputSystem.GetKeyboardMouseDevice(), KeyboardButton::KEY_F, ButtonPressType::Press, 33);
+		bindDoDamage(inputSystem.GetKeyboardDevice(), KeyboardButton::KEY_F, ButtonPressType::Hold, 33);
 	}
 
 	{

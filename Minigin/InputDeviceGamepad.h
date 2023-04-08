@@ -38,6 +38,7 @@ namespace dae
 
 			const GamepadSettings& GetSettings() const;
 			const InputStateGamepad& GetGamepadState() const;
+			virtual const InputState& GetDeviceInputState() const override;
 
 			bool IsConnected() const;
 			void SetConnection(bool connection);
@@ -48,7 +49,7 @@ namespace dae
 
 		protected:
 
-			virtual bool ProcessInput(Seconds deltaTime) override;
+			virtual void ProcessInput(Seconds deltaTime) override;
 
 			void SetTriggerValues(float leftRawValue, float rightRawValue);
 			void SetAnalogStickValues(const glm::vec2& leftRawValue, const glm::vec2& rightRawValue);
