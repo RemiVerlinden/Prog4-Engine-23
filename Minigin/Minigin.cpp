@@ -21,12 +21,13 @@ SDL_Window* g_window{};
 
 void PrintSDLVersion()
 {
+	CONSOLE_NEWLINE();
+
 	SDL_version version{};
 	SDL_VERSION(&version);
 	ENGINE_INFO("We compiled against SDL version {}.{}.{} ...",
 						version.major, version.minor, version.patch);
-	dae::Locator::Logger().Engine()->Info("We compiled against SDL version {0}.{1}.{2} ...", 1, 1, 1);
-	SDL_GetVersion(&version);
+
 	ENGINE_INFO("We are linking against SDL version {}.{}.{}.",
 						version.major, version.minor, version.patch);
 
