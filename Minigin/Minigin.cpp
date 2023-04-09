@@ -17,35 +17,36 @@
 #include "UpdateContext.h"
 #include "Utils.hpp"
 #include "Locator.h"
-
+#include "spdlog\spdlog.h"
+#include "spdlog\sinks\stdout_color_sinks.h"
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
 {
-	//SDL_version version{};
-	//SDL_VERSION(&version);
-	//ENGINE_INFO("We compiled against SDL version {}.{}.{} ...",
-	//					version.major, version.minor, version.patch);
+	SDL_version version{};
+	SDL_VERSION(&version);
+	ENGINE_INFO("We compiled against SDL version {}.{}.{} ...",
+						version.major, version.minor, version.patch);
+	dae::Locator::Logger().Engine()->Info("We compiled against SDL version {0}.{1}.{2} ...", 1, 1, 1);
+	SDL_GetVersion(&version);
+	ENGINE_INFO("We are linking against SDL version {}.{}.{}.",
+						version.major, version.minor, version.patch);
 
-	//SDL_GetVersion(&version);
-	//ENGINE_INFO("We are linking against SDL version {}.{}.{}.",
-	//					version.major, version.minor, version.patch);
+	SDL_IMAGE_VERSION(&version);
+	ENGINE_INFO("We compiled against SDL_image version {}.{}.{} ...",
+						version.major, version.minor, version.patch);
 
-	//SDL_IMAGE_VERSION(&version);
-	//ENGINE_INFO("We compiled against SDL_image version {}.{}.{} ...",
-	//					version.major, version.minor, version.patch);
+	version = *IMG_Linked_Version();
+	ENGINE_INFO("We are linking against SDL_image version {}.{}.{}.",
+						version.major, version.minor, version.patch);
 
-	//version = *IMG_Linked_Version();
-	//ENGINE_INFO("We are linking against SDL_image version {}.{}.{}.",
-	//					version.major, version.minor, version.patch);
+	SDL_TTF_VERSION(&version);
+	ENGINE_INFO("We compiled against SDL_ttf version {}.{}.{} ...",
+						version.major, version.minor, version.patch);
 
-	//SDL_TTF_VERSION(&version);
-	//ENGINE_INFO("We compiled against SDL_ttf version {}.{}.{} ...",
-	//					version.major, version.minor, version.patch);
-
-	//version = *TTF_Linked_Version();
-	//ENGINE_INFO("We are linking against SDL_ttf version {}.{}.{}.",
-	//					version.major, version.minor, version.patch);
+	version = *TTF_Linked_Version();
+	ENGINE_INFO("We are linking against SDL_ttf version {}.{}.{}.",
+						version.major, version.minor, version.patch);
 }
 
 dae::Minigin::Minigin(const std::string& dataPath)
@@ -159,5 +160,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		updateContext.UpdateDeltaTime(frameTime);
 		EngineClock::Update(frameTime);
+
+
+
 	}
 }

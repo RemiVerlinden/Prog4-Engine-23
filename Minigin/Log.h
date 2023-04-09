@@ -1,111 +1,142 @@
-//#pragma once
-//
-//#include "spdlog\spdlog.h"
-//#include "spdlog\sinks\stdout_color_sinks.h"
-//
-//#include <memory>
-//
-//
-//namespace dae
-//{
-//
-//	class Log
-//	{
-//	public:
-//		Log();
-//
-//		spdlog::logger* Engine() { return m_EngineLogger.get(); }
-//		spdlog::logger* App() { return m_AppLogger.get(); }
-//	private:
-//		std::shared_ptr<spdlog::logger> m_EngineLogger;
-//		std::shared_ptr<spdlog::logger> m_AppLogger;
-//	};
-//
-//}
-//
-//#define ENGINE_TRACE(...)	dae::Locator::Logger().Engine()->trace(__VA_ARGS__)
-//#define ENGINE_INFO(...)	dae::Locator::Logger().Engine()->info(__VA_ARGS__)
-//#define ENGINE_WARN(...)	dae::Locator::Logger().Engine()->warn(__VA_ARGS__)
-//#define ENGINE_ERROR(...)	dae::Locator::Logger().Engine()->error(__VA_ARGS__)
-//
-//#define APP_TRACE(...)		dae::Locator::Logger().App()->trace(__VA_ARGS__)
-//#define APP_INFO(...)		dae::Locator::Logger().App()->info(__VA_ARGS__)
-//#define APP_WARN(...)		dae::Locator::Logger().App()->warn(__VA_ARGS__)
-//#define APP_ERROR(...)		dae::Locator::Logger().App()->error(__VA_ARGS__)
-
-
 #pragma once
 
-#include <iostream>
 #include <format>
+#include <iostream>
 #include <memory>
 #include <string>
-#include "Time.h"
+#include <chrono>
+#include <iomanip>
+#include <sstream>
 
-namespace dae {
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 
+namespace dae
+{
 	enum class LogLevel
 	{
 		Trace,
+		Debug,
 		Info,
 		Warn,
 		Error
 	};
 
+	//----------------------------------------------------------------------------------------------------------------------
 	class Logger
 	{
 	public:
+		enum ConsoleColor
+		{
+			Black = 0,
+			DarkBlue = 1,
+			DarkGreen = 2,
+			DarkCyan = 3,
+			DarkRed = 4,
+			DarkMagenta = 5,
+			DarkYellow = 6,
+			Gray = 7,
+			DarkGray = 8,
+			Blue = 9,
+			Green = 10,
+			Cyan = 11,
+			Red = 12,
+			Magenta = 13,
+			Yellow = 14,
+			White = 15
+		};
+
+
 		Logger(const std::string& name, LogLevel level = LogLevel::Trace)
-			: m_Name(name), m_Level(level)
+			: m_Name(name),
+			m_Level(level),
+			m_HConsole(GetStdHandle(STD_OUTPUT_HANDLE))
 		{
 		}
+
 
 		void SetLevel(LogLevel level) { m_Level = level; }
 
 		template<typename... Args>
-		void Trace(Args&&... args) { Log(LogLevel::Trace, std::forward<Args>(args)...); }
+		void Trace(std::format_string<Args...> fmt, Args &&... args)
+		{
+			Log(LogLevel::Trace, fmt, std::forward<Args>(args)...);
+		}
 
 		template<typename... Args>
-		void Info(Args&&... args) { Log(LogLevel::Info, std::forward<Args>(args)...); }
+		void Debug(std::format_string<Args...> fmt, Args &&... args)
+		{
+			Log(LogLevel::Debug, fmt, std::forward<Args>(args)...);
+		}
 
 		template<typename... Args>
-		void Warn(Args&&... args) { Log(LogLevel::Warn, std::forward<Args>(args)...); }
+		void Info(std::format_string<Args...> fmt, Args &&... args)
+		{
+			Log(LogLevel::Info, fmt, std::forward<Args>(args)...);
+		}
 
 		template<typename... Args>
-		void Error(Args&&... args) { Log(LogLevel::Error, std::forward<Args>(args)...); }
+		void Warn(std::format_string<Args...> fmt, Args &&... args)
+		{
+			Log(LogLevel::Warn, fmt, std::forward<Args>(args)...);
+		}
+		template<typename... Args>
+		void Error(std::format_string<Args...> fmt, Args &&... args)
+		{
+			Log(LogLevel::Error, fmt, std::forward<Args>(args)...);
+		};
+
+		static void NewLine()
+		{
+			std::cout << '\n';
+		}
 
 	private:
+
 		template<typename... Args>
-		void Log(LogLevel level, Args&&... args)
+		void Log(LogLevel level, std::format_string<Args...> fmt, [[maybe_unused]] Args&&... args) const
 		{
 			if (level < m_Level) return;
 
-			float runTime = dae::PlatformClock::GetTimeInSeconds().ToFloat();
+			auto now = std::chrono::system_clock::now();
+			auto now_time_t = std::chrono::system_clock::to_time_t(now);
+			std::tm now_tm;
+			localtime_s(&now_tm, &now_time_t);
+
+			// Format the time
+			std::stringstream time_stream;
+			time_stream << std::put_time(&now_tm, "%H:%M:%S");
 
 			std::string levelStr;
+			WORD color = White;
 			switch (level)
 			{
-				case LogLevel::Trace: levelStr = "TRACE"; break;
-				case LogLevel::Info: levelStr = "INFO"; break;
-				case LogLevel::Warn: levelStr = "WARN"; break;
-				case LogLevel::Error: levelStr = "ERROR"; break;
+				case LogLevel::Trace: levelStr = "TRACE";	color = Cyan; break;
+				case LogLevel::Debug: levelStr = "DEBUG";	color = Gray; break;
+				case LogLevel::Info: levelStr = "INFO";		color = Green; break;
+				case LogLevel::Warn: levelStr = "WARN";		color = Yellow; break;
+				case LogLevel::Error: levelStr = "ERROR";	color = Red; break;
 			}
 
-			std::string message = std::format(std::forward<Args>(args)...);
-			//std::string message = std::format(formatString, std::forward<Args>(args)...);
-			std::cout << std::format("[{:.2f}] {} [{}] {}: {}\n",
-				runTime,
-				m_Name,
-				levelStr,
-				std::this_thread::get_id(),
-				message);
-			//std::cout << message;
+			std::string message = std::format(fmt, std::forward<Args>(args)...);
+
+			SetConsoleTextAttribute(m_HConsole, color);
+			std::cout << std::format("[{}] {} [{}]: ", time_stream.str(), m_Name, levelStr);
+
+			SetConsoleTextAttribute(m_HConsole, White);
+			std::cout << message << std::endl;
 		}
 
 		std::string m_Name;
 		LogLevel m_Level;
+		HANDLE m_HConsole;
 	};
+	//----------------------------------------------------------------------------------------------------------------------
 
+
+
+
+	//----------------------------------------------------------------------------------------------------------------------
 	class Log
 	{
 	public:
@@ -118,9 +149,11 @@ namespace dae {
 		Logger m_EngineLogger;
 		Logger m_AppLogger;
 	};
+	//----------------------------------------------------------------------------------------------------------------------
 
 } // namespace dae
 
+#define CONSOLE_NEWLINE()  dae::Logger::NewLine()
 #define ENGINE_TRACE(...)  dae::Locator::Logger().Engine()->Trace(__VA_ARGS__)
 #define ENGINE_INFO(...)   dae::Locator::Logger().Engine()->Info(__VA_ARGS__)
 #define ENGINE_WARN(...)   dae::Locator::Logger().Engine()->Warn(__VA_ARGS__)

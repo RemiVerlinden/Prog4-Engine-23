@@ -3,11 +3,12 @@
 
 namespace dae
 {
+	class Log;
 	class Locator
 	{
 	public:
-		static Log& Logger() { return m_Log; }
+		static Log& Logger();
 	private:
-		inline static Log m_Log;
+		static Log m_Log;
 	};
 }

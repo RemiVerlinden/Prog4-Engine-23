@@ -368,5 +368,8 @@
     <ClCompile Include="Log.cpp">
       <Filter>Engine Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Locator.cpp">
+      <Filter>Engine Files\Singletons</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
