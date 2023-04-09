@@ -212,7 +212,7 @@ namespace dae::Input
 			}
 		}
 
-		if(ImGui::Button("Nuck Figger Naggots"))
+		if(ImGui::Button("this is test button"))
 		{
 			EventManager::GetInstance().SendEvent(dae::OnDeathEvent{"Player1"});
 		}

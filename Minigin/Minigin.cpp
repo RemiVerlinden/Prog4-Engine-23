@@ -10,42 +10,42 @@
 #include "ResourceManager.h"
 #include "EventManager.h"
 
-
 #include "scene.h"
 #include <thread>
 #include "Timers.h"
 #include <iostream>
 #include "UpdateContext.h"
 #include "Utils.hpp"
+#include "Locator.h"
 
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
 {
-	SDL_version version{};
-	SDL_VERSION(&version);
-	printf("We compiled against SDL version %u.%u.%u ...\n",
-		version.major, version.minor, version.patch);
+	//SDL_version version{};
+	//SDL_VERSION(&version);
+	//ENGINE_INFO("We compiled against SDL version {}.{}.{} ...",
+	//					version.major, version.minor, version.patch);
 
-	SDL_GetVersion(&version);
-	printf("We are linking against SDL version %u.%u.%u.\n",
-		version.major, version.minor, version.patch);
+	//SDL_GetVersion(&version);
+	//ENGINE_INFO("We are linking against SDL version {}.{}.{}.",
+	//					version.major, version.minor, version.patch);
 
-	SDL_IMAGE_VERSION(&version);
-	printf("We compiled against SDL_image version %u.%u.%u ...\n",
-		version.major, version.minor, version.patch);
+	//SDL_IMAGE_VERSION(&version);
+	//ENGINE_INFO("We compiled against SDL_image version {}.{}.{} ...",
+	//					version.major, version.minor, version.patch);
 
-	version = *IMG_Linked_Version();
-	printf("We are linking against SDL_image version %u.%u.%u.\n",
-		version.major, version.minor, version.patch);
+	//version = *IMG_Linked_Version();
+	//ENGINE_INFO("We are linking against SDL_image version {}.{}.{}.",
+	//					version.major, version.minor, version.patch);
 
-	SDL_TTF_VERSION(&version)
-		printf("We compiled against SDL_ttf version %u.%u.%u ...\n",
-			version.major, version.minor, version.patch);
+	//SDL_TTF_VERSION(&version);
+	//ENGINE_INFO("We compiled against SDL_ttf version {}.{}.{} ...",
+	//					version.major, version.minor, version.patch);
 
-	version = *TTF_Linked_Version();
-	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
-		version.major, version.minor, version.patch);
+	//version = *TTF_Linked_Version();
+	//ENGINE_INFO("We are linking against SDL_ttf version {}.{}.{}.",
+	//					version.major, version.minor, version.patch);
 }
 
 dae::Minigin::Minigin(const std::string& dataPath)

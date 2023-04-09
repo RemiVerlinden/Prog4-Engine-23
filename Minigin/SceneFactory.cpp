@@ -1,27 +1,19 @@
 #include "SceneFactory.h"
-#include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "Scene.h"
-#include "TextComponent.h"
-#include "FpsComponent.h"
-#include "Render2DComponent.h"
+#include "Components.h"
 #include "GameObject.h"
-#include "OrbitComponent.h"
 #include "InputSystem.h"
-#include "InputDebugImguiComponent.h"
-#include "TrashTheCacheComponent.h"
-#include "ScoreboardComponent.h"
-#include <iostream>
 #include "DeviceButtons.hpp"
-#include "BindInputCommandComponent.h"
+#include <iostream>
+#include "Locator.h"
 using namespace dae;
 
 void dae::SceneFactory::CreateScenes()
 {
-	std::cout << std::endl << std::endl;
-	std::cout << "INPUT PLAYER 1: [WASD]       -	[GAMEPAD 1: DPAD] - [GAMEPAD 1: LEFT STICK]\n";
-	std::cout << "INPUT PLAYER 2: [ARROW KEYS] -	[GAMEPAD 2: DPAD] - [GAMEPAD 2: LEFT STICK]\n";
+	//APP_TRACE("INPUT PLAYER 1: [WASD]       -	[GAMEPAD 1: DPAD] - [GAMEPAD 1: LEFT STICK]");
+	//APP_TRACE("INPUT PLAYER 2: [ARROW KEYS] -	[GAMEPAD 2: DPAD] - [GAMEPAD 2: LEFT STICK]");
 
 	InitSceneKeybinds();
 

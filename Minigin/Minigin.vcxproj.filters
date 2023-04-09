@@ -237,6 +237,15 @@
     <ClInclude Include="SDLEventQueue.h">
       <Filter>Engine Files\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Engine Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Engine Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneFactory.cpp">
@@ -355,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="ScoreboardComponent.cpp">
       <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Engine Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

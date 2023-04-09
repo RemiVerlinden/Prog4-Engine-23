@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\spdlog\include;$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>-std=c++20 -fconcepts
@@ -125,7 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\spdlog\include;$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>-std=c++20 -fconcepts
@@ -148,7 +148,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\spdlog\include;$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>-std=c++20 -fconcepts
@@ -173,7 +173,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\3rdParty\spdlog\include;$(SolutionDir)\3rdParty\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnablePREfast>true</EnablePREfast>
@@ -203,6 +203,7 @@
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BindInputCommandComponent.h" />
     <ClInclude Include="CommandHandler.h" />
+    <ClInclude Include="Components.h" />
     <ClInclude Include="DeviceButtons.hpp" />
     <ClInclude Include="EventType.h" />
     <ClInclude Include="EventListener.h" />
@@ -213,6 +214,8 @@
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="InputDeviceKeyboard.h" />
     <ClInclude Include="InputDeviceMouse.h" />
+    <ClInclude Include="Locator.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PrefabFunctions.h" />
@@ -271,6 +274,7 @@
     <ClCompile Include="InputDebugImguiComponent.cpp" />
     <ClCompile Include="InputDeviceGamepad.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
