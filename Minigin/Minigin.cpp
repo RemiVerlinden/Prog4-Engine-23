@@ -17,8 +17,6 @@
 #include "UpdateContext.h"
 #include "Utils.hpp"
 #include "Locator.h"
-#include "spdlog\spdlog.h"
-#include "spdlog\sinks\stdout_color_sinks.h"
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
