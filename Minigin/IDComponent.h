@@ -17,6 +17,7 @@ namespace dae
 
 		uint64_t GetID() { return m_ID; }
 	private:
+		void Clone(GameObject* clone) override;
 		uint64_t m_ID;
 		inline static uint64_t m_UniqueID = 0;
 

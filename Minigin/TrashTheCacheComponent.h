@@ -63,6 +63,10 @@ namespace dae
 		void TimeGameObject(InputTimingParameters input);
 		void DrawImguiExercise1Window();
 		void DrawImguiExercise2Window();
+
+
+	private:
+		void Clone(GameObject* clone) override;
 	};
 }
 

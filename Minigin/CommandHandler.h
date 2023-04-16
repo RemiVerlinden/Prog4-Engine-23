@@ -24,6 +24,7 @@ namespace dae::Input
 		CommandHandler() = default;
 		void Update(Seconds elapsedTime);
 		void BindNewAction(deviceButton button, InputAction& inputAction);
+		void UnbindAction(deviceButton button, InputAction& inputAction);
 	private:
 
 		struct deviceButtonHash

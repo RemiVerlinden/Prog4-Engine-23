@@ -3,7 +3,6 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "BaseComponent.h"
-#include "Scene.h"
 
 #include "Transform.h"
 #include "IDComponent.h"
@@ -11,13 +10,27 @@
 
 using namespace dae;
 
-dae::GameObject::GameObject(Scene* scene) : GameObject(scene, "No Name Defined") {};
+std::shared_ptr<GameObject> dae::GameObject::Clone()
+{
+	std::shared_ptr<GameObject> clonedGO = std::make_shared<GameObject>(std::format("{}-Clone",GetTag()));
+
+	for (std::unique_ptr<BaseComponent>& component : m_Components)
+	{
+		component->Clone(clonedGO.get());
+	}
+	return clonedGO;
+}
+
+dae::GameObject::GameObject(std::string name) : GameObject(nullptr, name){}
+
 
 dae::GameObject::GameObject(Scene* scene, std::string name) :m_Scene(scene), m_Parent{ nullptr }, m_MarkedForDestroy{ false }
 {
 	m_Transform = AddComponent<TransformComponent>();
-	AddComponent<IDComponent>();
+	m_Transform->SetCanBeCloned(false);
+	AddComponent<IDComponent>()->SetCanBeCloned(false);
 	auto tagComponent = AddComponent<TagComponent>();
+	tagComponent->SetCanBeCloned(false);
 
 	tagComponent->m_Tag = name;
 
@@ -37,6 +50,7 @@ void dae::GameObject::Update(const UpdateContext& context)
 	}
 	--m_GameObjectCount;
 }
+
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
 	if (parent == nullptr)

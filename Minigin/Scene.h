@@ -9,6 +9,8 @@ namespace dae
 	class Scene final
 	{
 		friend dae::Scene* SceneManager::AddGameScene(const std::string& name);
+
+		friend class GameObject;
 	public:
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
@@ -35,10 +37,10 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
+		void AddGameObject(std::shared_ptr<GameObject> object);
 
 	private: 
 		explicit Scene(const std::string& name);
-		void Add(std::shared_ptr<GameObject> object);
 		
 		void DeleteMarkedForDestroy();
 

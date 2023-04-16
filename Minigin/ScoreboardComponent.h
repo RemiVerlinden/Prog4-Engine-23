@@ -36,6 +36,10 @@ namespace dae
 		std::vector <PlayerHUD> m_PlayerVec;
 
 		std::shared_ptr<Font> m_Font;
+
+
+	private:
+		void Clone(GameObject* clone) override;
 	}; 
 
 }

@@ -32,6 +32,7 @@ namespace dae {
 		FpsComponent& operator=(FpsComponent&& other) = delete;
 
 	private:
+		void Clone(GameObject* clone) override;
 		TextComponent*					m_TextComponent;
 		std::shared_ptr<Font>			m_Font;
 

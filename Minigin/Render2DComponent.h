@@ -38,6 +38,9 @@ namespace dae {
 		glm::vec4						m_SrcRect;
 		glm::ivec2						m_TextureResolution;
 		std::shared_ptr<Texture2D>		m_Texture;
+		std::string						m_TextureFileName;
 
+	private:
+		void Clone(GameObject* clone) override;
 	};
 }

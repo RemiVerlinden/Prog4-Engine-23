@@ -22,10 +22,6 @@ namespace dae::Input
 			m_PrevKeyboardState.fill(0);
 		};
 
-		~InputStateKeyboard()
-		{
-		};
-
 
 		// Was the button just pressed (i.e. went from up to down this frame)
 		virtual bool WasPressed(deviceButton button) const override
@@ -66,10 +62,11 @@ namespace dae::Input
 
 	private:
 
-		inline SDL_Scancode GetSDL_Scancode(deviceButton button) const
+		
+		inline SDL_Scancode GetSDL_Scancode(deviceButton button) const // deviceButton is a std::variant<>
 		{
-			const int buttonType = static_cast<int>(DeviceButtonType::Keyboard);
-			return static_cast<SDL_Scancode>(std::get<buttonType>(button));
+			const int buttonType = static_cast<int>(DeviceButtonType::Keyboard); // unfortunately deviceButtonType is a enum CLASS so we have to implicitaly cast it to an int
+			return static_cast<SDL_Scancode>(std::get<buttonType>(button)); // std::get<> is a std::variant<> function
 		}
 
 
@@ -78,17 +75,17 @@ namespace dae::Input
 			(deltaTime);
 			std::swap(m_KeyboardState, m_PrevKeyboardState);
 
-			const Uint8* keyboardState = SDL_GetKeyboardState(&m_KeyLength);
+			int keyLength = 0;
+			const Uint8* keyboardState = SDL_GetKeyboardState(&keyLength);
 
-			if (m_KeyLength <= SDL_NUM_SCANCODES)
-				std::memcpy(m_KeyboardState.data(), keyboardState, m_KeyLength * sizeof(Uint8));
+			if (keyLength <= SDL_NUM_SCANCODES)
+				std::memcpy(m_KeyboardState.data(), keyboardState, keyLength * sizeof(Uint8));
 		};
 
 
 
 	private:
 
-		int  m_KeyLength;
 		std::array<Uint8, SDL_NUM_SCANCODES> m_KeyboardState;
 		std::array<Uint8, SDL_NUM_SCANCODES> m_PrevKeyboardState;
 

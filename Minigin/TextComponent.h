@@ -24,8 +24,9 @@ namespace dae{
 		void SetFont(std::shared_ptr<Font> font);
 		void SetPosition(const float x, const float y);
 		void SetPosition(const glm::vec2& pos);
-		inline glm::vec3 GetPosition();
+		glm::vec3 GetPosition();
 		void SetColor(int r, int g, int b, int a);
+		SDL_Color GetColor() { return m_FontColor; }
 
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -38,6 +39,10 @@ namespace dae{
 		SDL_Color					m_FontColor;
 		std::shared_ptr<Font>		m_font;
 		std::shared_ptr<Texture2D>	m_textTexture;
-		glm::vec3					offset;
+		glm::vec3					m_Offset;
+
+
+	private:
+		void Clone(GameObject* clone) override;
 	};
 }

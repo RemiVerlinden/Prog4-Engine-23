@@ -29,6 +29,8 @@ namespace dae
 		TemplateComponent& operator=(TemplateComponent&& other) = delete;
 	private:
 
+
+		void Clone(GameObject*) override {};
 	};
 }
 

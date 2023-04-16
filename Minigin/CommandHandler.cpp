@@ -57,6 +57,22 @@ void dae::Input::CommandHandler::BindNewAction(deviceButton button, InputAction&
 
 }
 
+void dae::Input::CommandHandler::UnbindAction(deviceButton button, InputAction& inputAction)
+{
+	int deviceID = inputAction.device->GetID();
+
+
+	if (auto it = m_ActionBindPerDevice.find(deviceID); it == m_ActionBindPerDevice.end())
+	{
+		m_ActionBindPerDevice.emplace(deviceID, DeviceActionBinds{});
+	}
+
+	DeviceActionBinds& deviceBinds = m_ActionBindPerDevice[deviceID];
+
+	deviceBinds.emplace(std::make_pair(button, std::move(inputAction)));
+
+}
+
 
 //void dae::Input::CommandHandler::UpdateActionsCommandsList(InputActionCommandList& actionCommandList)
 //{

@@ -8,6 +8,8 @@
 #include "DeviceButtons.hpp"
 #include <iostream>
 #include "Locator.h"
+#include "Prefab.h"
+
 using namespace dae;
 
 void dae::SceneFactory::CreateScenes()
@@ -232,16 +234,25 @@ void dae::SceneFactory::InitDefaultScene()
 
 void dae::SceneFactory::InitFpsDemoScene()
 {
+
 	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Demo2");
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 72);
-	GameObject* fpsGO = pScene->MakeGameObject();
 
+	Prefab fpsPrefab{"FPS display prefab"};
+	GameObject* fpsPrefabObject = fpsPrefab.GetPrefabObject();
+	FpsComponent* fpsPrefabComponent = fpsPrefabObject->AddComponent<FpsComponent>();
+	fpsPrefabComponent->SetFont(font);
+	fpsPrefabComponent->SetPosition(200, 180);
+	fpsPrefabComponent->SetColor(200, 255, 255, 170);
 
-	FpsComponent* fpsComponent = fpsGO->AddComponent<FpsComponent>();
-	fpsComponent->SetFont(font);
-	fpsComponent->SetPosition(200, 180);
-	fpsComponent->SetColor(200, 255, 255, 170);
+	fpsPrefab.Instantiate(pScene);
+
+	//GameObject* fpsGO = pScene->MakeGameObject();
+	//FpsComponent* fpsComponent = fpsGO->AddComponent<FpsComponent>();
+	//fpsComponent->SetFont(font);
+	//fpsComponent->SetPosition(200, 180);
+	//fpsComponent->SetColor(200, 255, 255, 170);
 
 	GameObject* go = pScene->MakeGameObject();
 	Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();

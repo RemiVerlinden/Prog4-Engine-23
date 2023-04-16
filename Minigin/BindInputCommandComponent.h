@@ -10,6 +10,7 @@ namespace dae
 	{
 	public:
 		BindInputCommandComponent() :BaseComponent() {};
+		~BindInputCommandComponent();
 		void Initialize() {};
 
 		void BindCommand( std::unique_ptr<Command>&& pCommand,Input::InputDevice* pDevice, Input::deviceButton button, Input::ButtonPressType pressType)
@@ -32,6 +33,8 @@ namespace dae
 		BindInputCommandComponent& operator=(BindInputCommandComponent&& other) = delete;
 	private:
 
+
+		void Clone(GameObject* clone) override;
 	};
 }
 

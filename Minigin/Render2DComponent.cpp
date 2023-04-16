@@ -49,7 +49,8 @@ void dae::Render2DComponent::Draw()
 
 void dae::Render2DComponent::SetTexture(const std::string& filename)
 {
-	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
+	m_TextureFileName = filename;
+	m_Texture = ResourceManager::GetInstance().LoadTexture(m_TextureFileName);
 
 	if (m_TextureResolution.x == 0 && m_TextureResolution.y == 0 && m_Texture)
 	{
@@ -67,5 +68,14 @@ void dae::Render2DComponent::SetResolution(const int width, const int height)
 {
 	m_TextureResolution.x = width;
 	m_TextureResolution.y = height;
+}
+
+void dae::Render2DComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+	auto componentClone = clone->AddComponent<Render2DComponent>(GetComponentTag());
+	componentClone->SetTexture(m_TextureFileName);
+	componentClone->SetResolution(m_TextureResolution.x, m_TextureResolution.y);
+	componentClone->SetDrawStyle(m_DrawStyle);
 }
 

@@ -25,3 +25,10 @@ void dae::MoveComponent::SetMoveDirection(glm::vec2 direction)
 		m_MoveDirection = glm::normalize(m_MoveDirection);
 	}
 }
+
+void dae::MoveComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+	auto componentClone = clone->AddComponent<MoveComponent>(GetComponentTag());
+	componentClone->SetMoveSpeed(m_Speed);
+}

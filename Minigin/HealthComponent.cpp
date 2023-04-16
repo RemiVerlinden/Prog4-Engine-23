@@ -3,9 +3,14 @@
 #include "EventManager.h"
 #include "TagComponent.h"
 
-void dae::HealthComponent::SetHealth(int maxHealth)
+void dae::HealthComponent::SetMaxHealth(int maxHealth)
 {
 	m_Health.max = maxHealth;
+}
+
+void dae::HealthComponent::SetCurrentHealth(int health)
+{
+	m_Health.current = health;
 }
 
 void dae::HealthComponent::Damage(int damageAmount)
@@ -33,4 +38,13 @@ void dae::HealthComponent::Heal(int healAmount)
 	{
 		m_Health.current = m_Health.max;
 	}
+}
+
+void dae::HealthComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+
+	auto componentClone = clone->AddComponent<HealthComponent>(GetComponentTag());
+	componentClone->SetMaxHealth(m_Health.max);
+	componentClone->SetCurrentHealth(m_Health.current); 
 }

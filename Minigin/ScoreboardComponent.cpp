@@ -111,4 +111,10 @@ void dae::ScoreBoardComponent::PlayerDamaged(int playerID, int newHealth)
 	playerHUD.m_HealthText->SetText(playerHUD.info.GetHealthString());
 }
 
+void dae::ScoreBoardComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+	clone->AddComponent<ScoreBoardComponent>(GetComponentTag());
+}
+
 

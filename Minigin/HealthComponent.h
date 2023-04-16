@@ -9,10 +9,12 @@ namespace dae
 	public:
 		void Initialize() {};
 
-		void SetHealth(int maxHealth);
+		void SetMaxHealth(int maxHealth);
+		void SetCurrentHealth(int health);
 		void Damage(int damageAmount);
 		void Heal(int healAmount);
 	private:
+		void Clone(GameObject* clone) override;
 		struct Health
 		{
 			int max = 100;

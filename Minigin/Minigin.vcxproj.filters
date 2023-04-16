@@ -64,6 +64,12 @@
     <Filter Include="Components\Gameplay">
       <UniqueIdentifier>{b7a6ed66-fb9d-4534-9a98-b56eff85f053}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Spawner">
+      <UniqueIdentifier>{d8ef3da9-883a-4903-aef9-3047e8dca015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Spawner\Objects">
+      <UniqueIdentifier>{2a2324b4-13c5-4478-94b8-6c3a96e52dd1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneFactory.h">
@@ -246,6 +252,12 @@
     <ClInclude Include="Log.h">
       <Filter>Engine Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="SpawnerObject.h">
+      <Filter>Engine Files\Spawner\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefab.h">
+      <Filter>Engine Files\Spawner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SceneFactory.cpp">
@@ -370,6 +382,15 @@
     </ClCompile>
     <ClCompile Include="Locator.cpp">
       <Filter>Engine Files\Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnerObject.cpp">
+      <Filter>Engine Files\Spawner\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefab.cpp">
+      <Filter>Engine Files\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="BindInputCommandComponent.cpp">
+      <Filter>Components\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

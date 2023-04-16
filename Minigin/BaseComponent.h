@@ -22,15 +22,20 @@ namespace dae {
 		std::string GetComponentTag() const { return m_ComponentTag; }
 		void SetComponentTag(const std::string& tag) { m_ComponentTag = tag; }
 
+
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
+		bool CanBeCloned() const { return m_CanBeCloned; }
+		void SetCanBeCloned(bool canBeCloned) { m_CanBeCloned = canBeCloned; }
 	protected:
-		GameObject*						m_GameObject;
+		virtual void Clone(GameObject* clone) = 0;
 
+		GameObject*						m_GameObject;
 	private:
+		bool m_CanBeCloned = true; // this should be set to false if the component is created by another component and not by the user (look at FpsComponent constructor for example)
 		static uint64_t					m_ComponentCount;
 		std::string						m_ComponentTag;
 		friend GameObject;

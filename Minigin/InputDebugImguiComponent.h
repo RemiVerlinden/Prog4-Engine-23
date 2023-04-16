@@ -14,6 +14,10 @@ namespace dae::Input
 		void DrawDebugGamepadInputVisualisationWindow();
 
 		int DeathCounter{0};
+
+
+	private:
+		void Clone(GameObject* clone) override;
 	};
 
 }

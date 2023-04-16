@@ -24,6 +24,7 @@ void dae::TextComponent::SetColor(int r, int g, int b, int a)
 }
 
 
+
 void dae::TextComponent::Initialize()
 {
 	if (!m_font)
@@ -56,7 +57,7 @@ void dae::TextComponent::Draw()
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_GameObject->m_Transform->GetWorldPosition() + offset;
+		const auto& pos = m_GameObject->m_Transform->GetWorldPosition() + m_Offset;
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
@@ -78,8 +79,8 @@ void dae::TextComponent::SetFont(std::shared_ptr<Font> font)
 
 void dae::TextComponent::SetPosition(const float x, const float y)
 {
-	offset.x = x;
-	offset.y = y;
+	m_Offset.x = x;
+	m_Offset.y = y;
 }
 
 void dae::TextComponent::SetPosition(const glm::vec2& pos)
@@ -87,7 +88,19 @@ void dae::TextComponent::SetPosition(const glm::vec2& pos)
 	SetPosition(pos.x, pos.y);
 }
 
-inline glm::vec3 dae::TextComponent::GetPosition()
+glm::vec3 dae::TextComponent::GetPosition()
 {
 	return m_GameObject->m_Transform->GetWorldPosition();
+}
+
+void dae::TextComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+
+	auto componentClone = clone->AddComponent<TextComponent>(GetComponentTag());
+	componentClone->SetText(m_text);
+	componentClone->SetFont(m_font);
+	componentClone->SetPosition(m_Offset);
+
+	componentClone->SetColor(m_FontColor.r, m_FontColor.g, m_FontColor.b, m_FontColor.a);
 }

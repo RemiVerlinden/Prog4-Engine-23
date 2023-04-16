@@ -1,6 +1,7 @@
 #include "TrashTheCacheComponent.h"
 #include "glm\glm.hpp"
 #include "ImguiWrapper.h"
+#include "GameObject.h"
 
 void dae::TrashTheCacheComponent::Initialize()
 {
@@ -27,7 +28,8 @@ void dae::TrashTheCacheComponent::DrawImguiExercise1Window()
 	const int minNumSamples = 3; // we will remove the best and worst sample so we need at least 3 to start off with 
 	if (ImGui::InputInt("# samples", &numSamples))
 	{
-		numSamples = glm::max(numSamples, minNumSamples);
+		
+		numSamples = (((numSamples) > (minNumSamples)) ? (numSamples) : (minNumSamples));
 	}
 
 	// Add a button
@@ -107,7 +109,7 @@ void dae::TrashTheCacheComponent::DrawImguiExercise2Window()
 	const int minNumSamples = 3; // we will remove the best and worst sample so we need at least 3 to start off with 
 	if (ImGui::InputInt("# samples", &numSamples))
 	{
-		numSamples = glm::max(numSamples, minNumSamples);
+		numSamples = (((numSamples) > (minNumSamples)) ? (numSamples) : (minNumSamples));
 	}
 
 	// Add a button
@@ -230,7 +232,8 @@ void dae::TrashTheCacheComponent::DrawImguiExercise2Window()
 		static const float* y_data[] = { timePerStepGameObject.data(), timePerStepGameObjectAlt.data() };
 		static float highestTimeMeasure1 = *std::max_element(timePerStepGameObject.begin(), timePerStepGameObject.end());
 		static float highestTimeMeasure2 = *std::max_element(timePerStepGameObjectAlt.begin(), timePerStepGameObjectAlt.end());
-		static float highestTime = glm::max(highestTimeMeasure1, highestTimeMeasure2);
+		
+		static float highestTime = (((highestTimeMeasure1) > (highestTimeMeasure2)) ? (highestTimeMeasure1) : (highestTimeMeasure2));
 
 		static ImU32 colors[2] = { ImColor(127, 127, 255), ImColor(127, 255, 0) };
 		ImGui::PlotConfig config;
@@ -254,6 +257,12 @@ void dae::TrashTheCacheComponent::DrawImguiExercise2Window()
 
 	// End the window
 	ImGui::End();
+}
+
+void dae::TrashTheCacheComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+	clone->AddComponent<TrashTheCacheComponent>(GetComponentTag());
 }
 
 

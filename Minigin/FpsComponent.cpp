@@ -14,6 +14,7 @@
 void dae::FpsComponent::Initialize()
 {
 	m_TextComponent = m_GameObject->AddComponent<TextComponent>("SubComponent of FpsComponent: TextComponent");
+	m_TextComponent->SetCanBeCloned(false);
 	if (m_Font)
 		m_TextComponent->SetFont(m_Font);
 
@@ -96,5 +97,20 @@ void dae::FpsComponent::SetFont(std::shared_ptr<Font> font)
 	{
 		m_Font = font;
 	}
+}
+
+void dae::FpsComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+
+	auto componentClone = clone->AddComponent<FpsComponent>(GetComponentTag());
+
+	glm::vec3 position = m_TextComponent->GetPosition();
+	componentClone->SetPosition(position.x, position.y);
+
+	SDL_Color color = m_TextComponent->GetColor();
+	componentClone->SetColor(color.r, color.g, color.b, color.a);
+
+	componentClone->SetFont(m_Font);
 }
 

@@ -339,5 +339,11 @@ namespace dae::Input
 		}
 	}
 
+	void InputDebugImguiComponent::Clone(GameObject* clone)
+	{
+		if (CanBeCloned() == false) return;
+		clone->AddComponent<InputDebugImguiComponent>(GetComponentTag());
+	}
+
 #pragma endregion
 }

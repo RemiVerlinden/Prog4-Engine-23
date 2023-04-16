@@ -18,6 +18,10 @@ namespace dae
 		TransformComponent* m_Transform;
 		glm::vec2 m_MoveDirection;
 		float m_Speed = 150.f;
+
+
+	private:
+		void Clone(GameObject* clone) override;
 	};
 }
 

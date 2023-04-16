@@ -34,6 +34,13 @@ TransformComponent& dae::TransformComponent::operator+=(const glm::vec3& offset)
 	return *this;
 }
 
+void dae::TransformComponent::Clone(GameObject* clone)
+{
+	if (CanBeCloned() == false) return;
+	auto componentClone = clone->AddComponent<TransformComponent>(GetComponentTag());
+	componentClone->SetLocalPosition(m_LocalPosition);
+}
+
 
 void dae::TransformComponent::SetLocalPosition(const float x, const float y, const float z)
 {

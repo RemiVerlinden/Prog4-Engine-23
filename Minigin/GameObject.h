@@ -6,61 +6,89 @@
 #include <string>
 #include <format>
 #include "TagComponent.h"
+#include "Scene.h"
+#include "Locator.h"
 
 namespace dae
 {
 	class UpdateContext;
 	class TransformComponent;
 	class GameTime;
-	class Scene;
 	class BaseComponent;
 	class GameObject final
 	{
+		friend void Scene::AddGameObject(std::shared_ptr<GameObject> object);
+
 	public:
+		// Update the components attached to the game object.
 		void Update(const UpdateContext& context);
+
+		// secondary update, after the defualt update.
 		void LateUpdate(const UpdateContext& context);
+
+		// Perform FixedUpdate on all components attached to the game object.
 		void FixedUpdate(const UpdateContext& context);
+
+		// Renders the components attached to this game object.
 		void Render() const;
+		
+		// Renders the ImGui of the components attached to this game object.
 		void RenderUI(UpdateContext& context) const;
 
+		// Set the position of the game object.
 		void SetPosition(float x, float y);
 
+		// Mark the game object for destruction.
 		void Destroy();
+
+		// Check if the game object is marked for destruction.
 		inline bool IsMarkedForDestroy() { return m_MarkedForDestroy; }
 
-		//===============================================
+		// Add a component to the game object.
 		template<typename ComponentType>
-		//template<typename ComponentType, typename... Args>
 		ComponentType* AddComponent(const std::string& componentTag = "");
 
-
+		// Get a component from the game object.
 		template<typename ComponentType>
 		ComponentType* GetComponent(const std::string& componentTag = "");
-
+		
+		// Check if the game object has a specific component.
 		template<typename ComponentType>
 		bool HasComponent();
 
+		// Check if the game object has a specific component with a tag.
 		template<typename ComponentType>
 		bool HasComponentWithTag(const std::string& componentTag);
 
+		// Get the amount of components of a specific type.
 		template<typename ComponentType>
 		int GetComponentCount();
 
-
+		// Remove a component from the game object.
 		template<typename ComponentType>
 		void RemoveComponent();
-		//===============================================
 
+		// Set the parent of the game object.
 		void SetParent(GameObject* parent, bool keepWorldPosition);
+
 		inline GameObject* GetParent() { return m_Parent; };
 		inline const std::vector<GameObject*>& GetChildren() { return m_Children; };
+
+		// Get the number of children of the game object.
 		inline size_t GetChildCount() { return m_Children.size(); };
+
+		// Get a child of the game object at specific index.
 		GameObject* GetChildAt(unsigned int index);
 
+		// Get the total count of game objects.
 		static uint64_t GetGameObjectCount() { return m_GameObjectCount; }
+
 		const std::string& GetTag() { return m_Tag; }
 
-		GameObject(Scene* scene);
+		// Get a clone of the game object that is not connected to any scene.
+		std::shared_ptr<GameObject> Clone();
+
+		GameObject(std::string tag);
 		GameObject(Scene* scene, std::string tag);
 
 		~GameObject();
@@ -77,8 +105,8 @@ namespace dae
 
 	private:
 		std::string										m_Tag;
-		Scene* m_Scene;
-		GameObject* m_Parent;
+		Scene*											m_Scene;
+		GameObject*										m_Parent;
 		std::vector<GameObject*>						m_Children;
 		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 		bool											m_MarkedForDestroy;
@@ -100,7 +128,9 @@ namespace dae
 		if (HasComponentWithTag<ComponentType>(componentTag))
 		{
 			const std::string& objectTag = GetComponent<TagComponent>()->m_Tag;
-			assert(false && std::format("GameObject::AddComponent -> Component with tag:[{}] already present on GameObject With Tag[{}]", componentTag, objectTag).c_str());
+
+			ENGINE_ERROR("GameObject::AddComponent -> Component [{}] with tag:[{}] already present on GameObject With Tag[{}]", typeid(ComponentType).name(), componentTag, objectTag);
+			assert(false);
 		}
 
 		m_Components.emplace_back(std::make_unique<ComponentType>());
@@ -118,7 +148,8 @@ namespace dae
 
 		if (!HasComponent<ComponentType>())
 		{
-			assert(false && "GameObject::GetComponent -> no component of this type found in GameObject.");
+			ENGINE_ERROR("GameObject::GetComponent -> no component of this type found in GameObject.");
+			assert(false);
 		}
 
 		for (const std::unique_ptr<BaseComponent>& component : m_Components)
@@ -189,7 +220,8 @@ namespace dae
 
 		if (!HasComponent<ComponentType>())
 		{
-			assert("GameObject::RemoveComponent -> no component of this type found in GameObject.");
+			ENGINE_ERROR("GameObject::RemoveComponent -> no component of this type found in GameObject.");
+			assert(false);
 		}
 
 		for (auto itr = m_Components.begin(); itr != m_Components.end(); ++itr)

@@ -3,6 +3,7 @@
 #include "IDComponent.h"
 #include "TagComponent.h"
 #include "SceneManager.h"
+#include "Locator.h"
 
 using namespace dae;
 
@@ -25,8 +26,14 @@ void dae::Scene::DeleteMarkedForDestroy()
 
 Scene::~Scene() = default;
 
-void Scene::Add(std::shared_ptr<GameObject> object)
+void Scene::AddGameObject(std::shared_ptr<GameObject> object)
 {
+	if (object->m_Scene != nullptr)
+	{
+		ENGINE_ERROR("Function Scene::AddGameObject -> trying to add GameObject that is already in a scene to another one: Undefined behavior");
+		assert(false);
+	}
+	object->m_Scene = this;
 	m_objects.emplace_back(std::move(object));
 }
 
@@ -84,11 +91,10 @@ void Scene::RenderUI(UpdateContext& context) const
 
 GameObject* Scene::MakeGameObject(const std::string& tag )
 {
-	std::shared_ptr<GameObject> go{ std::make_shared<GameObject>(this, tag) };
+	std::shared_ptr<GameObject> go{ std::make_shared<GameObject>(tag) };
 
 	GameObject* ptr = go.get();
-
-	Add(go);
+	AddGameObject(go);
 
 	return ptr;
 }
