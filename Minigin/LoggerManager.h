@@ -60,30 +60,30 @@ namespace dae
 		template<typename... Args>
 		void Trace(std::format_string<Args...> fmt, Args &&... args)
 		{
-			Log(LogLevel::Trace, fmt, std::forward<Args>(args)...);
+			LoggerManager(LogLevel::Trace, fmt, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
 		void Debug(std::format_string<Args...> fmt, Args &&... args)
 		{
-			Log(LogLevel::Debug, fmt, std::forward<Args>(args)...);
+			LoggerManager(LogLevel::Debug, fmt, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
 		void Info(std::format_string<Args...> fmt, Args &&... args)
 		{
-			Log(LogLevel::Info, fmt, std::forward<Args>(args)...);
+			LoggerManager(LogLevel::Info, fmt, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
 		void Warn(std::format_string<Args...> fmt, Args &&... args)
 		{
-			Log(LogLevel::Warn, fmt, std::forward<Args>(args)...);
+			LoggerManager(LogLevel::Warn, fmt, std::forward<Args>(args)...);
 		}
 		template<typename... Args>
 		void Error(std::format_string<Args...> fmt, Args &&... args)
 		{
-			Log(LogLevel::Error, fmt, std::forward<Args>(args)...);
+			LoggerManager(LogLevel::Error, fmt, std::forward<Args>(args)...);
 		};
 
 		static void NewLine()
@@ -94,7 +94,7 @@ namespace dae
 	private:
 
 		template<typename... Args>
-		void Log(LogLevel level, std::format_string<Args...> fmt, [[maybe_unused]] Args&&... args) const
+		void LoggerManager(LogLevel level, std::format_string<Args...> fmt, [[maybe_unused]] Args&&... args) const
 		{
 			if (level < m_Level) return;
 
@@ -137,10 +137,10 @@ namespace dae
 
 
 	//----------------------------------------------------------------------------------------------------------------------
-	class Log
+	class LoggerManager
 	{
 	public:
-		Log() : m_EngineLogger("ENGINE"), m_AppLogger("APP") {}
+		LoggerManager() : m_EngineLogger("ENGINE"), m_AppLogger("APP") {}
 
 		Logger* Engine() { return &m_EngineLogger; }
 		Logger* App() { return &m_AppLogger; }

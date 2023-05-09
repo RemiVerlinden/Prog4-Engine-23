@@ -11,3 +11,5 @@
 #include "BindInputCommandComponent.h"
 #include "TrashTheCacheComponent.h"
 #include "InputDebugImguiComponent.h"
+#include "SpawnerComponent.h"
+#include "PlayerComponent.h"

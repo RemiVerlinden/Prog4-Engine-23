@@ -41,10 +41,13 @@ namespace dae::Input
 		// DeviceActionBinds -> unoredered map where the key value is a button of any type: xinput, sdl_scancode or sdl_mouse_code
 		// example of possible keys: XINPUT_GAMEPAD_A - SDL_SCANCODE_F - SDL_BUTTON_LEFT
 		
-		using DeviceActionBinds = std::unordered_map<deviceButton, InputAction, deviceButtonHash>;
+		using DeviceActionBinds = std::unordered_multimap<deviceButton, InputAction, deviceButtonHash>;
 		 std::unordered_map<int, DeviceActionBinds> m_ActionBindPerDevice;
 	};
 }
 
 // Currently no way to remove binds
 // 
+
+
+

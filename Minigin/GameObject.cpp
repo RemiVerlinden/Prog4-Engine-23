@@ -33,6 +33,7 @@ dae::GameObject::GameObject(Scene* scene, std::string name) :m_Scene(scene), m_P
 	tagComponent->SetCanBeCloned(false);
 
 	tagComponent->m_Tag = name;
+	m_Tag = name;
 
 	++m_GameObjectCount;
 };

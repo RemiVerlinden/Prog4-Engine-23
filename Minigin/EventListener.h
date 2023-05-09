@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_set>
-#include "EventType.h"
+#include "ApplicationEvent.h"
 namespace dae
 {
 	class EventListener

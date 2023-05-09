@@ -64,22 +64,22 @@ void dae::ScoreBoardComponent::OnEvent(const Event& sent)
 			const OnDeathEvent& event = reinterpret_cast<const OnDeathEvent&>(sent);
 			if (event.GetObjectName() == "Player1")
 			{
-				PlayerDied(0);
+				PlayerDied(event.GetObjectName(), 0);
 			}
 			else if (event.GetObjectName() == "Player2")
 			{
-				PlayerDied(1);
+				PlayerDied(event.GetObjectName(), 1);
 			}
 			break;
 		}
 		case OnDamage:
 		{
 			const OnDamageEvent& event = reinterpret_cast<const OnDamageEvent&>(sent);
-			if (event.GetObjectName() == "Player1")
+			if (event.GetObjectName() == "Player1-Clone")
 			{
 				PlayerDamaged(0, event.GetCurrentHealth());
 			}
-			else if (event.GetObjectName() == "Player2")
+			else if (event.GetObjectName() == "Player2-Clone")
 			{
 				PlayerDamaged(1, event.GetCurrentHealth());
 			}
@@ -88,7 +88,7 @@ void dae::ScoreBoardComponent::OnEvent(const Event& sent)
 	}
 }
 
-void dae::ScoreBoardComponent::PlayerDied(int playerID)
+void dae::ScoreBoardComponent::PlayerDied(std::string player, int playerID)
 {
 	PlayerHUD& playerHUD = m_PlayerVec[playerID];
 	PlayerInfo& playerInfo = m_PlayerVec[playerID].info;
@@ -99,7 +99,7 @@ void dae::ScoreBoardComponent::PlayerDied(int playerID)
 
 	if (playerInfo.lives > 0 )
 	{
-		PlayerResurrectEvent resurrectEvent{ playerID, playerInfo.lives };
+		OnGameObjectSpawnEvent resurrectEvent{ player };
 		EventManager::GetInstance().SendEvent(resurrectEvent);
 	}
 }

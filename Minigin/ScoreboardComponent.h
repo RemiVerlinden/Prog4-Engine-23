@@ -14,7 +14,7 @@ namespace dae
 		void DrawUI(UpdateContext& context) override;
 		virtual void OnEvent(const Event& sent);
 	private:
-		void PlayerDied(int playerID);
+		void PlayerDied(std::string player, int playerID);
 		void PlayerDamaged(int playerID, int newHealth);
 		struct PlayerInfo
 		{

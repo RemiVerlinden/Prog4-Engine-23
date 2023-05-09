@@ -21,6 +21,7 @@ void dae::SceneFactory::CreateScenes()
 
 	InitSceneKeybinds();
 
+	InitSteamTestScene();
 	InitDefaultScene();
 	InitFpsDemoScene();
 	InitBonusScene();
@@ -49,11 +50,40 @@ void dae::SceneFactory::InitSceneKeybinds()
 	bindChangeScene(inputDevice, KeyboardButton::KEY_PAGEDOWN, ButtonPressType::Release, false);
 	bindChangeScene(inputDevice, KeyboardButton::KEY_PAGEUP, ButtonPressType::Release, true);
 }
+void dae::SceneFactory::InitSteamTestScene()
+{
+	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("SteamTest");
+	dae::SceneManager::GetInstance().SetActiveGameScene("SteamTest");
+
+	// Background
+	{
+		GameObject* go = pScene->MakeGameObject();
+		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
+		textureComponent->SetTexture("demo/background.tga");
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::background);
+
+		go->AddComponent<dae::ScoreBoardComponent>();
+	}
+
+	{
+		GameObject* go = pScene->MakeGameObject();
+
+		SpawnerComponent* spawnerComp = go->AddComponent<SpawnerComponent>();
+
+		std::string player1PrefabName{ "Player1" };
+
+		spawnerComp->AddSpawnableObject(Prefab{ player1PrefabName });
+		GameObject* Player1Object = spawnerComp->GetPrefabObject(player1PrefabName);
+
+		Player1Object->AddComponent<PlayerComponent>();
+
+		spawnerComp->SpawnGameObject(player1PrefabName, pScene);
+	}
+}
 
 void dae::SceneFactory::InitDefaultScene()
 {
 	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Demo");
-	dae::SceneManager::GetInstance().SetActiveGameScene("Demo");
 
 	GameObject* go = pScene->MakeGameObject();
 	//go->AddComponent<TrashTheCacheComponent>();
@@ -239,7 +269,7 @@ void dae::SceneFactory::InitFpsDemoScene()
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 72);
 
-	Prefab fpsPrefab{"FPS display prefab"};
+	Prefab fpsPrefab{ "FPS display prefab" };
 	GameObject* fpsPrefabObject = fpsPrefab.GetPrefabObject();
 	FpsComponent* fpsPrefabComponent = fpsPrefabObject->AddComponent<FpsComponent>();
 	fpsPrefabComponent->SetFont(font);

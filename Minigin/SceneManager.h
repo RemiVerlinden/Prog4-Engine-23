@@ -17,6 +17,7 @@ namespace dae
 		Scene* GetGameScene(const std::string& name);
 		void RemoveGameScene(const std::string& name);
 		void SetActiveGameScene(const std::string& name);
+		Scene* GetActiveGameScene();
 		void CheckNewActiveGameScene();
 
 		void NextScene();

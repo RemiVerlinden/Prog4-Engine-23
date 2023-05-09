@@ -72,6 +72,7 @@ namespace dae
 			else
 			{
 				m_MoveComponent = gameObject->AddComponent<MoveComponent>();
+				m_MoveComponent->SetCanBeCloned(false);
 			}
 		}
 	};
@@ -116,6 +117,7 @@ namespace dae
 			else
 			{
 				m_HealthComponent = object->AddComponent<HealthComponent>();
+				m_HealthComponent->SetCanBeCloned(false);
 			}
 		}
 	};

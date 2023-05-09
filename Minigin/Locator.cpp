@@ -1,12 +1,12 @@
 #include "Locator.h"
 
-#include "Log.h"
+#include "LoggerManager.h"
 
 namespace dae
 {
-	Log Locator::m_Log;
+	LoggerManager Locator::m_Log;
 	
-	Log& dae::Locator::Logger()
+	LoggerManager& dae::Locator::Logger()
 	{
 		return m_Log;
 	}

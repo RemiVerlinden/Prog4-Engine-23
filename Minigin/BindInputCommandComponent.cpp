@@ -7,5 +7,5 @@ dae::BindInputCommandComponent::~BindInputCommandComponent()
 void dae::BindInputCommandComponent::Clone(GameObject* clone)
 {
 	if (CanBeCloned() == false) return;
-	clone->AddComponent<BindInputCommandComponent>(GetComponentTag());
+		clone->AddComponent<BindInputCommandComponent>(GetComponentTag());
 }

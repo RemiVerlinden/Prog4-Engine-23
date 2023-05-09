@@ -12,7 +12,6 @@ void dae::Input::CommandHandler::Update(Seconds elapsedTime)
 
 		for (auto& actionBind : deviceActionBinds)
 		{
-
 			deviceButton button = actionBind.first;
 			const InputAction& inputAction = actionBind.second;
 

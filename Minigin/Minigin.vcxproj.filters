@@ -70,6 +70,9 @@
     <Filter Include="Engine Files\Spawner\Objects">
       <UniqueIdentifier>{2a2324b4-13c5-4478-94b8-6c3a96e52dd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Files\Events">
+      <UniqueIdentifier>{7282c6ad-9d4d-4900-85aa-42b675dd4c55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneFactory.h">
@@ -225,15 +228,6 @@
     <ClInclude Include="Observer.h">
       <Filter>Application Files</Filter>
     </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Engine Files\Singletons</Filter>
-    </ClInclude>
-    <ClInclude Include="EventListener.h">
-      <Filter>Engine Files\Singletons</Filter>
-    </ClInclude>
-    <ClInclude Include="EventType.h">
-      <Filter>Engine Files\Singletons</Filter>
-    </ClInclude>
     <ClInclude Include="ScoreboardComponent.h">
       <Filter>Components\HUD</Filter>
     </ClInclude>
@@ -249,7 +243,7 @@
     <ClInclude Include="Locator.h">
       <Filter>Engine Files\Singletons</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
+    <ClInclude Include="LoggerManager.h">
       <Filter>Engine Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="SpawnerObject.h">
@@ -257,6 +251,24 @@
     </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>Engine Files\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Application Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnerComponent.h">
+      <Filter>Application Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Engine Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventListener.h">
+      <Filter>Engine Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Engine Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationEvent.h">
+      <Filter>Engine Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -368,16 +380,10 @@
     <ClCompile Include="HealthComponent.cpp">
       <Filter>Components\Gameplay</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Engine Files\Singletons</Filter>
-    </ClCompile>
-    <ClCompile Include="EventListener.cpp">
-      <Filter>Engine Files\Singletons</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreboardComponent.cpp">
       <Filter>Components\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
+    <ClCompile Include="LoggerManager.cpp">
       <Filter>Engine Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Locator.cpp">
@@ -391,6 +397,18 @@
     </ClCompile>
     <ClCompile Include="BindInputCommandComponent.cpp">
       <Filter>Components\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnerComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Engine Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventListener.cpp">
+      <Filter>Engine Files\Events</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

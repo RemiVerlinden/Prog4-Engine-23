@@ -1,15 +1,15 @@
 #pragma once
-#include "Log.h"
+#include "LoggerManager.h"
 
 // service locator pattern from game programming patterns book
 namespace dae
 {
-	class Log;
-	class Locator
+	class LoggerManager;
+	class Locator final
 	{
 	public:
-		static Log& Logger();
+		static LoggerManager& Logger();
 	private:
-		static Log m_Log;
+		static LoggerManager m_Log;
 	};
 }

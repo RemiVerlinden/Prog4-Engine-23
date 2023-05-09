@@ -74,6 +74,11 @@ void dae::SceneManager::SetActiveGameScene(const std::string& name)
 	}
 }
 
+dae::Scene* dae::SceneManager::GetActiveGameScene()
+{
+	return m_pActiveScene;
+}
+
 void dae::SceneManager::CheckNewActiveGameScene()
 {
 	if (m_pNewActiveScene != nullptr)
