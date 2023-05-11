@@ -1,9 +1,9 @@
 #pragma once
 #include <list>
 #include <unordered_map>
-#include "Command.h"
+#include "../BurgerTime/Command.h"
 #include "InputDevice.h"
-#include "Time.h"
+#include "EngineTime.h"
 #include "InputState.h"
 #include "DeviceButtons.hpp"
 

@@ -7,7 +7,7 @@
 
 // BIG DISCLAIMER
 
-// TIME.H - TIME.CPP - TIMERS.H
+// EngineTime.h - TIME.CPP - TIMERS.H
 
 // THESE FILES ARE NOT MINE, I DID NOT WRITE THEM
 
@@ -18,7 +18,7 @@
 
 
 //-------------------------------------------------------------------------
-#include "Time.h"
+#include "EngineTime.h"
 //-------------------------------------------------------------------------
 
 namespace dae

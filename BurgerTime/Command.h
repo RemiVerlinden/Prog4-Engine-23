@@ -3,9 +3,9 @@
 #include "UpdateContext.h"
 #include <iostream>
 #include <memory>
-#include "MoveComponent.h"
+#include "../BurgerTime/MoveComponent.h"
 #include "SceneManager.h"
-#include "HealthComponent.h"
+#include "../BurgerTime/HealthComponent.h"
 namespace dae
 {
 	class Command

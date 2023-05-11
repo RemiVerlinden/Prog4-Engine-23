@@ -75,17 +75,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneFactory.h">
-      <Filter>Application Files</Filter>
-    </ClInclude>
     <ClInclude Include="BaseComponent.h">
       <Filter>Components\General</Filter>
     </ClInclude>
     <ClInclude Include="FpsComponent.h">
       <Filter>Components\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="OrbitComponent.h">
-      <Filter>Components\General</Filter>
     </ClInclude>
     <ClInclude Include="Render2DComponent.h">
       <Filter>Components\Rendering</Filter>
@@ -120,7 +114,7 @@
     <ClInclude Include="Minigin.h">
       <Filter>Engine Files\General</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="EngineTime.h">
       <Filter>Engine Files\Time</Filter>
     </ClInclude>
     <ClInclude Include="Timers.h">
@@ -159,9 +153,6 @@
     <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
       <Filter>Engine Files\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.hpp">
-      <Filter>Application Files</Filter>
-    </ClInclude>
     <ClInclude Include="InputStateMouse.h">
       <Filter>Engine Files\Input\InputStates</Filter>
     </ClInclude>
@@ -183,9 +174,6 @@
     <ClInclude Include="InputSystem.h">
       <Filter>Engine Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Engine Files\Input\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="CommandHandler.h">
       <Filter>Engine Files\Input\Commands</Filter>
     </ClInclude>
@@ -194,9 +182,6 @@
     </ClInclude>
     <ClInclude Include="InputDebugImguiComponent.h">
       <Filter>Components\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveComponent.h">
-      <Filter>Components\Input</Filter>
     </ClInclude>
     <ClInclude Include="TrashTheCacheComponent.h">
       <Filter>Components\HUD</Filter>
@@ -222,15 +207,6 @@
     <ClInclude Include="InputDeviceMouse.h">
       <Filter>Engine Files\Input\Devices</Filter>
     </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Components\Gameplay</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Application Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreboardComponent.h">
-      <Filter>Components\HUD</Filter>
-    </ClInclude>
     <ClInclude Include="BindInputCommandComponent.h">
       <Filter>Components\Input</Filter>
     </ClInclude>
@@ -252,9 +228,6 @@
     <ClInclude Include="Prefab.h">
       <Filter>Engine Files\Spawner</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerComponent.h">
-      <Filter>Application Files</Filter>
-    </ClInclude>
     <ClInclude Include="SpawnerComponent.h">
       <Filter>Application Files</Filter>
     </ClInclude>
@@ -267,22 +240,16 @@
     <ClInclude Include="Event.h">
       <Filter>Engine Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="ApplicationEvent.h">
-      <Filter>Engine Files\Events</Filter>
+    <ClInclude Include="Utils.hpp">
+      <Filter>Engine Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SceneFactory.cpp">
-      <Filter>Application Files</Filter>
-    </ClCompile>
     <ClCompile Include="BaseComponent.cpp">
       <Filter>Components\General</Filter>
     </ClCompile>
     <ClCompile Include="FpsComponent.cpp">
       <Filter>Components\HUD</Filter>
-    </ClCompile>
-    <ClCompile Include="OrbitComponent.cpp">
-      <Filter>Components\General</Filter>
     </ClCompile>
     <ClCompile Include="Render2DComponent.cpp">
       <Filter>Components\Rendering</Filter>
@@ -311,13 +278,10 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Engine Files\Singletons</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Engine Files\General</Filter>
-    </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Engine Files\General</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
+    <ClCompile Include="EngineTime.cpp">
       <Filter>Engine Files\Time</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
@@ -347,9 +311,6 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
       <Filter>Engine Files\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Engine Files\Input\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="CommandHandler.cpp">
       <Filter>Engine Files\Input\Commands</Filter>
     </ClCompile>
@@ -362,9 +323,6 @@
     <ClCompile Include="InputSystem.cpp">
       <Filter>Engine Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="MoveComponent.cpp">
-      <Filter>Components\Input</Filter>
-    </ClCompile>
     <ClCompile Include="TrashTheCacheComponent.cpp">
       <Filter>Components\HUD</Filter>
     </ClCompile>
@@ -376,12 +334,6 @@
     </ClCompile>
     <ClCompile Include="IDComponent.cpp">
       <Filter>Components\General</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
-      <Filter>Components\Gameplay</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreboardComponent.cpp">
-      <Filter>Components\HUD</Filter>
     </ClCompile>
     <ClCompile Include="LoggerManager.cpp">
       <Filter>Engine Files\Objects</Filter>
@@ -397,9 +349,6 @@
     </ClCompile>
     <ClCompile Include="BindInputCommandComponent.cpp">
       <Filter>Components\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="SpawnerComponent.cpp">
       <Filter>Components</Filter>
