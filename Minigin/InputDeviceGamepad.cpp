@@ -7,8 +7,6 @@
 
 #include <array>
 #include <vector>
-
-
 // okay this is terrible, I dont know how else to implement this 
 // sorry for this giant clusterfuck
 //-------------------------------------------------------------------------

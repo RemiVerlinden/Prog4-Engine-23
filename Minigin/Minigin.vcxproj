@@ -216,6 +216,7 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BindInputCommandComponent.h" />
     <ClInclude Include="CommandHandler.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="EventManager.h" />
+    <ClInclude Include="NullSoundSystem.hpp" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="IDComponent.h" />
     <ClInclude Include="InputState.h" />
@@ -233,7 +235,9 @@
     <ClInclude Include="Locator.h" />
     <ClInclude Include="LoggerManager.h" />
     <ClInclude Include="PrefabFunctions.h" />
+    <ClInclude Include="SDL2_SoundSystem.h" />
     <ClInclude Include="SDLEventQueue.h" />
+    <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SpawnerComponent.h" />
     <ClInclude Include="SpawnerObject.h" />
     <ClInclude Include="TagComponent.h" />
@@ -273,6 +277,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BindInputCommandComponent.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
@@ -294,6 +299,8 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SDL2_SoundSystem.cpp" />
+    <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="SpawnerComponent.cpp" />
     <ClCompile Include="SpawnerObject.cpp" />
     <ClCompile Include="TagComponent.cpp" />

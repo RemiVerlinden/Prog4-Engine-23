@@ -1,15 +1,19 @@
 #pragma once
 #include "LoggerManager.h"
+#include "NullSoundSystem.hpp"
 
-// service locator pattern from game programming patterns book
 namespace dae
 {
 	class LoggerManager;
+
 	class Locator final
 	{
+		static LoggerManager m_Log;
+		static SoundSystem* m_pSoundInstance;
+		static NullSoundSystem m_DefaultSoundSystem;
 	public:
 		static LoggerManager& Logger();
-	private:
-		static LoggerManager m_Log;
+		static SoundSystem& GetSoundSystem();
+		static void RegisterSoundSystem(SoundSystem* pSoundSystem);
 	};
 }
