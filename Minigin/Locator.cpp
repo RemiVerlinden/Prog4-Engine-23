@@ -1,21 +1,29 @@
+// new convention
 #include "Locator.h"
-#include "SoundSystem.h"
+#include "NullSoundSystem.hpp"
 
 using namespace dae;
 
-	LoggerManager Locator::m_Log;
+	Logger Locator::m_spLogEngineInstance("ENGINE");
+	Logger Locator::m_spLogAppInstance("APP");
 
-	NullSoundSystem Locator::m_DefaultSoundSystem;
-	SoundSystem* Locator::m_pSoundInstance = &m_DefaultSoundSystem;
+	std::unique_ptr<SoundSystem> Locator::m_spSoundInstance = std::make_unique<NullSoundSystem>();
 	
-	LoggerManager& dae::Locator::Logger() {	return m_Log; }
 
-	SoundSystem& dae::Locator::GetSoundSystem() { return *m_pSoundInstance; }
+	Logger& dae::Locator::GetLogger(LoggerType type) {	return type == LoggerType::Engine ? m_spLogEngineInstance : m_spLogAppInstance; }
 
-	void Locator::RegisterSoundSystem(SoundSystem* soundSystem)
+	SoundSystem& dae::Locator::GetSoundSystem() { return *m_spSoundInstance; }
+
+	void Locator::RegisterSoundSystem(std::unique_ptr<SoundSystem>&& spSoundSystem)
 	{
-		if (m_pSoundInstance != &m_DefaultSoundSystem)
-			delete m_pSoundInstance;
-		m_pSoundInstance = soundSystem == nullptr ? &m_DefaultSoundSystem : soundSystem;
+		m_spSoundInstance = spSoundSystem == nullptr ? std::make_unique<NullSoundSystem>() : std::move(spSoundSystem);
 	}
+
+	//void dae::Locator::RegisterLogger(LoggerType type, std::unique_ptr<ILogger>&& spLogger)
+	//{
+	//	if (type == LoggerType::Engine)
+	//		m_spLogEngineInstance = spLogger == nullptr ? std::make_unique<NullLogger>() : std::move(spLogger);
+	//	else
+	//		m_spLogAppInstance = spLogger == nullptr ? std::make_unique<NullLogger>() : std::move(spLogger);
+	//}
 

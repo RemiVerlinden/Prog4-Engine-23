@@ -13,19 +13,117 @@
 
 namespace dae
 {
-	enum class LogLevel
-	{
-		Trace,
-		Debug,
-		Info,
-		Warn,
-		Error
-	};
 
 	//----------------------------------------------------------------------------------------------------------------------
-	class Logger
+
+	//class ILogger
+	//{
+	//protected:
+	//	enum class LogLevel
+	//	{
+	//		Trace,
+	//		Debug,
+	//		Info,
+	//		Warn,
+	//		Error
+	//	};
+	//	enum ConsoleColor
+	//	{
+	//		Black = 0,
+	//		DarkBlue = 1,
+	//		DarkGreen = 2,
+	//		DarkCyan = 3,
+	//		DarkRed = 4,
+	//		DarkMagenta = 5,
+	//		DarkYellow = 6,
+	//		Gray = 7,
+	//		DarkGray = 8,
+	//		Blue = 9,
+	//		Green = 10,
+	//		Cyan = 11,
+	//		Red = 12,
+	//		Magenta = 13,
+	//		Yellow = 14,
+	//		White = 15
+	//	};
+	//public:
+	//	virtual ~ILogger() = 0;
+
+	//	virtual void SetLevel(LogLevel level) = 0;
+
+	//	template<typename... Args>
+	//	virtual void Trace(std::format_string<Args...> fmt, Args &&... args) const = 0;
+
+	//	template<typename... Args>
+	//	virtual void Debug(std::format_string<Args...> fmt, Args &&... args) const = 0;
+
+	//	template<typename... Args>
+	//	virtual void Debug(std::format_string<Args...> fmt, Args &&... args) const = 0;
+
+	//	template<typename... Args>
+	//	virtual void Info(std::format_string<Args...> fmt, Args &&... args) const = 0;
+
+	//	template<typename... Args>
+	//	virtual void Warn(std::format_string<Args...> fmt, Args &&... args)const = 0;
+
+	//	template<typename... Args>
+	//	virtual void Error(std::format_string<Args...> fmt, Args &&... args) const = 0;
+
+	//	static void NewLine()
+	//	{
+	//		std::cout << '\n';
+	//	}
+
+	//protected:
+	//	template<typename... Args>
+	//	void  Log(LogLevel level, std::format_string<Args...> fmt, [[maybe_unused]] Args&&... args) const = 0;
+	//};
+
+	////----------------------------------------------------------------------------------------------------------------------
+
+	//class NullLogger final : public ILogger
+	//{
+	//public:
+	//	NullLogger() = default;
+
+	//	virtual void SetLevel(LogLevel) {};
+
+	//	template<typename... Args>
+	//	void Trace(std::format_string<Args...>, Args &&...) const {};
+
+	//	template<typename... Args>
+	//	void Debug(std::format_string<Args...>, Args &&...) const {};
+
+	//	template<typename... Args>
+	//	void Debug(std::format_string<Args...>, Args &&...) const {};
+
+	//	template<typename... Args>
+	//	void Info(std::format_string<Args...>, Args &&...) const {};
+
+	//	template<typename... Args>
+	//	void Warn(std::format_string<Args...>, Args &&...) const {};
+
+	//	template<typename... Args>
+	//	void Error(std::format_string<Args...>, Args &&...) const {};
+
+	//private:
+	//	template<typename... Args>
+	//	void Log(LogLevel, std::format_string<Args...>, Args&&...) const {};
+
+	//};
+
+
+	//----------------------------------------------------------------------------------------------------------------------
+	class Logger final/* : public ILogger*/
 	{
-	public:
+		enum class LogLevel
+		{
+			Trace,
+			Debug,
+			Info,
+			Warn,
+			Error
+		};
 		enum ConsoleColor
 		{
 			Black = 0,
@@ -45,7 +143,7 @@ namespace dae
 			Yellow = 14,
 			White = 15
 		};
-
+	public:
 
 		Logger(const std::string& name, LogLevel level = LogLevel::Trace)
 			: m_Name(name),
@@ -54,36 +152,36 @@ namespace dae
 		{
 		}
 
-
+		// this sets the Minimum level that will be logged, Ex: if you set level to Warn, then only that and all higher levels will be logged
 		void SetLevel(LogLevel level) { m_Level = level; }
 
 		template<typename... Args>
-		void Trace(std::format_string<Args...> fmt, Args &&... args)
+		void Trace(std::format_string<Args...> fmt, Args &&... args)const
 		{
-			LoggerManager(LogLevel::Trace, fmt, std::forward<Args>(args)...);
+			Log(LogLevel::Trace, fmt, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		void Debug(std::format_string<Args...> fmt, Args &&... args)
+		void Debug(std::format_string<Args...> fmt, Args &&... args)const
 		{
-			LoggerManager(LogLevel::Debug, fmt, std::forward<Args>(args)...);
+			Log(LogLevel::Debug, fmt, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		void Info(std::format_string<Args...> fmt, Args &&... args)
+		void Info(std::format_string<Args...> fmt, Args &&... args)const
 		{
-			LoggerManager(LogLevel::Info, fmt, std::forward<Args>(args)...);
+			Log(LogLevel::Info, fmt, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		void Warn(std::format_string<Args...> fmt, Args &&... args)
+		void Warn(std::format_string<Args...> fmt, Args &&... args)const
 		{
-			LoggerManager(LogLevel::Warn, fmt, std::forward<Args>(args)...);
+			Log(LogLevel::Warn, fmt, std::forward<Args>(args)...);
 		}
 		template<typename... Args>
-		void Error(std::format_string<Args...> fmt, Args &&... args)
+		void Error(std::format_string<Args...> fmt, Args &&... args) const
 		{
-			LoggerManager(LogLevel::Error, fmt, std::forward<Args>(args)...);
+			Log(LogLevel::Error, fmt, std::forward<Args>(args)...);
 		};
 
 		static void NewLine()
@@ -94,7 +192,7 @@ namespace dae
 	private:
 
 		template<typename... Args>
-		void LoggerManager(LogLevel level, std::format_string<Args...> fmt, [[maybe_unused]] Args&&... args) const
+		void Log(LogLevel level, std::format_string<Args...> fmt, [[maybe_unused]] Args&&... args) const
 		{
 			if (level < m_Level) return;
 
@@ -133,33 +231,15 @@ namespace dae
 	};
 	//----------------------------------------------------------------------------------------------------------------------
 
-
-
-
-	//----------------------------------------------------------------------------------------------------------------------
-	class LoggerManager
-	{
-	public:
-		LoggerManager() : m_EngineLogger("ENGINE"), m_AppLogger("APP") {}
-
-		Logger* Engine() { return &m_EngineLogger; }
-		Logger* App() { return &m_AppLogger; }
-
-	private:
-		Logger m_EngineLogger;
-		Logger m_AppLogger;
-	};
-	//----------------------------------------------------------------------------------------------------------------------
-
 } // namespace dae
 
 #define CONSOLE_NEWLINE()  dae::Logger::NewLine()
-#define ENGINE_TRACE(...)  dae::Locator::Logger().Engine()->Trace(__VA_ARGS__)
-#define ENGINE_INFO(...)   dae::Locator::Logger().Engine()->Info(__VA_ARGS__)
-#define ENGINE_WARN(...)   dae::Locator::Logger().Engine()->Warn(__VA_ARGS__)
-#define ENGINE_ERROR(...)  dae::Locator::Logger().Engine()->Error(__VA_ARGS__)
+#define ENGINE_TRACE(...)  dae::Locator::GetLogger(dae::Locator::LoggerType::Engine).Trace(__VA_ARGS__)
+#define ENGINE_INFO(...)   dae::Locator::GetLogger(dae::Locator::LoggerType::Engine).Info(__VA_ARGS__)
+#define ENGINE_WARN(...)   dae::Locator::GetLogger(dae::Locator::LoggerType::Engine).Warn(__VA_ARGS__)
+#define ENGINE_ERROR(...)  dae::Locator::GetLogger(dae::Locator::LoggerType::Engine).Error(__VA_ARGS__)
 
-#define APP_TRACE(...)     dae::Locator::Logger().App()->Trace(__VA_ARGS__)
-#define APP_INFO(...)      dae::Locator::Logger().App()->Info(__VA_ARGS__)
-#define APP_WARN(...)      dae::Locator::Logger().App()->Warn(__VA_ARGS__)
-#define APP_ERROR(...)     dae::Locator::Logger().App()->Error(__VA_ARGS__)
+#define APP_TRACE(...)     dae::Locator::GetLogger(dae::Locator::LoggerType::App).Trace(__VA_ARGS__)
+#define APP_INFO(...)      dae::Locator::GetLogger(dae::Locator::LoggerType::App).Info(__VA_ARGS__)
+#define APP_WARN(...)      dae::Locator::GetLogger(dae::Locator::LoggerType::App).Warn(__VA_ARGS__)
+#define APP_ERROR(...)     dae::Locator::GetLogger(dae::Locator::LoggerType::App).Error(__VA_ARGS__)

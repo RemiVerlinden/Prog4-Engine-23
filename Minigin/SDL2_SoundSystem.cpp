@@ -1,18 +1,19 @@
 #include "SDL2_SoundSystem.h"
 #include "audio.h"
+#include "Locator.h"
 
 using namespace dae;
 
 SDL2_SoundSystem::SDL2_SoundSystem(const std::string& dataPath)
 	:m_AudioThread(&SDL2_SoundSystem::ProcessQueue, this)
-	, m_Running(true)
+	, m_IsPlaying(true)
 {
-	m_DataPath = dataPath;
+	m_FilePath = dataPath;
 }
 
 SDL2_SoundSystem::~SDL2_SoundSystem()
 {
-	m_Running = false;
+	m_IsPlaying = false;
 	m_ConditionVariable.notify_one();
 	m_AudioThread.join();
 
@@ -25,15 +26,15 @@ void SDL2_SoundSystem::Play(const std::string& filename, float volume, bool isSo
 #ifdef _DEBUG
 	const std::string extention = filename.substr(filename.find_last_of("."));
 	if (extention != ".wav")
-		Logger::GetInstance().LogWarning(filename + " Unsuported file type SDL2_SoundSystem only supports .wav files");
+		ENGINE_ERROR("{} Unsuported file type SDL2_SoundSystem only supports .wav files", filename);
 #endif
 
 	std::unique_lock lock{ m_Mtx };
 
-	queuedAudio audio;
-	audio.filename = m_DataPath + filename;
+	AudioClip audio;
+	audio.filename = m_FilePath + filename;
 	audio.volume = static_cast<int>(std::clamp(volume, 0.f, 1.f) * SDL_MIX_MAXVOLUME);
-	audio.isSoundEffect = isSoundEffect;
+	audio.isSFX = isSoundEffect;
 
 	m_QueuedAudio.emplace(audio);
 
@@ -43,15 +44,16 @@ void SDL2_SoundSystem::Play(const std::string& filename, float volume, bool isSo
 void SDL2_SoundSystem::StopAll()
 {
 	//https://stackoverflow.com/questions/709146/how-do-i-clear-the-stdqueue-efficiently
-	std::queue<queuedAudio> empty;
+	std::queue<AudioClip> empty;
 	std::swap(m_QueuedAudio, empty);
 
-	stopMusic();
+	
+	//stopMusic();
 }
 
 void SDL2_SoundSystem::StopMusic()
 {
-	stopMusic();
+	//stopMusic();
 }
 
 void SDL2_SoundSystem::PauseAll()
@@ -69,16 +71,16 @@ void SDL2_SoundSystem::ProcessQueue()
 	std::unique_lock lock{ m_Mtx };
 	lock.unlock();
 
-	while (m_Running)
+	while (m_IsPlaying)
 	{
 		lock.lock();
 		if (!m_QueuedAudio.empty())
 		{
-			const queuedAudio audio = m_QueuedAudio.front();
+			const AudioClip audio = m_QueuedAudio.front();
 			m_QueuedAudio.pop();
 			lock.unlock();
 
-			if (audio.isSoundEffect)
+			if (audio.isSFX)
 				playSound(audio.filename.c_str(), audio.volume);
 			else
 				playMusic(audio.filename.c_str(), audio.volume);

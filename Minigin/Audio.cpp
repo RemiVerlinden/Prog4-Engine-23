@@ -262,7 +262,7 @@ Audio* createAudio(const char* filename, uint8_t loop, int volume)
     newAudio->loop = loop;
     newAudio->fade = 0;
     newAudio->free = 1;
-    newAudio->volume = volume;
+    newAudio->volume = static_cast<uint8_t>(volume);
 
     if (SDL_LoadWAV(filename, &(newAudio->audio), &(newAudio->bufferTrue), &(newAudio->lengthTrue)) == NULL)
     {
@@ -320,7 +320,7 @@ static inline void playAudio(const char* filename, Audio* audio, uint8_t loop, i
 
         SDL_memcpy(newAudio, audio, sizeof(Audio));
 
-        newAudio->volume = volume;
+        newAudio->volume = static_cast<uint8_t>(volume);
         newAudio->loop = loop;
         newAudio->free = 0;
     }

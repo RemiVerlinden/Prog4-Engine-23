@@ -1,19 +1,26 @@
 #pragma once
+// new convention
+
 #include "LoggerManager.h"
-#include "NullSoundSystem.hpp"
+#include "SoundSystem.h"
 
 namespace dae
 {
-	class LoggerManager;
-
 	class Locator final
 	{
-		static LoggerManager m_Log;
-		static SoundSystem* m_pSoundInstance;
-		static NullSoundSystem m_DefaultSoundSystem;
+		static Logger m_spLogEngineInstance;
+		static Logger m_spLogAppInstance;
+		static std::unique_ptr<SoundSystem> m_spSoundInstance;
 	public:
-		static LoggerManager& Logger();
+		enum class LoggerType
+		{
+			Engine,
+			App
+		};
+
+		static Logger& GetLogger(LoggerType type);
 		static SoundSystem& GetSoundSystem();
-		static void RegisterSoundSystem(SoundSystem* pSoundSystem);
+		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& spSoundSystem);
+		//static void RegisterLogger(LoggerType type, std::unique_ptr<ILogger>&& spLogger);
 	};
 }

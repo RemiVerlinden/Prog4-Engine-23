@@ -1,6 +1,10 @@
 #pragma once
 #include "SoundSystem.h"
 #include <queue>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
 namespace dae 
 {
 	class SDL2_SoundSystem : public SoundSystem
@@ -26,9 +30,14 @@ namespace dae
 		virtual void PauseAll() override;
 		virtual void UnpauseAll() override;
 	private:
+		void ProcessQueue();
 
 		std::string m_FilePath;
-		std::queue<AudioClip> `;
+		std::queue<AudioClip> m_QueuedAudio;
 		bool m_IsPlaying;
+
+		std::thread m_AudioThread;
+		std::mutex m_Mtx;
+		std::condition_variable m_ConditionVariable;
 	};
 }
