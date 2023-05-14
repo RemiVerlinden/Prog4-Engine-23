@@ -18,7 +18,7 @@
 #include "UpdateContext.h"
 #include "Utils.hpp"
 #include "Locator.h"
-#include "audio.h"
+#include "SDLAudioWrapper.h"
 
 SDL_Window* g_window{};
 
@@ -64,7 +64,11 @@ dae::Minigin::Minigin(const std::string& dataPath)
 	// Initialize SDL2 Audio
 	initAudio();
 
-	Locator::RegisterSoundSystem(std::make_unique<SimpleSDL2SoundSystem>("../Data/Sounds/"));
+#if _DEBUG
+	Locator::RegisterSoundSystem(std::make_unique<LogSoundSystem>(std::make_unique<SDL2SoundSystem>("../Data/Sounds/")));
+#else
+	Locator::RegisterSoundSystem(std::make_unique<SDL2SoundSystem>("../Data/Sounds/"));
+#endif
 
 
 	g_window = SDL_CreateWindow(

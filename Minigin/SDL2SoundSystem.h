@@ -7,7 +7,7 @@
 namespace dae 
 {
 
-class SimpleSDL2SoundSystem final : public SoundSystem
+class SDL2SoundSystem final : public SoundSystem
 {
 	struct queuedAudio
 	{
@@ -17,13 +17,13 @@ class SimpleSDL2SoundSystem final : public SoundSystem
 	};
 
 public:
-	SimpleSDL2SoundSystem(const std::string& dataPath);
-	~SimpleSDL2SoundSystem() override;
+	SDL2SoundSystem(const std::string& dataPath);
+	~SDL2SoundSystem() override;
 
-	SimpleSDL2SoundSystem(const SimpleSDL2SoundSystem& other) = delete;
-	SimpleSDL2SoundSystem(SimpleSDL2SoundSystem&& other) noexcept = delete;
-	SimpleSDL2SoundSystem& operator=(const SimpleSDL2SoundSystem& other) = delete;
-	SimpleSDL2SoundSystem& operator=(SimpleSDL2SoundSystem&& other) noexcept = delete;
+	SDL2SoundSystem(const SDL2SoundSystem& other) = delete;
+	SDL2SoundSystem(SDL2SoundSystem&& other) noexcept = delete;
+	SDL2SoundSystem& operator=(const SDL2SoundSystem& other) = delete;
+	SDL2SoundSystem& operator=(SDL2SoundSystem&& other) noexcept = delete;
 
 	void Play(const std::string& filename, float volume, bool isSoundEffect = true) override;
 	void StopAll() override;

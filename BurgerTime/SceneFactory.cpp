@@ -66,6 +66,58 @@ void dae::SceneFactory::InitSteamTestScene()
 		go->AddComponent<dae::TestSoundComponent>();
 	}
 
+	// text comp 1
+	{
+		GameObject* go;
+
+		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("[K] start music");
+		textComponent->SetFont(font);
+		textComponent->SetPosition(100, 20);
+	}
+
+	// text comp 2
+	{
+		GameObject* go;
+
+		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("[L] fade out music");
+		textComponent->SetFont(font);
+		textComponent->SetPosition(100, 40);
+	}
+
+	// text comp 3
+	{
+		GameObject* go;
+
+		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("[I] play Sound Effect (can be played multiple times at once)");
+		textComponent->SetFont(font);
+		textComponent->SetPosition(100, 60);
+	}
+
+	// text comp 4
+	{
+		GameObject* go;
+
+		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("[J] toggle pause on all sounds");
+		textComponent->SetFont(font);
+		textComponent->SetPosition(100, 80);
+	}
+
 	{
 		GameObject* go = pScene->MakeGameObject();
 

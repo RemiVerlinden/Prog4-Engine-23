@@ -2,9 +2,8 @@
 // new convention
 
 #include "Logger.h"
-#include "SDL2_SoundSystem.h" 
-#include "SimpleSDL2SoundSystem.h"
-
+#include "SDL2SoundSystem.h" 
+#include "LogSoundSystem.h"
 
 namespace dae
 {

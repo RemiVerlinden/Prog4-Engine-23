@@ -1,17 +1,17 @@
-#include "SimpleSDL2SoundSystem.h"
-#include "audio.h"
+#include "SDL2SoundSystem.h"
+#include "SDLAudioWrapper.h"
 
 
 using namespace dae;
 
-SimpleSDL2SoundSystem::SimpleSDL2SoundSystem(const std::string& dataPath)
-	:m_AudioThread(&SimpleSDL2SoundSystem::ProcessQueue, this)
+SDL2SoundSystem::SDL2SoundSystem(const std::string& dataPath)
+	:m_AudioThread(&SDL2SoundSystem::ProcessQueue, this)
 	,m_Running(true)
 {
 	m_DataPath = dataPath;
 }
 
-SimpleSDL2SoundSystem::~SimpleSDL2SoundSystem()
+SDL2SoundSystem::~SDL2SoundSystem()
 {
 	m_Running = false;
 	m_ConditionVariable.notify_one();
@@ -21,7 +21,7 @@ SimpleSDL2SoundSystem::~SimpleSDL2SoundSystem()
 	endAudio();
 }
 
-void SimpleSDL2SoundSystem::Play(const std::string& filename, float volume, bool isSoundEffect)
+void SDL2SoundSystem::Play(const std::string& filename, float volume, bool isSoundEffect)
 {
 
 	std::unique_lock lock{ m_Mtx };
@@ -36,7 +36,7 @@ void SimpleSDL2SoundSystem::Play(const std::string& filename, float volume, bool
 	m_ConditionVariable.notify_one();
 }
 
-void SimpleSDL2SoundSystem::StopAll()
+void SDL2SoundSystem::StopAll()
 {
 	//https://stackoverflow.com/questions/709146/how-do-i-clear-the-stdqueue-efficiently
 	std::queue<queuedAudio> empty;
@@ -45,22 +45,22 @@ void SimpleSDL2SoundSystem::StopAll()
 	stopMusic();
 }
 
-void SimpleSDL2SoundSystem::StopMusic()
+void SDL2SoundSystem::StopMusic()
 {
 	stopMusic();
 }
 
-void SimpleSDL2SoundSystem::PauseAll()
+void SDL2SoundSystem::PauseAll()
 {
 	pauseAudio();
 }
 
-void SimpleSDL2SoundSystem::UnpauseAll()
+void SDL2SoundSystem::UnpauseAll()
 {
 	unpauseAudio();
 }
 
-void SimpleSDL2SoundSystem::ProcessQueue()
+void SDL2SoundSystem::ProcessQueue()
 {
 	std::unique_lock lock{ m_Mtx };
 	lock.unlock();
