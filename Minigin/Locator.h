@@ -1,15 +1,17 @@
 #pragma once
 // new convention
 
-#include "LoggerManager.h"
-#include "SoundSystem.h"
+#include "Logger.h"
+#include "SDL2_SoundSystem.h" 
+#include "SimpleSDL2SoundSystem.h"
+
 
 namespace dae
 {
 	class Locator final
 	{
-		static Logger m_spLogEngineInstance;
-		static Logger m_spLogAppInstance;
+		static std::unique_ptr<ILogger> m_spLogEngineInstance;
+		static std::unique_ptr<ILogger> m_spLogAppInstance;
 		static std::unique_ptr<SoundSystem> m_spSoundInstance;
 	public:
 		enum class LoggerType
@@ -18,9 +20,11 @@ namespace dae
 			App
 		};
 
-		static Logger& GetLogger(LoggerType type);
+		static ILogger& GetLogger(LoggerType type);
 		static SoundSystem& GetSoundSystem();
 		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& spSoundSystem);
-		//static void RegisterLogger(LoggerType type, std::unique_ptr<ILogger>&& spLogger);
+		static void RegisterLogger(LoggerType type, std::unique_ptr<ILogger>&& spLogger);
 	};
 }
+
+#include "LoggerMacros.h"

@@ -1,11 +1,12 @@
 #include "SDL2_SoundSystem.h"
-#include "audio.h"
+#include "SDLAudioWrapper.h"
 #include "Locator.h"
+#include <filesystem>
 
 using namespace dae;
 
 SDL2_SoundSystem::SDL2_SoundSystem(const std::string& dataPath)
-	:m_AudioThread(&SDL2_SoundSystem::ProcessQueue, this)
+    :m_AudioThread(&SDL2_SoundSystem::ProcessQueue, this)
 	, m_IsPlaying(true)
 {
 	m_FilePath = dataPath;
@@ -13,12 +14,10 @@ SDL2_SoundSystem::SDL2_SoundSystem(const std::string& dataPath)
 
 SDL2_SoundSystem::~SDL2_SoundSystem()
 {
-	m_IsPlaying = false;
-	m_ConditionVariable.notify_one();
-	m_AudioThread.join();
-
-	/* End Simple-SDL2-Audio */
-	endAudio();
+    m_IsPlaying = false;
+    m_ConditionVariable.notify_one();
+    if (m_AudioThread.joinable())
+        m_AudioThread.join();
 }
 
 void SDL2_SoundSystem::Play(const std::string& filename, float volume, bool isSoundEffect)
@@ -29,69 +28,45 @@ void SDL2_SoundSystem::Play(const std::string& filename, float volume, bool isSo
 		ENGINE_ERROR("{} Unsuported file type SDL2_SoundSystem only supports .wav files", filename);
 #endif
 
-	std::unique_lock lock{ m_Mtx };
-
 	AudioClip audio;
 	audio.filename = m_FilePath + filename;
 	audio.volume = static_cast<int>(std::clamp(volume, 0.f, 1.f) * SDL_MIX_MAXVOLUME);
 	audio.isSFX = isSoundEffect;
 
-	m_QueuedAudio.emplace(audio);
+	if (!std::filesystem::exists(audio.filename))
+	{
+		ENGINE_ERROR("no sound file at: {} exists", audio.filename);
+		return;
+	}
 
-	m_ConditionVariable.notify_one();
-}
+    std::unique_lock<std::mutex> lock(m_Mtx);
+    m_SoundQueue.push(new Sound{ audio.filename });
+    lock.unlock();
 
-void SDL2_SoundSystem::StopAll()
-{
-	//https://stackoverflow.com/questions/709146/how-do-i-clear-the-stdqueue-efficiently
-	std::queue<AudioClip> empty;
-	std::swap(m_QueuedAudio, empty);
-
-	
-	//stopMusic();
-}
-
-void SDL2_SoundSystem::StopMusic()
-{
-	//stopMusic();
-}
-
-void SDL2_SoundSystem::PauseAll()
-{
-	pauseAudio();
-}
-
-void SDL2_SoundSystem::UnpauseAll()
-{
-	unpauseAudio();
+    // Notify the condition variable
+    m_ConditionVariable.notify_one();
 }
 
 void SDL2_SoundSystem::ProcessQueue()
 {
-	std::unique_lock lock{ m_Mtx };
-	lock.unlock();
+    while (m_IsPlaying)
+    {
+        std::unique_lock<std::mutex> lock(m_Mtx);
 
-	while (m_IsPlaying)
-	{
-		lock.lock();
-		if (!m_QueuedAudio.empty())
-		{
-			const AudioClip audio = m_QueuedAudio.front();
-			m_QueuedAudio.pop();
-			lock.unlock();
+        // Wait until a sound is added to the queue
+        while (m_SoundQueue.empty())
+        {
+            m_ConditionVariable.wait(lock);
+        }
 
-			if (audio.isSFX)
-				playSound(audio.filename.c_str(), audio.volume);
-			else
-				playMusic(audio.filename.c_str(), audio.volume);
-		}
-		else
-		{
-			//unlocks lock, then sleeps
-			m_ConditionVariable.wait(lock); //wait until woken up
-			//enter lock
+        // Get the next sound from the queue
+        Sound* soundEffect = m_SoundQueue.front();
+        m_SoundQueue.pop();
+        lock.unlock();
 
-			lock.unlock();
-		}
-	}
+        // Play the sound
+        soundEffect->PlaySound();
+
+        // Delete the sound when finished
+    }
 }

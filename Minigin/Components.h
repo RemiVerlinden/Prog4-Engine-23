@@ -14,3 +14,4 @@
 #include "../BurgerTime/OrbitComponent.h"
 #include "../BurgerTime/ScoreboardComponent.h"
 #include "../BurgerTime/PlayerComponent.h"
+#include "../BurgerTime/TestSoundComponent.h"

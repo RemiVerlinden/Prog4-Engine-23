@@ -216,7 +216,8 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
-    <ClInclude Include="Audio.h" />
+    <ClInclude Include="audio.h" />
+    <ClInclude Include="SDLAudioWrapper.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BindInputCommandComponent.h" />
     <ClInclude Include="CommandHandler.h" />
@@ -225,6 +226,9 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventListener.h" />
     <ClInclude Include="EventManager.h" />
+    <ClInclude Include="ILogger.h" />
+    <ClInclude Include="LoggerMacros.h" />
+    <ClInclude Include="NullLogger.h" />
     <ClInclude Include="NullSoundSystem.hpp" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="IDComponent.h" />
@@ -233,10 +237,11 @@
     <ClInclude Include="InputDeviceKeyboard.h" />
     <ClInclude Include="InputDeviceMouse.h" />
     <ClInclude Include="Locator.h" />
-    <ClInclude Include="LoggerManager.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="PrefabFunctions.h" />
     <ClInclude Include="SDL2_SoundSystem.h" />
     <ClInclude Include="SDLEventQueue.h" />
+    <ClInclude Include="SimpleSDL2SoundSystem.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SpawnerComponent.h" />
     <ClInclude Include="SpawnerObject.h" />
@@ -277,7 +282,8 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="audio.cpp" />
+    <ClCompile Include="SDLAudioWrapper.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BindInputCommandComponent.cpp" />
     <ClCompile Include="CommandHandler.cpp" />
@@ -286,13 +292,14 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ILogger.cpp" />
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="IDComponent.cpp" />
     <ClCompile Include="InputDebugImguiComponent.cpp" />
     <ClCompile Include="InputDeviceGamepad.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Locator.cpp" />
-    <ClCompile Include="LoggerManager.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="Render2DComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -300,6 +307,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SDL2_SoundSystem.cpp" />
+    <ClCompile Include="SimpleSDL2SoundSystem.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="SpawnerComponent.cpp" />
     <ClCompile Include="SpawnerObject.cpp" />

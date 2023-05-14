@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include "SDLAudioWrapper.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -17,6 +18,8 @@
 #include "UpdateContext.h"
 #include "Utils.hpp"
 #include "Locator.h"
+#include "audio.h"
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -52,10 +55,17 @@ dae::Minigin::Minigin(const std::string& dataPath)
 {
 	PrintSDLVersion();
 
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	// Initialize SDL video and audio
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
+
+	// Initialize SDL2 Audio
+	initAudio();
+
+	Locator::RegisterSoundSystem(std::make_unique<SimpleSDL2SoundSystem>("../Data/Sounds/"));
+
 
 	g_window = SDL_CreateWindow(
 		"Programming 4 assignment",

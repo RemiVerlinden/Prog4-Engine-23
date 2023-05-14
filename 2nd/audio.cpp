@@ -16,7 +16,6 @@
  * limitations under the License.
  *
  */
-#include <iostream>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,7 +120,6 @@ static inline void audioCallback(void * userdata, uint8_t * stream, int len);
 
 void playSound(const char * filename, int volume)
 {
-
     playAudio(filename, NULL, 0, volume);
 }
 
@@ -210,19 +208,7 @@ void initAudio(void)
     global->next = NULL;
 
     /* want.userdata = newAudio; */
-
-    int count = SDL_GetNumAudioDevices(0);  // get count of audio devices
-    for (int i = 0; i < count; ++i)
-    {
-        const char* device_name = SDL_GetAudioDeviceName(i, 0);  // get the name of the audio device
-        std::cout << "Audio device " << i << ": " << device_name << std::endl;
-        //SDL_AudioDeviceID device = SDL_OpenAudioDevice(device_name, 0, &gDevice->want, NULL, 0);  // open the audio device
-        // ... rest of your code to handle the opened device ...
-    }
-
-    //if((gDevice->device = SDL_OpenAudioDevice(NULL, 0, &(gDevice->want), NULL, SDL_AUDIO_ALLOW_CHANGES)) == 0)
-    //if((SDL_OpenAudio(&(gDevice->want), NULL) < 0))
-    if(gDevice->device = SDL_OpenAudioDevice(NULL, 0, &gDevice->want, NULL, SDL_AUDIO_ALLOW_CHANGES) == 0)
+    if((gDevice->device = SDL_OpenAudioDevice(NULL, 0, &(gDevice->want), NULL, SDL_AUDIO_ALLOW_CHANGES)) == 0)
     {
         fprintf(stderr, "[%s: %d]Warning: failed to open audio device: %s\n", __FILE__, __LINE__, SDL_GetError());
     }
@@ -245,8 +231,7 @@ void endAudio(void)
         freeAudio((Audio *) (gDevice->want).userdata);
 
         /* Close down audio */
-        //SDL_CloseAudioDevice(gDevice->device);
-        SDL_CloseAudio();
+        SDL_CloseAudioDevice(gDevice->device);
     }
 
     free(gDevice);
@@ -436,7 +421,6 @@ static inline void audioCallback(void * userdata, uint8_t * stream, int len)
 
     while(audio != NULL)
     {
-        std::cout << "test" << std::endl;
         if(audio->length > 0)
         {
             if(audio->fade == 1 && audio->loop == 1)
@@ -473,8 +457,6 @@ static inline void audioCallback(void * userdata, uint8_t * stream, int len)
 
             audio->buffer += tempLength;
             audio->length -= tempLength;
-
-            std::cout << audio->length << std::endl;
 
             previous = audio;
             audio = audio->next;

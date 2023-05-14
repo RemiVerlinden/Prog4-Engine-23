@@ -27,6 +27,7 @@
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="ScoreboardComponent.cpp" />
+    <ClCompile Include="TestSoundComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationEvent.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="ScoreboardComponent.h" />
+    <ClInclude Include="TestSoundComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

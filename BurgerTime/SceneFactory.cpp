@@ -63,6 +63,7 @@ void dae::SceneFactory::InitSteamTestScene()
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::background);
 
 		go->AddComponent<dae::ScoreBoardComponent>();
+		go->AddComponent<dae::TestSoundComponent>();
 	}
 
 	{
