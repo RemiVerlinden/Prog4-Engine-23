@@ -14,12 +14,12 @@ namespace dae
 		SpawnerComponent() = default;
 		void Initialize();
 
-		void FixedUpdate ([[maybe_unused]] const UpdateContext& context) override {};
-		void Update([[maybe_unused]] const UpdateContext& context) override {};
-		void LateUpdate([[maybe_unused]] const UpdateContext& context) override {};
+		void FixedUpdate (const UpdateContext& /*context*/) override {};
+		void Update( const UpdateContext& /*context*/) override {};
+		void LateUpdate(const UpdateContext& /*context*/) override {};
 
 		void Draw() override {};
-		void DrawUI([[maybe_unused]] UpdateContext& context) override {};
+		void DrawUI(UpdateContext& /*context*/) override {};
 
 		void AddSpawnableObject(Prefab&& spawner);
 		void SpawnGameObject(const std::string& objectName, Scene* pScene);

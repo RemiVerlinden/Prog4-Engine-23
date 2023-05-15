@@ -23,7 +23,7 @@ namespace dae
             virtual void Initialize() override {};
             virtual void Shutdown() override {};
 
-            virtual void ProcessInput([[maybe_unused]] Seconds deltaTime) override 
+            virtual void ProcessInput(Seconds deltaTime) override 
             {
                 for (const SDL_Event& event : m_EventQueue.GetEvents())
                 {

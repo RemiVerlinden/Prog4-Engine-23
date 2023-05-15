@@ -25,7 +25,7 @@ void dae::Render2DComponent::Initialize()
 
 void dae::Render2DComponent::Draw()
 {
-	[[maybe_unused]] const auto& pos = m_GameObject->m_Transform->GetWorldPosition();
+	const auto& pos = m_GameObject->m_Transform->GetWorldPosition();
 
 
 	switch (m_DrawStyle)

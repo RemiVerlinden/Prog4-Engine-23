@@ -9,7 +9,7 @@ void dae::OrbitComponent::Initialize()
 	m_CenterPos = m_GameObject->m_Transform->GetWorldPosition();
 }
 
-void dae::OrbitComponent::Update([[maybe_unused]] const UpdateContext& context)
+void dae::OrbitComponent::Update(const UpdateContext& /*context*/)
 {
 	float time = EngineClock::GetTimeInSeconds();
 

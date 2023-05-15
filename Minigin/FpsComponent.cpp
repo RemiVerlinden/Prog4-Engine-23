@@ -21,7 +21,7 @@ void dae::FpsComponent::Initialize()
 	m_TextComponent->SetText(std::format("{} FPS", m_FramesPerSecond));
 }
 
-void dae::FpsComponent::Update([[maybe_unused]] const UpdateContext& context)
+void dae::FpsComponent::Update(const UpdateContext& context)
 {
 	m_Accumulator += context.GetDeltaTime();
 	++m_FpsCount;

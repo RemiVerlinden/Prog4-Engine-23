@@ -11,11 +11,11 @@ namespace dae {
 		virtual ~BaseComponent() = default;
 
 		virtual void Initialize() = 0;
-		virtual void Update([[maybe_unused]] const UpdateContext& context) {};
+		virtual void Update(const UpdateContext& /*context*/) {};
 		virtual void Draw() {};
-		virtual void DrawUI([[maybe_unused]] UpdateContext& context) {};
-		virtual void LateUpdate([[maybe_unused]] const UpdateContext& context) {};
-		virtual void FixedUpdate([[maybe_unused]] const UpdateContext& context) {};
+		virtual void DrawUI(UpdateContext& /*context*/) {};
+		virtual void LateUpdate( const UpdateContext& /*context*/) {};
+		virtual void FixedUpdate(const UpdateContext& /*context*/) {};
 
 		static uint64_t GetComponentCount() { return m_ComponentCount; }
 		

@@ -7,7 +7,7 @@ void dae::TrashTheCacheComponent::Initialize()
 {
 }
 
-void dae::TrashTheCacheComponent::DrawUI([[maybe_unused]] UpdateContext& context)
+void dae::TrashTheCacheComponent::DrawUI(UpdateContext& context)
 {
 	DrawImguiExercise1Window();
 	DrawImguiExercise2Window();

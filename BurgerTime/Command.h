@@ -50,7 +50,7 @@ namespace dae
 			SetMoveComponent(gameObject);
 		}
 
-		void Execute([[maybe_unused]] Seconds elapsedTime)
+		void Execute(Seconds /*elapsedTime*/)
 		{
 			glm::vec2 moveVec = (useRef) ? *m_MoveDirRef : m_MoveDir;
 			moveVec.y = -moveVec.y; // in this engine the Y is inverted 
@@ -82,7 +82,7 @@ namespace dae
 	public:
 		ChangeSceneCommand(bool nextScene) :m_NextScene(nextScene) {}
 
-		virtual void Execute([[maybe_unused]] Seconds elapsedTime)
+		virtual void Execute(Seconds /*elapsedTime*/)
 		{
 			SceneManager& sceneManager = SceneManager::GetInstance();
 
@@ -100,7 +100,7 @@ namespace dae
 		{
 			SetHealthComponent(object);
 		};
-		virtual void Execute([[maybe_unused]] Seconds elapsedTime)
+		virtual void Execute(Seconds /*elapsedTime*/)
 		{
 			m_HealthComponent->Damage(m_DamageAmount);
 		};
@@ -126,7 +126,7 @@ namespace dae
 	{
 	public:
 		KillCommand(GameObject* object) :GameObjectCommand(object){};
-		virtual void Execute([[maybe_unused]] Seconds elapsedTime)
+		virtual void Execute(Seconds /*elapsedTime*/)
 		{
 			GetGameObject()->Destroy();
 		};

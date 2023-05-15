@@ -169,7 +169,7 @@ namespace dae::Input
 		EventSubscribe(OnDeath);
 	}
 
-	void dae::Input::InputDebugImguiComponent::DrawUI([[maybe_unused]] UpdateContext& context)
+	void dae::Input::InputDebugImguiComponent::DrawUI(UpdateContext& /*context*/)
 	{
 		DrawIsDeviceConnectedWindow();
 

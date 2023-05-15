@@ -46,7 +46,7 @@ void dae::ScoreBoardComponent::Initialize()
 }
 
 
-void dae::ScoreBoardComponent::DrawUI([[maybe_unused]] UpdateContext& context)
+void dae::ScoreBoardComponent::DrawUI(UpdateContext& /*context*/)
 {
 	ImGui::Begin("Scoreboard");
 

@@ -74,8 +74,6 @@ void SDL2SoundSystem::ProcessQueue()
 			m_AudioQueue.pop();
 			lock.unlock();
 
-
-
 			if (audio.isSoundEffect)
 				playSound(audio.filename.c_str(), audio.volume);
 			else
