@@ -33,7 +33,7 @@ void dae::TextComponent::Initialize()
 	}
 }
 
-void dae::TextComponent::Update(const UpdateContext& context)
+void dae::TextComponent::Update(const UpdateContext& /*context*/)
 {
 	if (m_needsUpdate)
 	{
