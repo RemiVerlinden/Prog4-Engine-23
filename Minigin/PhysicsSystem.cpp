@@ -4,25 +4,57 @@
 
 bool dae::PhysicsSystem::CheckLevelCollision(GameObject* pObject) const
 {
-    pObject->
+    std::vector<ColliderComponent*> colliders{pObject->GetAllComponents<ColliderComponent>()};
+    for (ColliderComponent* pCollider : colliders)
+    {
+        if (CheckLevelCollision(pCollider)) return true;
+    };
 
-
-    return false;
+   return false;
 }
 
 bool dae::PhysicsSystem::CheckLevelCollision(ColliderComponent* pCollider) const
 {
     for (ColliderComponent* pCollider : m_pColliders)
     {
-        Rect& a = pCollider->GetRect();
-        Rect& b = pCollider->GetRect();
+        const Box& a = pCollider->GetCollider();
+        const Box& b = pCollider->GetCollider();
 
         if (CheckCollisionAABB(a, b)) return true;
     }
     return false;
 }
 
-bool dae::PhysicsSystem::CheckCollisionAABB(const Rect& a, const Rect& b) const
+void dae::PhysicsSystem::AddCollider(ColliderComponent* pCollider)
+{
+    m_pColliders.emplace_back(pCollider);
+}
+
+void dae::PhysicsSystem::AddCollider(GameObject* pObject)
+{
+    std::vector<ColliderComponent*> colliders{pObject->GetAllComponents<ColliderComponent>()};
+    for (ColliderComponent* pCollider : colliders)
+    {
+        AddCollider(pCollider);
+    };
+}
+
+void dae::PhysicsSystem::RemoveCollider(ColliderComponent* pCollider)
+{
+    std::erase(m_pColliders, pCollider);
+}
+
+void dae::PhysicsSystem::RemoveCollider(GameObject* pObject)
+{
+    std::vector<ColliderComponent*> colliders{pObject->GetAllComponents<ColliderComponent>()};
+
+    for (ColliderComponent* pCollider : colliders)
+    {
+        RemoveCollider(pCollider);
+    }
+}
+
+bool dae::PhysicsSystem::CheckCollisionAABB(const Box& a, const Box& b) const
 {
     //The sides of the rectangles
     int leftA, leftB;
