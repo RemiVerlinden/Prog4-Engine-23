@@ -11,7 +11,7 @@ namespace dae
 	{
 		static std::unique_ptr<ILogger> m_spLogEngineInstance;
 		static std::unique_ptr<ILogger> m_spLogAppInstance;
-		static std::unique_ptr<SoundSystem> m_spSoundInstance;
+		static std::unique_ptr<ISoundSystem> m_spSoundInstance;
 	public:
 		enum class LoggerType
 		{
@@ -20,8 +20,8 @@ namespace dae
 		};
 
 		static ILogger& GetLogger(LoggerType type);
-		static SoundSystem& GetSoundSystem();
-		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& spSoundSystem);
+		static ISoundSystem& GetSoundSystem();
+		static void RegisterSoundSystem(std::unique_ptr<ISoundSystem>&& spSoundSystem);
 		static void RegisterLogger(LoggerType type, std::unique_ptr<ILogger>&& spLogger);
 	};
 }

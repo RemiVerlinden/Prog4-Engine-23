@@ -217,6 +217,7 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="LogSoundSystem.h" />
+    <ClInclude Include="IPhysicsSystem.h" />
     <ClInclude Include="SDLAudioWrapper.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BindInputCommandComponent.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="LogSoundSystem.cpp" />
+    <ClCompile Include="IPhysicsSystem.cpp" />
     <ClCompile Include="SDLAudioWrapper.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BindInputCommandComponent.cpp" />

@@ -2,7 +2,7 @@
 #include "Locator.h"
 
 using namespace dae;
-LogSoundSystem::LogSoundSystem(std::unique_ptr<SoundSystem>&& upSystemToLog)
+LogSoundSystem::LogSoundSystem(std::unique_ptr<ISoundSystem>&& upSystemToLog)
 {
 	m_upSystem = std::move(upSystemToLog);
 	ENGINE_INFO("Created sound system");

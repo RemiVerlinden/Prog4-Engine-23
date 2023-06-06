@@ -1,13 +1,13 @@
 #pragma once
 #include <mutex>
 #include <queue>
-#include "SoundSystem.h"
+#include "ISoundSystem.h"
 
 //very simple audio system
 namespace dae 
 {
 
-class SDL2SoundSystem final : public SoundSystem
+class SDL2SoundSystem final : public ISoundSystem
 {
 	struct queuedAudio
 	{

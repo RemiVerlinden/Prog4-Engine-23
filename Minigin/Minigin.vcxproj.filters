@@ -82,6 +82,12 @@
     <Filter Include="Engine Files\Audio\SDLWrapper">
       <UniqueIdentifier>{37358410-79c3-41bb-9bfa-f50c6daf471a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Animation">
+      <UniqueIdentifier>{bff8c59c-9847-4d8c-b2f9-763a2f47d63c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{1ad48bff-046e-4ec0-acae-582ca12f5b03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h">
@@ -276,6 +282,9 @@
     <ClInclude Include="LogSoundSystem.h">
       <Filter>Engine Files\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="IPhysicsSystem.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -406,6 +415,9 @@
     </ClCompile>
     <ClCompile Include="LogSoundSystem.cpp">
       <Filter>Engine Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="IPhysicsSystem.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

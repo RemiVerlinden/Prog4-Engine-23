@@ -51,6 +51,10 @@ namespace dae
 		// Get a component from the game object.
 		template<typename ComponentType>
 		ComponentType* GetComponent(const std::string& componentTag = "");
+
+		// Get a all components from the game object.
+		template<typename ComponentType>
+		std::vector<ComponentType*>&& GetAllComponents();
 		
 		// Check if the game object has a specific component.
 		template<typename ComponentType>
@@ -154,14 +158,37 @@ namespace dae
 
 		for (const std::unique_ptr<BaseComponent>& component : m_Components)
 		{
-			ComponentType* castedComponent = dynamic_cast<ComponentType*>(component.get());
-			if (castedComponent != nullptr)
+			ComponentType* pCastedComponent = dynamic_cast<ComponentType*>(component.get());
+			if (pCastedComponent != nullptr)
 			{
 				if (component->GetComponentTag() == componentTag)
-					return castedComponent;
+					return pCastedComponent;
 			}
 		}
 		return nullptr;
+	}
+
+	template<typename ComponentType>
+	std::vector<ComponentType*>&& GameObject::GetAllComponents()
+	{
+		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
+
+		if (!HasComponent<ComponentType>())
+		{
+			ENGINE_ERROR("GameObject::GetComponent -> no component of this type found in GameObject.");
+			assert(false);
+		}
+
+		std::vector<ComponentType*> components;
+		for (const std::unique_ptr<BaseComponent>& component : m_Components)
+		{
+			ComponentType* pCastedComponent = dynamic_cast<ComponentType*>(component.get());
+			if (pCastedComponent != nullptr)
+			{
+				components.emplace_back(pCastedComponent);
+			}
+		}
+		return std::move(components);
 	}
 
 	template<typename ComponentType>

@@ -1,13 +1,13 @@
 #pragma once
-#include "SoundSystem.h"
+#include "ISoundSystem.h"
 #include <memory>
 
 namespace dae
 {
-	class LogSoundSystem final : public SoundSystem
+	class LogSoundSystem final : public ISoundSystem
 	{
 	public:
-		LogSoundSystem(std::unique_ptr<SoundSystem>&& systemToLog);
+		LogSoundSystem(std::unique_ptr<ISoundSystem>&& systemToLog);
 		~LogSoundSystem() override;
 
 		LogSoundSystem(const LogSoundSystem& other) = delete;
@@ -22,6 +22,6 @@ namespace dae
 		void UnpauseAll() override;
 
 	private:
-		std::unique_ptr<SoundSystem> m_upSystem;
+		std::unique_ptr<ISoundSystem> m_upSystem;
 	};
 }

@@ -1,10 +1,10 @@
 #pragma once
-#include "SoundSystem.h"
+#include "ISoundSystem.h"
 //#include "Logger.h"
 
 namespace dae
 {
-	class NullSoundSystem final : public SoundSystem
+	class NullSoundSystem final : public ISoundSystem
 	{
 	public:
 		void Play(const std::string& /*filename*/, float /*volume*/, bool /*isSoundEffect*/ = true) override { /*Logger::GetInstance().LogWarning("Tried to use NullSoundSystem");*/ }
