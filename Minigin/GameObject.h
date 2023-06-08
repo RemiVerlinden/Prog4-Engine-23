@@ -54,7 +54,7 @@ namespace dae
 
 		// Get a all components from the game object.
 		template<typename ComponentType>
-		std::vector<ComponentType*>&& GetAllComponents();
+		std::vector<ComponentType*> GetAllComponents();
 		
 		// Check if the game object has a specific component.
 		template<typename ComponentType>
@@ -88,6 +88,8 @@ namespace dae
 		static uint64_t GetGameObjectCount() { return m_GameObjectCount; }
 
 		const std::string& GetTag() { return m_Tag; }
+
+		Scene* GetScene() { return m_Scene; }
 
 		// Get a clone of the game object that is not connected to any scene.
 		std::shared_ptr<GameObject> Clone();
@@ -169,7 +171,7 @@ namespace dae
 	}
 
 	template<typename ComponentType>
-	std::vector<ComponentType*>&& GameObject::GetAllComponents()
+	std::vector<ComponentType*> GameObject::GetAllComponents()
 	{
 		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
 
@@ -188,7 +190,7 @@ namespace dae
 				components.emplace_back(pCastedComponent);
 			}
 		}
-		return std::move(components);
+		return components;
 	}
 
 	template<typename ComponentType>

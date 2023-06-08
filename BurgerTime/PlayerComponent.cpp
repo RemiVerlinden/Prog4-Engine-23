@@ -9,7 +9,7 @@ void dae::PlayerComponent::Initialize()
 	textureComponent->SetCanBeCloned(false);
 
 	textureComponent->SetTexture("cheff.png");
-	textureComponent->SetPosition(300, 300);
+	textureComponent->SetPosition(-25, -25);
 	textureComponent->SetResolution(50, 50);
 	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 

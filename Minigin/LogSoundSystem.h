@@ -1,5 +1,5 @@
 #pragma once
-#include "ISoundSystem.h"
+#include "ISoundSystem.hpp"
 #include <memory>
 
 namespace dae

@@ -22,6 +22,7 @@ namespace dae {
 		std::string GetComponentTag() const { return m_ComponentTag; }
 		void SetComponentTag(const std::string& tag) { m_ComponentTag = tag; }
 
+		GameObject* GetGameObject() const;
 
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;

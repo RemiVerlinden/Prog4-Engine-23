@@ -9,6 +9,7 @@
 #include <iostream>
 #include "Locator.h"
 #include "Prefab.h"
+#include "WorldPhysics.h"
 
 using namespace dae;
 
@@ -20,6 +21,8 @@ void dae::SceneFactory::CreateScenes()
 	APP_TRACE("INPUT PLAYER 2: [ARROW KEYS] -	[GAMEPAD 2: DPAD] - [GAMEPAD 2: LEFT STICK]");
 
 	InitSceneKeybinds();
+
+	InitBurgerTimeScene();
 
 	InitSteamTestScene();
 	InitDefaultScene();
@@ -50,10 +53,29 @@ void dae::SceneFactory::InitSceneKeybinds()
 	bindChangeScene(inputDevice, KeyboardButton::KEY_PAGEDOWN, ButtonPressType::Release, false);
 	bindChangeScene(inputDevice, KeyboardButton::KEY_PAGEUP, ButtonPressType::Release, true);
 }
+
+void dae::SceneFactory::InitBurgerTimeScene()
+{
+	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("BurgerTime");
+	pScene->SetPhysicsWorld(std::make_unique<WorldPhysics>());
+
+	GameObject* pWorldObject = pScene->MakeGameObject();
+	pWorldObject->AddComponent<WorldDataComponent>();
+	
+
+	GameObject* pPlayer = pScene->MakeGameObject();
+	pPlayer->AddComponent<PlayerComponent>();
+	pPlayer->AddComponent<CirclePhysicsComponent>();
+	pPlayer->m_Transform->SetLocalPosition(240, 240,0);
+
+	dae::SceneManager::GetInstance().SetActiveGameScene("BurgerTime");
+
+}
+
 void dae::SceneFactory::InitSteamTestScene()
 {
 	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("SteamTest");
-	dae::SceneManager::GetInstance().SetActiveGameScene("SteamTest");
+	//dae::SceneManager::GetInstance().SetActiveGameScene("SteamTest");
 
 	// Background
 	{

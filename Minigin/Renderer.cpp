@@ -7,6 +7,7 @@
 #include "UpdateContext.h"
 #include <assert.h>
 #include <algorithm>
+#include "DebugRenderer.h"
 
 int GetOpenGLDriverIndex()
 {
@@ -37,6 +38,8 @@ void dae::Renderer::Init(SDL_Window* window)
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL2_Init();
+
+	DebugRenderer::GetInstance().Init(m_renderer);
 }
 
 
@@ -59,6 +62,8 @@ void dae::Renderer::Render(UpdateContext& context)
 		ImGui::ShowDemoWindow(&m_showDemo);
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
+
 
 	SDL_RenderPresent(m_renderer);
 }

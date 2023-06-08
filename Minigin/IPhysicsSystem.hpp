@@ -1,16 +1,27 @@
 #pragma once
 #include <vector>
+#include <variant>
+#include "glm\glm.hpp"
 
 namespace dae
 {
 	class GameObject;
 	class ColliderComponent;
 
-	struct Rect
+
+	struct Box
 	{
-		int x, y;
-		int w, h;
+		glm::vec2 pos;
+		glm::vec2 size;
 	};
+
+	struct Circle
+	{
+		glm::vec2 pos;
+		float radius;
+	};
+
+	using Shape = std::variant<Box, Circle>;
 
 	class IPhysicsSystem	
 	{
@@ -18,16 +29,8 @@ namespace dae
 		IPhysicsSystem() = default;
 		virtual ~IPhysicsSystem() = default;
 
-		virtual bool CheckLevelCollision(GameObject* pObject) const = 0;
-		virtual bool CheckLevelCollision(ColliderComponent* pCollider) const = 0;
-
-		virtual void AddCollider(ColliderComponent* pCollider) = 0;
-		virtual void AddCollider(GameObject* pObject) = 0;
-
-		virtual void RemoveCollider(ColliderComponent* pCollider) = 0;
-		virtual void RemoveCollider(GameObject* pObject) = 0;
-
-	protected:
-		std::vector<ColliderComponent*> m_pColliders;
+		virtual bool CheckCollisionAABB(const Box& a, const Box& b) const = 0;
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Circle& c, const Box& b) const = 0;
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Box& b, const Circle& c) const = 0;
 	};
 }

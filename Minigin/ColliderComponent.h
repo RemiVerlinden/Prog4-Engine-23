@@ -1,35 +1,27 @@
 #pragma once
 #include "BaseComponent.h"
 #include "UpdateContext.h"
-
-//==============================================================================
-//
-// THIS IS NOT A REAL COMPONENT : THIS IS JUST SO I CAN COPY PASTE IT WHEN I MAKE ACTUAL NEW COMPONENTS
-//
-//==============================================================================
+#include "IPhysicsSystem.hpp" // for Shape
 
 namespace dae
 {
-	class TemplateComponent final : public BaseComponent
+	class ColliderComponent final : public BaseComponent
 	{
 	public:
-		void Initialize() {};
+		void Initialize();
+		virtual ~ColliderComponent();
+		void SetCollider(const Shape& collider);
+		const Shape& GetCollider() const;
+		void SetPosition(glm::vec2 position);
 
-		void FixedUpdate (const UpdateContext& /*context*/) override {};
-		void Update(const UpdateContext& /*context*/) override {};
-		void LateUpdate(const UpdateContext& /*context*/) override {};
-
-		void Draw() override {};
-		void DrawUI(UpdateContext& /*context*/) override {};
-
-
-		TemplateComponent(const TemplateComponent& other) = delete;
-		TemplateComponent(TemplateComponent&& other) = delete;
-		TemplateComponent& operator=(const TemplateComponent& other) = delete;
-		TemplateComponent& operator=(TemplateComponent&& other) = delete;
+		ColliderComponent(const ColliderComponent& other) = delete;
+		ColliderComponent(ColliderComponent&& other) = delete;
+		ColliderComponent& operator=(const ColliderComponent& other) = delete;
+		ColliderComponent& operator=(ColliderComponent&& other) = delete;
 	private:
-
-
+		Shape m_Collider;
+		
+		bool m_IsInitialized = false;
 		void Clone(GameObject*) override {};
 	};
 }

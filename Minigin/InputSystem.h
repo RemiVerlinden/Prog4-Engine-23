@@ -55,7 +55,7 @@ namespace dae::Input
 
         // CommandHandler
         //-------------------------------------------------------------------------
-        CommandHandler& GetCommandHandler() const { return *m_CommandHandler.get(); }
+        CommandHandler& GetCommandHandler() const { return *m_CommandHandler; }
 
     private:
         friend class Singleton<InputSystem>;

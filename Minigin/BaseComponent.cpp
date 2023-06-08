@@ -38,3 +38,8 @@ void dae::BaseComponent::RootLateUpdate(const UpdateContext& context)
 {
 	LateUpdate(context);
 }
+
+dae::GameObject* dae::BaseComponent::GetGameObject() const
+{
+	return m_GameObject;
+}

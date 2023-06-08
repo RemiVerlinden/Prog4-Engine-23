@@ -36,7 +36,7 @@ namespace dae
 			: GameObjectCommand(gameObject)
 			, m_MoveDir(movedir)
 			,m_MoveDirRef(nullptr)
-			,useRef(false)
+			,m_UseRef(false)
 		{
 			SetMoveComponent(gameObject);
 		}
@@ -45,21 +45,21 @@ namespace dae
 			: GameObjectCommand(gameObject)
 			, m_MoveDir(0,0)
 			, m_MoveDirRef(movedir)
-			,useRef(true)
+			,m_UseRef(true)
 		{
 			SetMoveComponent(gameObject);
 		}
 
 		void Execute(Seconds /*elapsedTime*/)
 		{
-			glm::vec2 moveVec = (useRef) ? *m_MoveDirRef : m_MoveDir;
+			glm::vec2 moveVec = (m_UseRef) ? *m_MoveDirRef : m_MoveDir;
 			moveVec.y = -moveVec.y; // in this engine the Y is inverted 
 			m_MoveComponent->SetMoveDirection(moveVec);
 		}
 	private:
 		MoveComponent* m_MoveComponent;
 		
-		bool useRef;
+		bool m_UseRef;
 		const glm::vec2* m_MoveDirRef;
 		glm::vec2 m_MoveDir;
 

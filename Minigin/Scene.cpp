@@ -4,6 +4,7 @@
 #include "TagComponent.h"
 #include "SceneManager.h"
 #include "Locator.h"
+#include "NullWorldPhysics.h"
 
 using namespace dae;
 
@@ -13,6 +14,7 @@ Scene::Scene(const std::string& tag)
 	: m_Tag(tag)
 {
 	// Initialize the timer in the scene
+	m_pPhysicsWorld = std::make_unique<NullWorldPhysics>();
 }
 
 void dae::Scene::DeleteMarkedForDestroy()

@@ -88,6 +88,15 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{1ad48bff-046e-4ec0-acae-582ca12f5b03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\Physics">
+      <UniqueIdentifier>{ed8a1b7d-9a37-4a34-a5e6-7f28aff5c65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\WorldPhysics">
+      <UniqueIdentifier>{e195bfa8-9dcd-44ed-b06d-90d032fe9615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\DebugDraw">
+      <UniqueIdentifier>{f505eb5d-e44a-4459-a080-50a4f875d909}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h">
@@ -252,7 +261,7 @@
     <ClInclude Include="Utils.hpp">
       <Filter>Engine Files</Filter>
     </ClInclude>
-    <ClInclude Include="SoundSystem.h">
+    <ClInclude Include="ISoundSystem.hpp">
       <Filter>Engine Files\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Locator.h">
@@ -282,8 +291,29 @@
     <ClInclude Include="LogSoundSystem.h">
       <Filter>Engine Files\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="IPhysicsSystem.h">
+    <ClInclude Include="IPhysicsSystem.hpp">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="NullPhysicsSystem.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Application Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IWorldPhysics.h">
+      <Filter>Engine Files\WorldPhysics</Filter>
+    </ClInclude>
+    <ClInclude Include="NullWorldPhysics.h">
+      <Filter>Engine Files\WorldPhysics</Filter>
+    </ClInclude>
+    <ClInclude Include="CirclePhysicsComponent.h">
+      <Filter>Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugRenderer.h">
+      <Filter>Engine Files\DebugDraw</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,9 +425,6 @@
     <ClCompile Include="EventListener.cpp">
       <Filter>Engine Files\Events</Filter>
     </ClCompile>
-    <ClCompile Include="SoundSystem.cpp">
-      <Filter>Engine Files\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="Locator.cpp">
       <Filter>Engine Files\ServiceLocator</Filter>
     </ClCompile>
@@ -416,8 +443,26 @@
     <ClCompile Include="LogSoundSystem.cpp">
       <Filter>Engine Files\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="IPhysicsSystem.cpp">
+    <ClCompile Include="PhysicsSystem.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="NullPhysicsSystem.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="IWorldPhysics.cpp">
+      <Filter>Engine Files\WorldPhysics</Filter>
+    </ClCompile>
+    <ClCompile Include="NullWorldPhysics.cpp">
+      <Filter>Engine Files\WorldPhysics</Filter>
+    </ClCompile>
+    <ClCompile Include="CirclePhysicsComponent.cpp">
+      <Filter>Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugRenderer.cpp">
+      <Filter>Engine Files\DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

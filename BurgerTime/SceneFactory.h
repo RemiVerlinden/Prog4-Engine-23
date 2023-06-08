@@ -14,6 +14,7 @@ namespace dae
 
 		void InitSceneKeybinds();
 
+		void InitBurgerTimeScene();
 		void InitSteamTestScene();
 		void InitDefaultScene();
 		void InitFpsDemoScene();

@@ -12,7 +12,7 @@
 dae::Render2DComponent::Render2DComponent()
 	: m_Texture(nullptr)
 	, m_DrawStyle(DrawStyle::position)
-	, m_SrcRect( 0,0,1,1 )
+	, m_SrcRect(0, 0, 1, 1)
 {
 
 }
@@ -25,25 +25,27 @@ void dae::Render2DComponent::Initialize()
 
 void dae::Render2DComponent::Draw()
 {
-	const auto& pos = m_GameObject->m_Transform->GetWorldPosition();
+	glm::vec2 pos = m_GameObject->m_Transform->GetWorldPosition();
 
+	pos.x += m_SrcRect.x;
+	pos.y += m_SrcRect.y;
 
 	switch (m_DrawStyle)
 	{
-	case dae::Render2DComponent::position:
-		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+		case dae::Render2DComponent::position:
+			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+			break;
+		case dae::Render2DComponent::positionScale:
+		{
+			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, (float)m_SrcRect.z, (float)m_SrcRect.w);
+		}
 		break;
-	case dae::Render2DComponent::positionScale:
-	{
-		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, (float)m_TextureResolution.x, (float)m_TextureResolution.y);
-	}
-		break;
-	case dae::Render2DComponent::background:
-		Renderer::GetInstance().RenderTextureBackground(*m_Texture);
-		break;
-	default:
-		assert(false);
-		break;
+		case dae::Render2DComponent::background:
+			Renderer::GetInstance().RenderTextureBackground(*m_Texture);
+			break;
+		default:
+			assert(false);
+			break;
 	}
 }
 
@@ -61,13 +63,16 @@ void dae::Render2DComponent::SetTexture(const std::string& filename)
 
 void dae::Render2DComponent::SetPosition(const float x, const float y)
 {
-	m_GameObject->m_Transform->SetLocalPosition(x, y, 0.0f);
+	m_SrcRect.x = x;
+	m_SrcRect.y = y;
 }
 
 void dae::Render2DComponent::SetResolution(const int width, const int height)
 {
 	m_TextureResolution.x = width;
 	m_TextureResolution.y = height;
+	m_SrcRect.z = static_cast<float>(width);
+	m_SrcRect.w = static_cast<float>(height);
 }
 
 void dae::Render2DComponent::Clone(GameObject* clone)

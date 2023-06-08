@@ -9,16 +9,8 @@ namespace dae
 		PhysicsSystem() = default;
 		virtual ~PhysicsSystem() = default;
 
-		virtual bool CheckLevelCollision(GameObject* pObject) const;
-		virtual bool CheckLevelCollision(ColliderComponent* pCollider) const;
-
-		virtual void AddCollider(ColliderComponent* pCollider);
-		virtual void AddCollider(GameObject* pObject);
-
-		virtual void RemoveCollider(ColliderComponent* pCollider);
-		virtual void RemoveCollider(GameObject* pObject);
-	private:
-		bool CheckCollisionAABB(const Rect& a, const Rect& b) const;
-
+		virtual bool CheckCollisionAABB(const Box& a, const Box& b) const;
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Circle& c, const Box& b) const;
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Box& b, const Circle& c) const;
 	};
 }

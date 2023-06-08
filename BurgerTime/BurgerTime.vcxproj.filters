@@ -8,6 +8,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Core\Physics">
+      <UniqueIdentifier>{e647056c-6f4d-401e-a070-3b69c98184b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -34,6 +37,18 @@
     <ClCompile Include="Command.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="TestSoundComponent.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldDataComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldPhysics.cpp">
+      <Filter>Core\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HealthComponent.h">
@@ -59,6 +74,14 @@
     </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSoundComponent.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="WorldDataComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldPhysics.h">
+      <Filter>Core\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

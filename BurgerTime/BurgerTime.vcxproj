@@ -28,6 +28,9 @@
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="ScoreboardComponent.cpp" />
     <ClCompile Include="TestSoundComponent.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="WorldDataComponent.cpp" />
+    <ClCompile Include="WorldPhysics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationEvent.h" />
@@ -39,6 +42,9 @@
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="ScoreboardComponent.h" />
     <ClInclude Include="TestSoundComponent.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="WorldDataComponent.h" />
+    <ClInclude Include="WorldPhysics.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

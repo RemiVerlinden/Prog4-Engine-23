@@ -1,5 +1,5 @@
 #pragma once
-#include "ISoundSystem.h"
+#include "ISoundSystem.hpp"
 //#include "Logger.h"
 
 namespace dae
@@ -14,4 +14,3 @@ namespace dae
 		void UnpauseAll() override { /*Logger::GetInstance().LogWarning("Tried to use NullSoundSystem");*/ };
 	};
 }
-
