@@ -252,6 +252,7 @@
     <ClInclude Include="ISoundSystem.hpp" />
     <ClInclude Include="SpawnerComponent.h" />
     <ClInclude Include="SpawnerObject.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="TagComponent.h" />
     <ClInclude Include="TemplateComponent.h" />
     <ClInclude Include="TrashTheCacheComponent.h" />

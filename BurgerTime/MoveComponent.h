@@ -17,7 +17,7 @@ namespace dae
 	private:
 		TransformComponent* m_Transform;
 		glm::vec2 m_MoveDirection;
-		float m_Speed = 150.f;
+		float m_Speed = 100.f;
 
 
 	private:

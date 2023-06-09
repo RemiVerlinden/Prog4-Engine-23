@@ -19,7 +19,7 @@
 #include "Utils.hpp"
 #include "Locator.h"
 #include "SDLAudioWrapper.h"
-
+#include "Structs.h"
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -75,15 +75,15 @@ dae::Minigin::Minigin(const std::string& dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		static_cast<int>(640),
-		static_cast<int>(480),
+		static_cast<int>(WindowSettings::width),
+		static_cast<int>(WindowSettings::height),
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
-
+	
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);

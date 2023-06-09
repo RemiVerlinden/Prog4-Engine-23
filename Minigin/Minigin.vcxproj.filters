@@ -315,6 +315,9 @@
     <ClInclude Include="DebugRenderer.h">
       <Filter>Engine Files\DebugDraw</Filter>
     </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Engine Files\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">

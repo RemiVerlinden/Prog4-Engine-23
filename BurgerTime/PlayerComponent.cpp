@@ -9,8 +9,8 @@ void dae::PlayerComponent::Initialize()
 	textureComponent->SetCanBeCloned(false);
 
 	textureComponent->SetTexture("cheff.png");
-	textureComponent->SetPosition(-25, -25);
-	textureComponent->SetResolution(50, 50);
+	textureComponent->SetPosition(-16, -16);
+	textureComponent->SetResolution(32, 32);
 	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
 
 	// ASSIGN INPUT

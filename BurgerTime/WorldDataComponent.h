@@ -30,9 +30,9 @@ namespace dae
 	struct WorldData
 	{
 		bool isInitialized = false;
-		int tileCountHorizontal = 0;
-		int tileCountVertical = 0;
-		float tileSize = 0.f;
+		static inline int tileCountHorizontal = 0;
+		static inline int tileCountVertical = 0;
+		static inline float tileSize = 0.f;
 		std::vector<Tile> tileList;
 	};
 

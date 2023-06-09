@@ -20,7 +20,9 @@ namespace dae
 	private:
 		void UpdateColliderPosition();
 		void UpdateObjectPosition();
+		void ClampColliderPosToWindow();
 		bool m_CollisionOccured = false;
 		Circle m_PhysicsCollider;
+		bool m_CanLeaveWindow = false;
 	};
 }

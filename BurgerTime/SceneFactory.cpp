@@ -10,6 +10,7 @@
 #include "Locator.h"
 #include "Prefab.h"
 #include "WorldPhysics.h"
+#include "Structs.h"
 
 using namespace dae;
 
@@ -28,6 +29,7 @@ void dae::SceneFactory::CreateScenes()
 	InitDefaultScene();
 	InitFpsDemoScene();
 	InitBonusScene();
+	Renderer::GetInstance().SetBackgroundColor(SDL_Color{ 0,0,0,255 });
 }
 
 void dae::SceneFactory::InitSceneKeybinds()
@@ -61,12 +63,17 @@ void dae::SceneFactory::InitBurgerTimeScene()
 
 	GameObject* pWorldObject = pScene->MakeGameObject();
 	pWorldObject->AddComponent<WorldDataComponent>();
-	
+	Render2DComponent* textureComponent = pWorldObject->AddComponent<Render2DComponent>();
+	textureComponent->SetTexture("stage1.tga");
+	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+	textureComponent->SetResolution(WindowSettings::width,WindowSettings::height);
+	textureComponent->SetPosition(0,6);
 
 	GameObject* pPlayer = pScene->MakeGameObject();
 	pPlayer->AddComponent<PlayerComponent>();
-	pPlayer->AddComponent<CirclePhysicsComponent>();
-	pPlayer->m_Transform->SetLocalPosition(240, 240,0);
+	CirclePhysicsComponent* physicsComp = pPlayer->AddComponent<CirclePhysicsComponent>();
+	physicsComp->GetCircleCollider().radius = WorldData::tileSize;
+	pPlayer->m_Transform->SetLocalPosition(8, 44,0);
 
 	dae::SceneManager::GetInstance().SetActiveGameScene("BurgerTime");
 
