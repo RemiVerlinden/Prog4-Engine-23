@@ -112,6 +112,22 @@ void engine::GameObject::RenderUI(UpdateContext& context) const
 	}
 }
 
+void engine::GameObject::OnSceneActivate()
+{
+	for (const std::unique_ptr<BaseComponent>& component : m_Components)
+	{
+		component->RootOnSceneActivate();
+	}
+}
+
+void engine::GameObject::OnSceneDeactivate()
+{
+	for (const std::unique_ptr<BaseComponent>& component : m_Components)
+	{
+		component->RootOnSceneDeactivate();
+	}
+}
+
 void engine::GameObject::SetPosition(float x, float y)
 {
 	m_Transform->SetLocalPosition(x, y, 0.0f);

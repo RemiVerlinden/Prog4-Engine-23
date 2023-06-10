@@ -22,6 +22,9 @@ namespace engine
 		void LateUpdate(const UpdateContext& context);
 		void FixedUpdate(const UpdateContext& context);
 
+		void OnSceneActivate();
+		void OnSceneDeactivate();
+
 		//========================================================
 		std::string GetTag() { return m_Tag; };
 		void OnSceneActivated() {  }

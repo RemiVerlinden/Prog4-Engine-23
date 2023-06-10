@@ -76,6 +76,22 @@ void engine::Scene::FixedUpdate(const UpdateContext& context)
 	}
 }
 
+void engine::Scene::OnSceneActivate()
+{
+	for (auto& object : m_objects)
+	{
+		object->OnSceneActivate();
+	}
+}
+
+void engine::Scene::OnSceneDeactivate()
+{
+	for (auto& object : m_objects)
+	{
+		object->OnSceneDeactivate();
+	}
+}
+
 void Scene::Render() const
 {
 	for (const auto& object : m_objects)

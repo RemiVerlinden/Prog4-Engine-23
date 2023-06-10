@@ -16,6 +16,8 @@ namespace engine {
 		virtual void DrawUI(UpdateContext& /*context*/) {};
 		virtual void LateUpdate( const UpdateContext& /*context*/) {};
 		virtual void FixedUpdate(const UpdateContext& /*context*/) {};
+		virtual void OnSceneActivate() {};
+		virtual void OnSceneDeactivate() {};
 
 		static uint64_t GetComponentCount() { return m_ComponentCount; }
 		
@@ -46,5 +48,7 @@ namespace engine {
 		void RootDrawUI(UpdateContext& context);
 		void RootFixedUpdate(const UpdateContext& context);
 		void RootLateUpdate(const UpdateContext& context);
+		void RootOnSceneActivate();
+		void RootOnSceneDeactivate();
 	};
 }

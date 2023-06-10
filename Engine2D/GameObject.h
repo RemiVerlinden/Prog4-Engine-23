@@ -35,6 +35,10 @@ namespace engine
 		// Renders the ImGui of the components attached to this game object.
 		void RenderUI(UpdateContext& context) const;
 
+
+		void OnSceneActivate();
+		void OnSceneDeactivate();
+
 		// Set the position of the game object.
 		void SetPosition(float x, float y);
 
