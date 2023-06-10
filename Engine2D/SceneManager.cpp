@@ -65,6 +65,7 @@ void engine::SceneManager::RemoveGameScene(const std::string& name)
 
 void engine::SceneManager::SetActiveGameScene(const std::string& name)
 {
+	
 	auto checkMatchingName = [name](std::shared_ptr<Scene>& scene) { return scene->GetTag() == name; };
 	auto it = find_if(m_Scenes.begin(), m_Scenes.end(), checkMatchingName);
 
@@ -76,6 +77,7 @@ void engine::SceneManager::SetActiveGameScene(const std::string& name)
 
 void engine::SceneManager::SetActiveGameScene(Scene* pScene)
 {
+
 	auto checkMatchingName = [pScene](std::shared_ptr<Scene>& scene) { return scene.get() == pScene; };
 	auto it = find_if(m_Scenes.begin(), m_Scenes.end(), checkMatchingName);
 
@@ -99,20 +101,20 @@ void engine::SceneManager::CheckNewActiveGameScene()
 	{
 		//Deactivate the current active scene
 		if (m_pActiveScene != nullptr)
-			m_pActiveScene->OnSceneDeactivated();
+			m_pActiveScene->OnSceneDeactivate();
 
 		//Set New Scene
 		m_pActiveScene = m_pNewActiveScene;
 		m_pNewActiveScene = nullptr;
 
 		//Active the new scene and reset SceneTimer
-		m_pActiveScene->OnSceneActivated();
+		m_pActiveScene->OnSceneActivate();
 	}
 }
 
 void engine::SceneManager::NextScene()
 {
-	
+
 	for (size_t i = 0; i < m_Scenes.size(); ++i)
 	{
 		if (m_Scenes[i].get() == m_pActiveScene)

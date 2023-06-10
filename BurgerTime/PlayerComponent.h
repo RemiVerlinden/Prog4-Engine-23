@@ -13,7 +13,7 @@ namespace engine
 		void FixedUpdate (const UpdateContext& /*context*/) override {};
 		void Update(const UpdateContext& /*context*/) override {};
 		void LateUpdate(const UpdateContext& /*context*/) override {};
-
+		void OnSceneActivate() override;
 		void Draw() override {};
 		void DrawUI(UpdateContext& /*context*/) override {};
 
@@ -24,7 +24,7 @@ namespace engine
 		PlayerComponent& operator=(PlayerComponent&& other) = delete;
 	private:
 
-
+		void InitializeInputCommands();
 	};
 }
 

@@ -82,26 +82,26 @@ void engine::Renderer::Destroy()
 	}
 }
 
-void engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
+void engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, SDL_RendererFlip flip) const
 {
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, 0, nullptr, flip);
 }
 
-void engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
+void engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height, SDL_RendererFlip flip) const
 {
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, 0, nullptr, flip);
 }
 
-void engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height, const int srcX, const int srcY) const
+void engine::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height, const int srcX, const int srcY, SDL_RendererFlip flip) const
 {
 	SDL_Rect src{};
 	src.x = static_cast<int>(srcX);
@@ -114,13 +114,13 @@ void engine::Renderer::RenderTexture(const Texture2D& texture, const float x, co
 	dst.y = static_cast<int>(y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst, 0, nullptr, flip);
 }
 
 
-void engine::Renderer::RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& dstRect) const
+void engine::Renderer::RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& dstRect, SDL_RendererFlip flip) const
 {
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dstRect);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dstRect,0 , nullptr, flip);
 }
 
 void engine::Renderer::RenderTextureBackground(const Texture2D& texture) const

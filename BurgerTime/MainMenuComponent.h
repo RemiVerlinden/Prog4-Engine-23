@@ -15,6 +15,8 @@ public:
 
 	virtual void Initialize() override;
 	virtual void Update(const engine::UpdateContext& context) override;
+	virtual void OnSceneActivate() override;
+	virtual void OnSceneDeactivate() override;
 
 	enum class MainMenuState
 	{

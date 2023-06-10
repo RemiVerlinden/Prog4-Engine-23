@@ -15,6 +15,7 @@ engine::Render2DComponent::Render2DComponent()
 	: m_Texture(nullptr)
 	, m_DrawStyle(DrawStyle::normal)
 	, m_SrcRect(0, 0, 1, 1)
+	,m_FlipTexture(SDL_FLIP_NONE)
 {
 
 }
@@ -35,14 +36,16 @@ void engine::Render2DComponent::Draw()
 	pos.x += m_DstRect.x;
 	pos.y += m_DstRect.y;
 
+	SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(m_FlipTexture);
+	
 	switch (m_DrawStyle)
 	{
 		case engine::Render2DComponent::normal:
-			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, flip);
 			break;
 		case engine::Render2DComponent::customResolution:
 		{
-			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, (float)m_DstRect.z, (float)m_DstRect.w);
+			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, (float)m_DstRect.z, (float)m_DstRect.w, flip);
 		}
 		break;
 		case engine::Render2DComponent::spritesheet:
@@ -58,7 +61,7 @@ void engine::Render2DComponent::Draw()
 			dstRect.w = m_DstRect.z;
 			dstRect.h = m_DstRect.w;
 
-			Renderer::GetInstance().RenderTexture(*m_Texture, srcRect, dstRect);
+			Renderer::GetInstance().RenderTexture(*m_Texture, srcRect, dstRect, flip);
 		}
 		break;
 		case engine::Render2DComponent::background:

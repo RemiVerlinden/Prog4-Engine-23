@@ -52,7 +52,7 @@ void engine::TestSoundComponent::Update(const UpdateContext&)
 
     if (playMusic)
     {
-        Locator::GetSoundSystem().Play("burgermenu.wav", 1, false);
+        Locator::GetSoundSystem().Play("burgertimemenu.wav", 1, false);
     }
 
     if (stopMusic)

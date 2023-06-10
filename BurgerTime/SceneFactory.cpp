@@ -70,14 +70,14 @@ Scene* engine::SceneFactory::InitBurgerTimeScene()
 	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("BurgerTime");
 	pScene->SetPhysicsWorld(std::make_unique<WorldPhysics>());
 
-	GameObject* pWorldObject = pScene->MakeGameObject();
+	GameObject* pWorldObject = pScene->MakeGameObject("world");
 	pWorldObject->AddComponent<WorldDataComponent>();
 	//Render2DComponent* textureComponent = pWorldObject->AddComponent<Render2DComponent>();
 	//textureComponent->SetTexture("stage1.tga");
 	//textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 	//textureComponent->SetResolution(WindowSettings::width,WindowSettings::height);
 
-	GameObject* pPlayer = pScene->MakeGameObject();
+	GameObject* pPlayer = pScene->MakeGameObject("player");
 	pPlayer->AddComponent<PlayerComponent>();
 	CirclePhysicsComponent* physicsComp = pPlayer->AddComponent<CirclePhysicsComponent>();
 	physicsComp->GetCircleCollider().radius = WorldData::defaultTileSize;

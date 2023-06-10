@@ -14,7 +14,6 @@
 void engine::FpsComponent::Initialize()
 {
 	m_TextComponent = m_GameObject->AddComponent<TextComponent>("SubComponent of FpsComponent: TextComponent");
-	m_TextComponent->SetCanBeCloned(false);
 	if (m_Font)
 		m_TextComponent->SetFont(m_Font);
 

@@ -18,6 +18,13 @@ namespace engine {
 			background // stretch texture to fit background
 		};
 
+		enum FlipTexture
+		{
+			SDL_FLIP_NONE = 0x00000000,     /**< Do not flip */
+				SDL_FLIP_HORIZONTAL = 0x00000001,    /**< flip horizontally */
+				SDL_FLIP_VERTICAL = 0x00000002     /**< flip vertically */
+		};
+
 		Render2DComponent();
 		~Render2DComponent() = default;
 
@@ -30,7 +37,7 @@ namespace engine {
 		void SetSourceRect(const float x, const float y, const float width, const float height );
 		void SetDestinationRect(const float x, const float y, const float width, const float height );
 		void SetDrawStyle(DrawStyle drawStyle) { m_DrawStyle = drawStyle; };
-
+		void SetFlipTexture(FlipTexture flip) { m_FlipTexture = flip; };
 		Render2DComponent(const Render2DComponent& other) = delete;
 		Render2DComponent(Render2DComponent&& other) = delete;
 		Render2DComponent& operator=(const Render2DComponent& other) = delete;
@@ -43,7 +50,7 @@ namespace engine {
 		glm::ivec2						m_TextureResolution;
 		std::shared_ptr<Texture2D>		m_Texture;
 		std::string						m_TextureFileName;
-
+		FlipTexture						m_FlipTexture;
 	private:
 	};
 }

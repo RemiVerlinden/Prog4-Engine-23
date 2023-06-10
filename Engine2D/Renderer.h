@@ -36,10 +36,10 @@ namespace engine
 		void Render(UpdateContext& context);
 		void Destroy();
 
-		void RenderTexture(const Texture2D& texture, float x, float y) const;
-		void RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, const int srcX, const int srcY) const;
-		void RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& dstRect) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, SDL_RendererFlip flip) const;
+		void RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height, SDL_RendererFlip flip) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, const int srcX, const int srcY, SDL_RendererFlip flip) const;
+		void RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& dstRect, SDL_RendererFlip flip) const;
 		void RenderTextureBackground(const Texture2D& texture) const;
 
 		SDL_Renderer* GetSDLRenderer() const;

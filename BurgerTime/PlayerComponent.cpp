@@ -7,7 +7,6 @@ void engine::PlayerComponent::Initialize()
 {
 	GameObject* go = m_GameObject;
 	auto textureComponent = go->AddComponent<Render2DComponent>();
-	textureComponent->SetCanBeCloned(false);
 
 	textureComponent->SetTexture("cheff.png");
 
@@ -15,28 +14,45 @@ void engine::PlayerComponent::Initialize()
 	textureComponent->SetResolution(static_cast<int>(WorldData::defaultTileSize * 2), static_cast<int>(WorldData::defaultTileSize *2));
 	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
+	InitializeInputCommands();
+
+}
+
+void engine::PlayerComponent::OnSceneActivate()
+{
+	using namespace engine;
+	std::string soundPath = "main.wav";
+	Locator::GetSoundSystem().Play(soundPath, 1.f, false);
+
+}
+
+
+
+void engine::PlayerComponent::InitializeInputCommands()
+{
+	GameObject* go = m_GameObject;
+
 	// ASSIGN INPUT
 	engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
 
 	using namespace engine::Input;
 
 	auto* pInputCommandComponent = go->AddComponent<BindInputCommandComponent>();
-	pInputCommandComponent->SetCanBeCloned(false);
 
 	// GAMEPAD
 	auto gamepadDevice = inputSystem.GetGamepadDevice(0);
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), gamepadDevice, ControllerButton::DPAD_LEFT, ButtonPressType::Hold);
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), gamepadDevice, ControllerButton::DPAD_RIGHT, ButtonPressType::Hold);
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), gamepadDevice, ControllerButton::DPAD_UP, ButtonPressType::Hold);
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1, 0 }), gamepadDevice, ControllerButton::DPAD_LEFT, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1, 0 }), gamepadDevice, ControllerButton::DPAD_RIGHT, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, 1 }), gamepadDevice, ControllerButton::DPAD_UP, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, -1 }), gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold);
 	//pInputCommandComponent->BindCommand(std::make_unique<DamageCommand>(go, glm::vec2{ 0,-1 }), gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold);
 
 	// KEYBOARD
 	auto keyboardDevice = inputSystem.GetKeyboardDevice();
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), keyboardDevice, KeyboardButton::KEY_A, ButtonPressType::Hold);
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), keyboardDevice, KeyboardButton::KEY_D, ButtonPressType::Hold);
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), keyboardDevice, KeyboardButton::KEY_W, ButtonPressType::Hold);
-	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), keyboardDevice, KeyboardButton::KEY_S, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1, 0 }), keyboardDevice, KeyboardButton::KEY_A, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1, 0 }), keyboardDevice, KeyboardButton::KEY_D, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, 1 }), keyboardDevice, KeyboardButton::KEY_W, ButtonPressType::Hold);
+	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, -1 }), keyboardDevice, KeyboardButton::KEY_S, ButtonPressType::Hold);
 	pInputCommandComponent->BindCommand(std::make_unique<DamageCommand>(go, 33), keyboardDevice, KeyboardButton::KEY_F, ButtonPressType::Press);
 
 	// GAMEPAD ANALOG STICK

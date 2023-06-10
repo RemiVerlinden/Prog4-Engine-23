@@ -59,7 +59,7 @@ void engine::TextComponent::Draw()
 	if (m_textTexture != nullptr)
 	{
 		const auto& pos = m_GameObject->m_Transform->GetWorldPosition() + m_Offset;
-		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
+		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y, SDL_FLIP_NONE);
 	}
 }
 

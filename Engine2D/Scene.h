@@ -27,8 +27,6 @@ namespace engine
 
 		//========================================================
 		std::string GetTag() { return m_Tag; };
-		void OnSceneActivated() {  }
-		void OnSceneDeactivated() {  }
 		GameObject* MakeGameObject(const std::string& tag = "No Name Defined");
 		GameObject* FindGameObjectByID( uint64_t ID);
 		GameObject* FindGameObjectByTag( std::string tag);

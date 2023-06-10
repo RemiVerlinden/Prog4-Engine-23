@@ -17,10 +17,7 @@ engine::GameObject::GameObject(std::string name) : GameObject(nullptr, name){}
 engine::GameObject::GameObject(Scene* scene, std::string name) :m_Scene(scene), m_Parent{ nullptr }, m_MarkedForDestroy{ false }
 {
 	m_Transform = AddComponent<TransformComponent>();
-	m_Transform->SetCanBeCloned(false);
-	AddComponent<IDComponent>()->SetCanBeCloned(false);
 	auto tagComponent = AddComponent<TagComponent>();
-	tagComponent->SetCanBeCloned(false);
 
 	tagComponent->m_Tag = name;
 	m_Tag = name;

@@ -97,6 +97,9 @@
     <Filter Include="Engine Files\Logger">
       <UniqueIdentifier>{fc820b30-cd29-47af-ae1a-5ae9e63868a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="General">
+      <UniqueIdentifier>{bed4853a-dac2-4ff3-9176-3a0d2d26dd4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h">
@@ -315,6 +318,9 @@
     <ClInclude Include="NullLogger.h">
       <Filter>Engine Files\Logger</Filter>
     </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -457,6 +463,9 @@
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Engine Files\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>General</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

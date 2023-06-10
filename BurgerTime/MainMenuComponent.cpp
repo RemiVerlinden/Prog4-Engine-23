@@ -3,6 +3,8 @@
 #include "Render2DComponent.h"
 #include "ResourceManager.h"
 #include "Structs.h"
+#include "Locator.h"
+#include "Common.h"
 
 void MainMenuComponent::OnEvent(const engine::Event& /*sent*/)
 {
@@ -33,6 +35,8 @@ void MainMenuComponent::Initialize()
 
 void MainMenuComponent::Update(const engine::UpdateContext& /*context*/)
 {
+	using namespace engine;
+
 	if (m_StartGame)
 	{
 		std::cout << "starting game";
@@ -46,8 +50,24 @@ void MainMenuComponent::Update(const engine::UpdateContext& /*context*/)
 
 		m_MenuTextComponents[static_cast<int>(m_MainMenuState)]->SetColor(255, 255, 4,255);
 
+		Locator::GetSoundSystem().Play("menu_move.wav", 1.f, true);
+
 		m_StateChanged = false;
 	}
+}
+
+void MainMenuComponent::OnSceneActivate()
+{
+	using namespace engine;
+	std::string soundPath = "burgertimemenu.wav";
+		Locator::GetSoundSystem().Play(soundPath, 0.3f, false);
+}
+
+void MainMenuComponent::OnSceneDeactivate()
+{
+	using namespace engine;
+	std::string soundPath = "menu_select.wav";
+	Locator::GetSoundSystem().Play(soundPath, 1.f, true);
 }
 
 void MainMenuComponent::SetMainMenuState(MainMenuState state)

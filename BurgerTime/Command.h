@@ -74,7 +74,6 @@ namespace engine
 			else
 			{
 				m_MoveComponent = gameObject->AddComponent<MoveComponent>();
-				m_MoveComponent->SetCanBeCloned(false);
 			}
 		}
 	};
@@ -119,7 +118,6 @@ namespace engine
 			else
 			{
 				m_HealthComponent = object->AddComponent<HealthComponent>();
-				m_HealthComponent->SetCanBeCloned(false);
 			}
 		}
 	};
