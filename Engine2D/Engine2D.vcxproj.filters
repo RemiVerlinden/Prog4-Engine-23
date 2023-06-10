@@ -64,12 +64,6 @@
     <Filter Include="Components\Gameplay">
       <UniqueIdentifier>{b7a6ed66-fb9d-4534-9a98-b56eff85f053}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine Files\Spawner">
-      <UniqueIdentifier>{d8ef3da9-883a-4903-aef9-3047e8dca015}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine Files\Spawner\Objects">
-      <UniqueIdentifier>{2a2324b4-13c5-4478-94b8-6c3a96e52dd1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine Files\Events">
       <UniqueIdentifier>{7282c6ad-9d4d-4900-85aa-42b675dd4c55}</UniqueIdentifier>
     </Filter>
@@ -99,6 +93,9 @@
     </Filter>
     <Filter Include="Engine Files\FSM">
       <UniqueIdentifier>{3ac413e2-cf4d-43e8-b553-b8d0db5a777a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Files\Logger">
+      <UniqueIdentifier>{fc820b30-cd29-47af-ae1a-5ae9e63868a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,12 +237,6 @@
     <ClInclude Include="Components.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="SpawnerObject.h">
-      <Filter>Engine Files\Spawner\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Prefab.h">
-      <Filter>Engine Files\Spawner</Filter>
-    </ClInclude>
     <ClInclude Include="SpawnerComponent.h">
       <Filter>Application Files</Filter>
     </ClInclude>
@@ -269,18 +260,6 @@
     </ClInclude>
     <ClInclude Include="NullSoundSystem.hpp">
       <Filter>Engine Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="ILogger.h">
-      <Filter>Application Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoggerMacros.h">
-      <Filter>Application Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NullLogger.h">
-      <Filter>Application Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Application Files</Filter>
     </ClInclude>
     <ClInclude Include="SDLAudioWrapper.h">
       <Filter>Engine Files\Audio\SDLWrapper</Filter>
@@ -323,6 +302,18 @@
     </ClInclude>
     <ClInclude Include="FSM.h">
       <Filter>Engine Files\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="ILogger.h">
+      <Filter>Engine Files\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Engine Files\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerMacros.h">
+      <Filter>Engine Files\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="NullLogger.h">
+      <Filter>Engine Files\Logger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -413,12 +404,6 @@
     <ClCompile Include="IDComponent.cpp">
       <Filter>Components\General</Filter>
     </ClCompile>
-    <ClCompile Include="SpawnerObject.cpp">
-      <Filter>Engine Files\Spawner\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Prefab.cpp">
-      <Filter>Engine Files\Spawner</Filter>
-    </ClCompile>
     <ClCompile Include="BindInputCommandComponent.cpp">
       <Filter>Components\Input</Filter>
     </ClCompile>
@@ -433,12 +418,6 @@
     </ClCompile>
     <ClCompile Include="Locator.cpp">
       <Filter>Engine Files\ServiceLocator</Filter>
-    </ClCompile>
-    <ClCompile Include="ILogger.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="SDLAudioWrapper.cpp">
       <Filter>Engine Files\Audio\SDLWrapper</Filter>
@@ -472,6 +451,12 @@
     </ClCompile>
     <ClCompile Include="Engine2D.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ILogger.cpp">
+      <Filter>Engine Files\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Engine Files\Logger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

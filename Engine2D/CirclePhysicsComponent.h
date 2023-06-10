@@ -16,7 +16,6 @@ namespace engine
 		Circle& GetCircleCollider() { return m_PhysicsCollider; }
 		void CollisionOccured() { m_CollisionOccured = true; }
 	protected:
-		void Clone(GameObject*) override {};
 	private:
 		void UpdateColliderPosition();
 		void UpdateObjectPosition();
@@ -26,3 +25,4 @@ namespace engine
 		bool m_CanLeaveWindow = false;
 	};
 }
+

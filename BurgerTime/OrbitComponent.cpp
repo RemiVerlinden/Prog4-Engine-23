@@ -20,10 +20,3 @@ void engine::OrbitComponent::Update(const UpdateContext& /*context*/)
 	m_GameObject->m_Transform->SetLocalPosition(orbitPos);
 }
 
-void engine::OrbitComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-	auto componentClone = clone->AddComponent<OrbitComponent>(GetComponentTag());
-	componentClone->SetSpeed(m_Speed);
-	componentClone->SetRadius(m_Radius);
-}

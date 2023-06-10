@@ -32,7 +32,6 @@ namespace engine {
 		bool CanBeCloned() const { return m_CanBeCloned; }
 		void SetCanBeCloned(bool canBeCloned) { m_CanBeCloned = canBeCloned; }
 	protected:
-		virtual void Clone(GameObject* clone) = 0;
 
 		GameObject*						m_GameObject;
 	private:

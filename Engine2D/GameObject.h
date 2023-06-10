@@ -91,9 +91,6 @@ namespace engine
 
 		Scene* GetScene() { return m_Scene; }
 
-		// Get a clone of the game object that is not connected to any scene.
-		std::shared_ptr<GameObject> Clone();
-
 		GameObject(std::string tag);
 		GameObject(Scene* scene, std::string tag);
 

@@ -10,16 +10,6 @@
 
 using namespace engine;
 
-std::shared_ptr<GameObject> engine::GameObject::Clone()
-{
-	std::shared_ptr<GameObject> clonedGO = std::make_shared<GameObject>(std::format("{}-Clone",GetTag()));
-
-	for (std::unique_ptr<BaseComponent>& component : m_Components)
-	{
-		component->Clone(clonedGO.get());
-	}
-	return clonedGO;
-}
 
 engine::GameObject::GameObject(std::string name) : GameObject(nullptr, name){}
 

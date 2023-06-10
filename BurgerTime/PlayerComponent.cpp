@@ -44,8 +44,3 @@ void engine::PlayerComponent::Initialize()
 	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, stick), gamepadDevice, ControllerButton::THUMBSTICK_LEFT_MOVE, ButtonPressType::Hold);
 }
 
-void engine::PlayerComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-		clone->AddComponent<PlayerComponent>();
-}

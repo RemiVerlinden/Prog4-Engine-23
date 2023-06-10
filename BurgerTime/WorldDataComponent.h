@@ -78,10 +78,10 @@ namespace engine
 	private:
 		void ParseSprites(const std::filesystem::path& filePath);
 		void ParseCollision(const std::filesystem::path& filePath);
-		virtual void Clone(GameObject*) override {};
 
 		WorldData m_WorldData;
 		Render2DComponent* m_TileRenderer;
 		static std::unordered_map<Scene*, bool> m_IsComponentInScene;
 	};
 }
+

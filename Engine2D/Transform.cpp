@@ -34,12 +34,6 @@ TransformComponent& engine::TransformComponent::operator+=(const glm::vec3& offs
 	return *this;
 }
 
-void engine::TransformComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-	auto componentClone = clone->AddComponent<TransformComponent>(GetComponentTag());
-	componentClone->SetLocalPosition(m_LocalPosition);
-}
 
 
 void engine::TransformComponent::SetLocalPosition(const float x, const float y, const float z)

@@ -112,6 +112,7 @@ void engine::SceneManager::CheckNewActiveGameScene()
 
 void engine::SceneManager::NextScene()
 {
+	
 	for (size_t i = 0; i < m_Scenes.size(); ++i)
 	{
 		if (m_Scenes[i].get() == m_pActiveScene)

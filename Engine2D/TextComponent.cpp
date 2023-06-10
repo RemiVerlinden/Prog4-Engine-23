@@ -95,14 +95,3 @@ glm::vec3 engine::TextComponent::GetPosition()
 	return m_GameObject->m_Transform->GetWorldPosition();
 }
 
-void engine::TextComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-
-	auto componentClone = clone->AddComponent<TextComponent>(GetComponentTag());
-	componentClone->SetText(m_text);
-	componentClone->SetFont(m_font);
-	componentClone->SetPosition(m_Offset);
-
-	componentClone->SetColor(m_FontColor.r, m_FontColor.g, m_FontColor.b, m_FontColor.a);
-}

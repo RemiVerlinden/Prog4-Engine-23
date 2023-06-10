@@ -28,7 +28,6 @@ public:
 	static void SetMainMenuState(MainMenuState state);
 	static void StartGame();
 protected:
-	void Clone(engine::GameObject* /*clone*/) override {};
 private:
 	static inline MainMenuState m_MainMenuState;
 	static inline bool m_StateChanged = false;

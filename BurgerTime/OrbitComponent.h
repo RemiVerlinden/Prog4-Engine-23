@@ -23,7 +23,6 @@ class OrbitComponent final : public BaseComponent
 		OrbitComponent& operator=(OrbitComponent&& other) = delete;
 
 	private:
-		void Clone (GameObject* clone) override;
 		glm::vec3					m_CenterPos;
 
 		float						m_Speed = 10.f;

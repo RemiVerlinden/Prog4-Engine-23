@@ -14,7 +14,6 @@ namespace engine
 		void Damage(int damageAmount);
 		void Heal(int healAmount);
 	private:
-		void Clone(GameObject* clone) override;
 		struct Health
 		{
 			int max = 100;

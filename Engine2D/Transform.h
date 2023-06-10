@@ -32,7 +32,6 @@ namespace engine
 		TransformComponent& operator+=(const glm::vec3& offset);
 
 	private:
-		void Clone(GameObject* clone) override;
 		glm::vec3				m_LocalPosition;
 		glm::vec3				m_WorldPosition;
 		bool					m_IsDirty = true;

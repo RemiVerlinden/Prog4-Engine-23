@@ -44,6 +44,5 @@ namespace engine
 
 
 	private:
-		void Clone(GameObject* clone) override;
 	};
 }

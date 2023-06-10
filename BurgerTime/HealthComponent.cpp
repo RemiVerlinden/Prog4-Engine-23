@@ -40,11 +40,3 @@ void engine::HealthComponent::Heal(int healAmount)
 	}
 }
 
-void engine::HealthComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-
-	auto componentClone = clone->AddComponent<HealthComponent>(GetComponentTag());
-	componentClone->SetMaxHealth(m_Health.max);
-	componentClone->SetCurrentHealth(m_Health.current); 
-}

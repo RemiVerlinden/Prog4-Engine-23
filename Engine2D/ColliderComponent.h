@@ -22,7 +22,6 @@ namespace engine
 		Shape m_Collider;
 		
 		bool m_IsInitialized = false;
-		void Clone(GameObject*) override {};
 	};
 }
 

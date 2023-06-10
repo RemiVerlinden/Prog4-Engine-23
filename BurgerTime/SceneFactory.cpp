@@ -8,7 +8,6 @@
 #include "DeviceButtons.hpp"
 #include <iostream>
 #include "Locator.h"
-#include "Prefab.h"
 #include "WorldPhysics.h"
 #include "Structs.h"
 #include <fstream>
@@ -82,7 +81,7 @@ Scene* engine::SceneFactory::InitBurgerTimeScene()
 	pPlayer->AddComponent<PlayerComponent>();
 	CirclePhysicsComponent* physicsComp = pPlayer->AddComponent<CirclePhysicsComponent>();
 	physicsComp->GetCircleCollider().radius = WorldData::defaultTileSize;
-	pPlayer->m_Transform->SetLocalPosition(8, 44, 0);
+	pPlayer->m_Transform->SetLocalPosition(110, 168, 0);
 
 
 	return pScene;
@@ -284,7 +283,6 @@ Scene* engine::SceneFactory::InitMainMenu()
 		mainMenu;
 	}
 
-
 	{
 		engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
 		engine::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
@@ -465,20 +463,6 @@ Scene* engine::SceneFactory::InitSteamTestScene()
 		textComponent->SetPosition(100, 80);
 	}
 
-	{
-		GameObject* go = pScene->MakeGameObject();
-
-		SpawnerComponent* spawnerComp = go->AddComponent<SpawnerComponent>();
-
-		std::string player1PrefabName{ "Player1" };
-
-		spawnerComp->AddSpawnableObject(Prefab{ player1PrefabName });
-		GameObject* Player1Object = spawnerComp->GetPrefabObject(player1PrefabName);
-
-		Player1Object->AddComponent<PlayerComponent>();
-
-		spawnerComp->SpawnGameObject(player1PrefabName, pScene);
-	}
 	return pScene;
 
 }
@@ -672,15 +656,6 @@ Scene* engine::SceneFactory::InitFpsDemoScene()
 	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("Demo2");
 
 	auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 72);
-
-	Prefab fpsPrefab{ "FPS display prefab" };
-	GameObject* fpsPrefabObject = fpsPrefab.GetPrefabObject();
-	FpsComponent* fpsPrefabComponent = fpsPrefabObject->AddComponent<FpsComponent>();
-	fpsPrefabComponent->SetFont(font);
-	fpsPrefabComponent->SetPosition(200, 180);
-	fpsPrefabComponent->SetColor(200, 255, 255, 170);
-
-	fpsPrefab.Instantiate(pScene);
 
 	//GameObject* fpsGO = pScene->MakeGameObject();
 	//FpsComponent* fpsComponent = fpsGO->AddComponent<FpsComponent>();

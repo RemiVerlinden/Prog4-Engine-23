@@ -17,7 +17,6 @@ namespace engine::Input
 
 
 	private:
-		void Clone(GameObject* clone) override;
 	};
 
 }

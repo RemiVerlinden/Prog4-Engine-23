@@ -121,12 +121,3 @@ void engine::Render2DComponent::SetDestinationRect(const float x, const float y,
 }
 
 
-void engine::Render2DComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-	auto componentClone = clone->AddComponent<Render2DComponent>(GetComponentTag());
-	componentClone->SetTexture(m_TextureFileName);
-	componentClone->SetResolution(m_TextureResolution.x, m_TextureResolution.y);
-	componentClone->SetDrawStyle(m_DrawStyle);
-}
-

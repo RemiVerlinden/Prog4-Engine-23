@@ -259,12 +259,6 @@ void engine::TrashTheCacheComponent::DrawImguiExercise2Window()
 	ImGui::End();
 }
 
-void engine::TrashTheCacheComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-	clone->AddComponent<TrashTheCacheComponent>(GetComponentTag());
-}
-
 
 
 void engine::TrashTheCacheComponent::TimeInt(InputTimingParameters input)

@@ -16,7 +16,6 @@ namespace engine
 
 		std::string m_Tag = "Undefined";
 	private:
-		void Clone(GameObject* clone) override;
 	};
 }
 

@@ -30,7 +30,6 @@ namespace engine
 	private:
 
 
-		void Clone(GameObject*) override {};
 	};
 }
 

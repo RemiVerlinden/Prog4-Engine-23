@@ -45,6 +45,6 @@ namespace engine {
 		std::string						m_TextureFileName;
 
 	private:
-		void Clone(GameObject* clone) override;
 	};
 }
+

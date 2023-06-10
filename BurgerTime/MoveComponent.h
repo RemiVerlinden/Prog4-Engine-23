@@ -17,11 +17,10 @@ namespace engine
 	private:
 		TransformComponent* m_Transform;
 		glm::vec2 m_MoveDirection;
-		float m_Speed = 100.f;
+		float m_Speed = 40;
 
 
 	private:
-		void Clone(GameObject* clone) override;
 	};
 }
 

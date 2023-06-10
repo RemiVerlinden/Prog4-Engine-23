@@ -26,9 +26,3 @@ void engine::MoveComponent::SetMoveDirection(glm::vec2 direction)
 	}
 }
 
-void engine::MoveComponent::Clone(GameObject* clone)
-{
-	if (CanBeCloned() == false) return;
-	auto componentClone = clone->AddComponent<MoveComponent>(GetComponentTag());
-	componentClone->SetMoveSpeed(m_Speed);
-}
