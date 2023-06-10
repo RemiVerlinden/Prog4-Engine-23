@@ -2,7 +2,7 @@
 #include "IWorldPhysics.h"
 #include <vector>
 
-namespace dae
+namespace engine
 {
 	struct Tile;
 	class WorldPhysics final : public IWorldPhysics

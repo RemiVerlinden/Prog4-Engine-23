@@ -1,22 +1,24 @@
 #include "PlayerComponent.h"
 #include "Components.h"
 #include <memory>
+#include "WorldDataComponent.h"
 
-void dae::PlayerComponent::Initialize()
+void engine::PlayerComponent::Initialize()
 {
 	GameObject* go = m_GameObject;
 	auto textureComponent = go->AddComponent<Render2DComponent>();
 	textureComponent->SetCanBeCloned(false);
 
 	textureComponent->SetTexture("cheff.png");
-	textureComponent->SetPosition(-16, -16);
-	textureComponent->SetResolution(32, 32);
-	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+
+	textureComponent->SetPosition(-WorldData::defaultTileSize, -WorldData::defaultTileSize);
+	textureComponent->SetResolution(static_cast<int>(WorldData::defaultTileSize * 2), static_cast<int>(WorldData::defaultTileSize *2));
+	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
 	// ASSIGN INPUT
-	dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
+	engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
 
-	using namespace dae::Input;
+	using namespace engine::Input;
 
 	auto* pInputCommandComponent = go->AddComponent<BindInputCommandComponent>();
 	pInputCommandComponent->SetCanBeCloned(false);
@@ -42,7 +44,7 @@ void dae::PlayerComponent::Initialize()
 	pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, stick), gamepadDevice, ControllerButton::THUMBSTICK_LEFT_MOVE, ButtonPressType::Hold);
 }
 
-void dae::PlayerComponent::Clone(GameObject* clone)
+void engine::PlayerComponent::Clone(GameObject* clone)
 {
 	if (CanBeCloned() == false) return;
 		clone->AddComponent<PlayerComponent>();

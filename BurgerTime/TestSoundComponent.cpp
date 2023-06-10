@@ -5,22 +5,22 @@
 
 //#include "SDL.h"
 
-using namespace dae;
-using namespace dae::Input;
+using namespace engine;
+using namespace engine::Input;
 
 //SDL_AudioSpec wavSpec;
 //Uint32 wavLength;
 //Uint8* wavBuffer;
 //SDL_AudioDeviceID deviceId;
 
-dae::TestSoundComponent::~TestSoundComponent()
+engine::TestSoundComponent::~TestSoundComponent()
 {
 	//SDL_CloseAudioDevice(deviceId);
 	//SDL_FreeWAV(wavBuffer);
 	//SDL_Quit();
 }
 
-void dae::TestSoundComponent::Initialize()
+void engine::TestSoundComponent::Initialize()
 {
 
     //if (SDL_LoadWAV("../Data/Sounds/burgermenu.wav", &wavSpec, &wavBuffer, &wavLength) == NULL)
@@ -36,7 +36,7 @@ void dae::TestSoundComponent::Initialize()
     //}
 }
 
-void dae::TestSoundComponent::Update(const UpdateContext&)
+void engine::TestSoundComponent::Update(const UpdateContext&)
 {
     bool playMusic = InputSystem::GetInstance().GetKeyboardDevice()->GetKeyboardState().WasPressed(KeyboardButton::KEY_K);
     bool stopMusic = InputSystem::GetInstance().GetKeyboardDevice()->GetKeyboardState().WasReleased(KeyboardButton::KEY_L);

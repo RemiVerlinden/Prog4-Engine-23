@@ -4,7 +4,7 @@
 #include <memory>
 #include "font.h"
 #include <format>
-namespace dae
+namespace engine
 {
 	class TextComponent;
 	class ScoreBoardComponent final : public BaseComponent, public EventListener

@@ -5,14 +5,14 @@
 #include "TextComponent.h"
 #include "EventManager.h"
 
-void dae::ScoreBoardComponent::Initialize()
+void engine::ScoreBoardComponent::Initialize()
 {
 	EventSubscribe(OnDeath);
 	EventSubscribe(OnDamage);
 
-	m_Font = dae::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 20);
+	m_Font = engine::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 20);
 
-	int hardCodedTotalPlayers = 2;
+	size_t hardCodedTotalPlayers = 2;
 	glm::vec2 textPos{0,300};
 	for (size_t i = 0; i < hardCodedTotalPlayers; i++)
 	{
@@ -46,7 +46,7 @@ void dae::ScoreBoardComponent::Initialize()
 }
 
 
-void dae::ScoreBoardComponent::DrawUI(UpdateContext& /*context*/)
+void engine::ScoreBoardComponent::DrawUI(UpdateContext& /*context*/)
 {
 	ImGui::Begin("Scoreboard");
 
@@ -55,7 +55,7 @@ void dae::ScoreBoardComponent::DrawUI(UpdateContext& /*context*/)
 	ImGui::End();
 }
 
-void dae::ScoreBoardComponent::OnEvent(const Event& sent)
+void engine::ScoreBoardComponent::OnEvent(const Event& sent)
 {
 	switch (sent.GetEventType())
 	{
@@ -88,7 +88,7 @@ void dae::ScoreBoardComponent::OnEvent(const Event& sent)
 	}
 }
 
-void dae::ScoreBoardComponent::PlayerDied(std::string player, int playerID)
+void engine::ScoreBoardComponent::PlayerDied(std::string player, int playerID)
 {
 	PlayerHUD& playerHUD = m_PlayerVec[playerID];
 	PlayerInfo& playerInfo = m_PlayerVec[playerID].info;
@@ -104,14 +104,14 @@ void dae::ScoreBoardComponent::PlayerDied(std::string player, int playerID)
 	}
 }
 
-void dae::ScoreBoardComponent::PlayerDamaged(int playerID, int newHealth)
+void engine::ScoreBoardComponent::PlayerDamaged(int playerID, int newHealth)
 {
 	PlayerHUD& playerHUD = m_PlayerVec[playerID];
 	playerHUD.info.health = newHealth;
 	playerHUD.m_HealthText->SetText(playerHUD.info.GetHealthString());
 }
 
-void dae::ScoreBoardComponent::Clone(GameObject* clone)
+void engine::ScoreBoardComponent::Clone(GameObject* clone)
 {
 	if (CanBeCloned() == false) return;
 	clone->AddComponent<ScoreBoardComponent>(GetComponentTag());

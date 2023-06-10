@@ -2,7 +2,7 @@
 #include "BaseComponent.h"
 #include "UpdateContext.h"
 
-namespace dae
+namespace engine
 {
 	class TestSoundComponent final : public BaseComponent
 	{

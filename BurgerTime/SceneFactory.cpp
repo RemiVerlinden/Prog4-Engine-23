@@ -11,38 +11,48 @@
 #include "Prefab.h"
 #include "WorldPhysics.h"
 #include "Structs.h"
+#include <fstream>
+#include <format>
 
-using namespace dae;
+using namespace engine;
 
-void dae::SceneFactory::CreateScenes()
+void engine::SceneFactory::CreateScenes()
 {
 	CONSOLE_NEWLINE();
 	CONSOLE_NEWLINE();
 	APP_TRACE("INPUT PLAYER 1: [WASD]       -	[GAMEPAD 1: DPAD] - [GAMEPAD 1: LEFT STICK]");
 	APP_TRACE("INPUT PLAYER 2: [ARROW KEYS] -	[GAMEPAD 2: DPAD] - [GAMEPAD 2: LEFT STICK]");
 
-	InitSceneKeybinds();
+	Scene* activeScene;
 
-	InitBurgerTimeScene();
+	InitSceneKeybinds();
+	activeScene = InitMainMenu1();
+	InitMainMenu2();
+	InitMainMenu3();
+	InitMainMenu();
+	activeScene = InitBurgerTimeScene();
 
 	InitSteamTestScene();
 	InitDefaultScene();
 	InitFpsDemoScene();
 	InitBonusScene();
+
+	engine::SceneManager::GetInstance().SetActiveGameScene(activeScene);
+
 	Renderer::GetInstance().SetBackgroundColor(SDL_Color{ 0,0,0,255 });
 }
 
-void dae::SceneFactory::InitSceneKeybinds()
+void engine::SceneFactory::InitSceneKeybinds()
 {
-	dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
-	dae::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
+	engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
+	engine::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
 
-	using namespace dae::Input;
+	using namespace engine::Input;
 
 	auto bindChangeScene = [&commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, bool nextScene)
 	{
 
-		dae::Input::InputAction inputAction;
+		engine::Input::InputAction inputAction;
 		inputAction.command = std::make_unique<ChangeSceneCommand>(nextScene);
 		inputAction.device = pDevice;
 		inputAction.pressType = pressType;
@@ -56,33 +66,341 @@ void dae::SceneFactory::InitSceneKeybinds()
 	bindChangeScene(inputDevice, KeyboardButton::KEY_PAGEUP, ButtonPressType::Release, true);
 }
 
-void dae::SceneFactory::InitBurgerTimeScene()
+Scene* engine::SceneFactory::InitBurgerTimeScene()
 {
-	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("BurgerTime");
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("BurgerTime");
 	pScene->SetPhysicsWorld(std::make_unique<WorldPhysics>());
 
 	GameObject* pWorldObject = pScene->MakeGameObject();
 	pWorldObject->AddComponent<WorldDataComponent>();
-	Render2DComponent* textureComponent = pWorldObject->AddComponent<Render2DComponent>();
-	textureComponent->SetTexture("stage1.tga");
-	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
-	textureComponent->SetResolution(WindowSettings::width,WindowSettings::height);
-	textureComponent->SetPosition(0,6);
+	//Render2DComponent* textureComponent = pWorldObject->AddComponent<Render2DComponent>();
+	//textureComponent->SetTexture("stage1.tga");
+	//textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
+	//textureComponent->SetResolution(WindowSettings::width,WindowSettings::height);
 
 	GameObject* pPlayer = pScene->MakeGameObject();
 	pPlayer->AddComponent<PlayerComponent>();
 	CirclePhysicsComponent* physicsComp = pPlayer->AddComponent<CirclePhysicsComponent>();
-	physicsComp->GetCircleCollider().radius = WorldData::tileSize;
-	pPlayer->m_Transform->SetLocalPosition(8, 44,0);
+	physicsComp->GetCircleCollider().radius = WorldData::defaultTileSize;
+	pPlayer->m_Transform->SetLocalPosition(8, 44, 0);
 
-	dae::SceneManager::GetInstance().SetActiveGameScene("BurgerTime");
 
+	return pScene;
 }
 
-void dae::SceneFactory::InitSteamTestScene()
+static void IntroRedTextPrefab(Scene* pScene)
 {
-	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("SteamTest");
-	//dae::SceneManager::GetInstance().SetActiveGameScene("SteamTest");
+
+	// text comp 1
+	{
+		GameObject* go;
+
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 9);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("BURGERTIME");
+		textComponent->SetFont(font);
+		textComponent->SetColor(255, 0, 0, 255);
+		textComponent->SetPosition(66, 36);
+	}
+
+	{
+		GameObject* go;
+
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 5);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("TM");
+		textComponent->SetFont(font);
+		textComponent->SetColor(255, 0, 0, 255);
+		textComponent->SetPosition(156, 40);
+	}
+
+	{
+		GameObject* go;
+
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 7);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("© COPR. 1982 DATA EAST INC");
+		textComponent->SetFont(font);
+		textComponent->SetColor(255, 0, 0, 255);
+		textComponent->SetPosition(8, 50);
+	}
+
+	{
+		GameObject* go;
+
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 7);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("MFGD BY REMI VERLINDEN MFG. CO.");
+		textComponent->SetFont(font);
+		textComponent->SetColor(255, 0, 0, 255);
+		textComponent->SetPosition(5, 58);
+	}
+}
+
+static std::pair<std::string, int> GetHighscoreFromFile()
+{
+	std::pair<std::string, int> score;
+	std::ifstream inputFile("../Data/highscore.txt");
+	if (inputFile)
+	{ // Make sure the file was opened successfully 
+		int highscore = 0;
+		while (inputFile >> highscore)
+		{ // Read in the scores from the file
+			score = std::make_pair(std::string("You"), highscore);
+		}
+	}
+	else
+	{
+		std::cout << "could not find highscore.txt" << std::endl;
+	}
+	return score;
+}
+
+Scene* engine::SceneFactory::InitMainMenu1()
+{
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu1");
+
+	IntroRedTextPrefab(pScene);
+
+	{
+		GameObject* go;
+
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("BEST FIVE PLAYERS");
+		textComponent->SetFont(font);
+		textComponent->SetPosition(42, 85);
+	}
+
+	{
+		std::vector<std::pair<std::string, int>> scores;
+		scores.emplace_back(std::make_pair("KEN", 28000));
+		scores.emplace_back(std::make_pair("H,I", 10100));
+		scores.emplace_back(std::make_pair("GON", 9400));
+		scores.emplace_back(std::make_pair("H,K", 6550));
+		scores.emplace_back(std::make_pair("K.H", 4850));
+
+		scores.emplace_back(GetHighscoreFromFile());
+
+		std::sort(scores.begin(), scores.end(), [](auto const& a, auto const& b)
+			{
+				return a.second > b.second; // Sort by score in descending order
+			});
+
+		int rank = 1;
+		float drawY = 100;
+		for (auto& [name, score] : scores)
+		{
+			std::string displayText = std::format("{} {}{:>7} PTS", rank, name, score);
+
+			GameObject* go;
+
+			auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
+			go = pScene->MakeGameObject();
+
+			auto textComponent = go->AddComponent<TextComponent>();
+			textComponent->SetText(displayText);
+			textComponent->SetFont(font);
+			textComponent->SetPosition(41, drawY);
+
+			drawY += 15;
+			++rank;
+		}
+	}
+
+	return pScene;
+}
+
+
+
+
+Scene* engine::SceneFactory::InitMainMenu3()
+{
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu3");
+
+
+	IntroRedTextPrefab(pScene);
+
+	{
+		GameObject* go;
+
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("-SCORE-");
+		textComponent->SetFont(font);
+		textComponent->SetPosition(80, 85);
+	}
+
+	{
+		GameObject* go;
+		float drawY = 175;
+
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
+		go = pScene->MakeGameObject();
+
+		auto textComponent = go->AddComponent<TextComponent>();
+		textComponent->SetText("BONUS  FOR EVERY 10000 PTS");
+		textComponent->SetFont(font);
+		textComponent->SetPosition(8, drawY);
+
+
+		auto textureComponent = go->AddComponent<Render2DComponent>();
+		textureComponent->SetTexture("../data/sprites/burgertime-sprites.png");
+		textureComponent->SetDrawStyle(Render2DComponent::spritesheet);
+		textureComponent->SetSourceRect(16.f, 0.f, 16, 16);
+		textureComponent->SetPosition(50, drawY - 2);
+		textureComponent->SetResolution(11, 11);
+	}
+
+
+
+	return pScene;
+}
+
+Scene* engine::SceneFactory::InitMainMenu()
+{
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu");
+
+	IntroRedTextPrefab(pScene);
+
+	{
+		GameObject* go;
+
+		go = pScene->MakeGameObject();
+
+		auto mainMenu = go->AddComponent<MainMenuComponent>();
+		mainMenu;
+	}
+
+
+	{
+		engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
+		engine::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
+
+		using namespace engine::Input;
+
+		auto bindSelectGamemode = [&commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, bool menuSelectDown)
+		{
+
+			engine::Input::InputAction inputAction;
+			//inputAction.command = menuSelectDown ? std::make_unique<MainMenuSelectDown>() : std::make_unique<MainMenuSelectUp>(); this is not working for some reason
+			if (menuSelectDown)
+				inputAction.command = std::make_unique<MainMenuSelectDown>();
+			else
+				inputAction.command = std::make_unique<MainMenuSelectUp>();
+
+			inputAction.device = pDevice;
+			inputAction.pressType = pressType;
+
+			commandHandler.BindNewAction(button, inputAction);
+		};
+
+		// KEYBOARD
+		auto inputDeviceKeyboard = inputSystem.GetKeyboardDevice();
+		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_T, ButtonPressType::Release, false);
+		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_G, ButtonPressType::Release, true);
+
+		auto inputDeviceGamepad1 = inputSystem.GetGamepadDevice(0);
+		bindSelectGamemode(inputDeviceGamepad1, ControllerButton::DPAD_UP, ButtonPressType::Release, false);
+		bindSelectGamemode(inputDeviceGamepad1, ControllerButton::DPAD_DOWN, ButtonPressType::Release, true);
+
+
+		auto bindStartGame = [&commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType)
+		{
+
+			engine::Input::InputAction inputAction;
+			inputAction.command = std::make_unique<MainMenuStartGame>();
+			inputAction.device = pDevice;
+			inputAction.pressType = pressType;
+
+			commandHandler.BindNewAction(button, inputAction);
+		};
+
+		bindStartGame(inputDeviceKeyboard, KeyboardButton::KEY_L, ButtonPressType::Release);
+
+		bindStartGame(inputDeviceGamepad1, ControllerButton::BUTTON_A, ButtonPressType::Release);
+	}
+
+
+	return pScene;
+}
+
+Scene* engine::SceneFactory::InitMainMenu2()
+{
+
+
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu2");
+
+	IntroRedTextPrefab(pScene);
+	{
+		std::vector<std::string> characters;
+		characters.emplace_back("PETER PEPPER");
+		characters.emplace_back("MR HOT DOG");
+		characters.emplace_back("MR PICKLE");
+		characters.emplace_back("MR EGG");
+
+		float drawY = 90;
+
+		for (std::string& name : characters)
+		{
+			static int sourceRectPos = -2; sourceRectPos += 2; // start at pos 0 and go up to 8 for each character in burgertime-sprites.png
+
+			GameObject* go;
+
+			auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
+			go = pScene->MakeGameObject();
+
+			//first spawn character texture
+
+			auto textureComponent = go->AddComponent<Render2DComponent>();
+			textureComponent->SetTexture("../data/sprites/burgertime-sprites.png");
+			textureComponent->SetDrawStyle(Render2DComponent::spritesheet);
+			textureComponent->SetSourceRect(0.f, sourceRectPos * 16.f, 16, 16);
+			textureComponent->SetPosition(47, drawY - 5);
+			textureComponent->SetResolution(16, 16);
+
+			auto textComponent = go->AddComponent<TextComponent>();
+			textComponent->SetText(name);
+			textComponent->SetFont(font);
+			textComponent->SetPosition(75, drawY);
+
+			auto TM_font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 5);
+
+			// try to offset TM text to the bottom right of each name
+			static int currentCharacter = 0; ++currentCharacter; // I dont care what the number is, just that it's unique
+			auto TM_textComponent = go->AddComponent<TextComponent>(std::format("TM-Text {}", currentCharacter));
+			TM_textComponent->SetText("TM");
+			TM_textComponent->SetFont(TM_font);
+			TM_textComponent->SetPosition(75 + name.size() * 8.0f, drawY + 10);
+
+			static bool doOnce = true; // first name needs to be up a bit higher
+			drawY += (doOnce) ? 30 : 20;
+			doOnce = false;
+		}
+	}
+
+
+
+	return pScene;
+}
+
+
+Scene* engine::SceneFactory::InitSteamTestScene()
+{
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("SteamTest");
+	//engine::SceneManager::GetInstance().SetActiveGameScene("SteamTest");
 
 	// Background
 	{
@@ -91,15 +409,15 @@ void dae::SceneFactory::InitSteamTestScene()
 		textureComponent->SetTexture("demo/background.tga");
 		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::background);
 
-		go->AddComponent<dae::ScoreBoardComponent>();
-		go->AddComponent<dae::TestSoundComponent>();
+		go->AddComponent<engine::ScoreBoardComponent>();
+		go->AddComponent<engine::TestSoundComponent>();
 	}
 
 	// text comp 1
 	{
 		GameObject* go;
 
-		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
 		go = pScene->MakeGameObject();
 
 		auto textComponent = go->AddComponent<TextComponent>();
@@ -112,7 +430,7 @@ void dae::SceneFactory::InitSteamTestScene()
 	{
 		GameObject* go;
 
-		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
 		go = pScene->MakeGameObject();
 
 		auto textComponent = go->AddComponent<TextComponent>();
@@ -125,7 +443,7 @@ void dae::SceneFactory::InitSteamTestScene()
 	{
 		GameObject* go;
 
-		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
 		go = pScene->MakeGameObject();
 
 		auto textComponent = go->AddComponent<TextComponent>();
@@ -138,7 +456,7 @@ void dae::SceneFactory::InitSteamTestScene()
 	{
 		GameObject* go;
 
-		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 20);
 		go = pScene->MakeGameObject();
 
 		auto textComponent = go->AddComponent<TextComponent>();
@@ -161,11 +479,13 @@ void dae::SceneFactory::InitSteamTestScene()
 
 		spawnerComp->SpawnGameObject(player1PrefabName, pScene);
 	}
+	return pScene;
+
 }
 
-void dae::SceneFactory::InitDefaultScene()
+Scene* engine::SceneFactory::InitDefaultScene()
 {
-	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Demo");
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("Demo");
 
 	GameObject* go = pScene->MakeGameObject();
 	//go->AddComponent<TrashTheCacheComponent>();
@@ -190,7 +510,7 @@ void dae::SceneFactory::InitDefaultScene()
 
 	// text comp 1
 	{
-		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 36);
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/Lingua.otf", 36);
 		go = pScene->MakeGameObject();
 
 		auto textComponent = go->AddComponent<TextComponent>();
@@ -204,7 +524,7 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		go = pScene->MakeGameObject();
 
-		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 36);
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 36);
 		auto textComponent = go->AddComponent<TextComponent>();
 		textComponent->SetText("Press [PAGE UP|DOWN] to change scene");
 		textComponent->SetFont(font);
@@ -216,8 +536,8 @@ void dae::SceneFactory::InitDefaultScene()
 	// fps comp 1
 	{
 		go = pScene->MakeGameObject();
-		auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 42);
-		//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 42);
+		//auto font = engine::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 		FpsComponent* fpsComponent = go->AddComponent<FpsComponent>();
 		fpsComponent->SetFont(font);
 		go->SetPosition(270, 80);
@@ -231,7 +551,7 @@ void dae::SceneFactory::InitDefaultScene()
 	//	textureComponent->SetTexture("cheff.png");
 	//	textureComponent->SetPosition(300, 300);
 	//	textureComponent->SetResolution(50, 50);
-	//	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+	//	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
 	//	auto orbitComp = go->AddComponent<OrbitComponent>();
 	//	orbitComp->SetSpeed(-2.6f);
@@ -249,7 +569,7 @@ void dae::SceneFactory::InitDefaultScene()
 	//	textureComponent->SetTexture("bean.png");
 	//	textureComponent->SetPosition(0, 0);
 	//	textureComponent->SetResolution(50, 50);
-	//	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+	//	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
 	//	go->SetParent(parentGo.get(), true);
 	//	auto orbitComp = go->AddComponent<OrbitComponent>();
@@ -263,29 +583,29 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetTexture("cheff.png");
 		textureComponent->SetPosition(300, 300);
 		textureComponent->SetResolution(50, 50);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
 
 		// ASSIGN INPUT
-		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
+		engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
 
-		using namespace dae::Input;
+		using namespace engine::Input;
 
 		auto* pInputCommandComponent = go->AddComponent<BindInputCommandComponent>();
 
 		// GAMEPAD
 		auto gamepadDevice = inputSystem.GetGamepadDevice(0);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), gamepadDevice, ControllerButton::DPAD_LEFT, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), gamepadDevice, ControllerButton::DPAD_RIGHT, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), gamepadDevice, ControllerButton::DPAD_UP, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1, 0 }), gamepadDevice, ControllerButton::DPAD_LEFT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1, 0 }), gamepadDevice, ControllerButton::DPAD_RIGHT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, 1 }), gamepadDevice, ControllerButton::DPAD_UP, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, -1 }), gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold);
 
 		// KEYBOARD
 		auto keyboardDevice = inputSystem.GetKeyboardDevice();
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), keyboardDevice, KeyboardButton::KEY_A, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), keyboardDevice, KeyboardButton::KEY_D, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), keyboardDevice, KeyboardButton::KEY_W, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), keyboardDevice, KeyboardButton::KEY_S, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1, 0 }), keyboardDevice, KeyboardButton::KEY_A, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1, 0 }), keyboardDevice, KeyboardButton::KEY_D, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, 1 }), keyboardDevice, KeyboardButton::KEY_W, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, -1 }), keyboardDevice, KeyboardButton::KEY_S, ButtonPressType::Hold);
 
 		// GAMEPAD ANALOG STICK
 		auto stick = gamepadDevice->GetGamepadState().GetAnalogStickFilteredPtr(false);
@@ -299,32 +619,32 @@ void dae::SceneFactory::InitDefaultScene()
 		textureComponent->SetTexture("bean.png");
 		textureComponent->SetPosition(350, 350);
 		textureComponent->SetResolution(50, 50);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
 		auto moveComponent = go->AddComponent<MoveComponent>();
 		moveComponent->SetMoveSpeed(300.f);
 
 		// ASSIGN INPUT
 
-		dae::Input::InputSystem& inputSystem = dae::Input::InputSystem::GetInstance();
+		engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
 
 		auto* pInputCommandComponent = go->AddComponent<BindInputCommandComponent>();
 
-		using namespace dae::Input;
+		using namespace engine::Input;
 
 		// GAMEPAD
 		auto gamepadDevice = inputSystem.GetGamepadDevice(1);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), gamepadDevice, ControllerButton::DPAD_LEFT, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), gamepadDevice, ControllerButton::DPAD_RIGHT, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), gamepadDevice, ControllerButton::DPAD_UP, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1, 0 }), gamepadDevice, ControllerButton::DPAD_LEFT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1, 0 }), gamepadDevice, ControllerButton::DPAD_RIGHT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, 1 }), gamepadDevice, ControllerButton::DPAD_UP, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, -1 }), gamepadDevice, ControllerButton::DPAD_DOWN, ButtonPressType::Hold);
 
 		// KEYBOARD
 		auto keyboardDevice = inputSystem.GetKeyboardDevice();
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1,0 }), keyboardDevice, KeyboardButton::KEY_LEFT, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1,0 }), keyboardDevice, KeyboardButton::KEY_RIGHT, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,1 }), keyboardDevice, KeyboardButton::KEY_UP, ButtonPressType::Hold);
-		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0,-1 }), keyboardDevice, KeyboardButton::KEY_DOWN, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ -1, 0 }), keyboardDevice, KeyboardButton::KEY_LEFT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 1, 0 }), keyboardDevice, KeyboardButton::KEY_RIGHT, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, 1 }), keyboardDevice, KeyboardButton::KEY_UP, ButtonPressType::Hold);
+		pInputCommandComponent->BindCommand(std::make_unique<MoveCommand>(go, glm::vec2{ 0, -1 }), keyboardDevice, KeyboardButton::KEY_DOWN, ButtonPressType::Hold);
 
 
 
@@ -339,17 +659,19 @@ void dae::SceneFactory::InitDefaultScene()
 	{
 		go = pScene->MakeGameObject();
 
-		go->AddComponent<dae::Input::InputDebugImguiComponent>();
-		go->AddComponent<dae::ScoreBoardComponent>();
+		go->AddComponent<engine::Input::InputDebugImguiComponent>();
+		go->AddComponent<engine::ScoreBoardComponent>();
 	}
+	return pScene;
+
 }
 
-void dae::SceneFactory::InitFpsDemoScene()
+Scene* engine::SceneFactory::InitFpsDemoScene()
 {
 
-	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Demo2");
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("Demo2");
 
-	auto font = dae::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 72);
+	auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/raju-bold.otf", 72);
 
 	Prefab fpsPrefab{ "FPS display prefab" };
 	GameObject* fpsPrefabObject = fpsPrefab.GetPrefabObject();
@@ -369,12 +691,16 @@ void dae::SceneFactory::InitFpsDemoScene()
 	GameObject* go = pScene->MakeGameObject();
 	Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
 	textureComponent->SetTexture("demo/colorbars.png");
-	textureComponent->SetDrawStyle(dae::Render2DComponent::DrawStyle::background);
+	textureComponent->SetDrawStyle(engine::Render2DComponent::DrawStyle::background);
+
+
+	return pScene;
+
 }
 
-void dae::SceneFactory::InitBonusScene()
+Scene* engine::SceneFactory::InitBonusScene()
 {
-	Scene* pScene = dae::SceneManager::GetInstance().AddGameScene("Bonus");
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("Bonus");
 
 	GameObject* go;
 	{
@@ -383,7 +709,7 @@ void dae::SceneFactory::InitBonusScene()
 		textureComponent->SetTexture("demo/backdrop_trees.png");
 		textureComponent->SetPosition(-80, 0);
 		textureComponent->SetResolution(800, 600);
-		textureComponent->SetDrawStyle(dae::Render2DComponent::DrawStyle::positionScale);
+		textureComponent->SetDrawStyle(engine::Render2DComponent::DrawStyle::customResolution);
 		Renderer::GetInstance().SetBackgroundColor(SDL_Color{ 100,140,230,255 });
 	}
 	// orbiting texture 1
@@ -393,7 +719,7 @@ void dae::SceneFactory::InitBonusScene()
 		textureComponent->SetTexture("demo/fatalerror.png");
 		textureComponent->SetPosition(300, 200);
 		textureComponent->SetResolution(100, 100);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
 		auto orbitComp = go->AddComponent<OrbitComponent>();
 		orbitComp->SetSpeed(2.6f);
@@ -409,11 +735,14 @@ void dae::SceneFactory::InitBonusScene()
 		textureComponent->SetTexture("demo/colorbars.png");
 		textureComponent->SetPosition(0, 0);
 		textureComponent->SetResolution(100, 100);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::positionScale);
+		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
 
 		go->SetParent(parentGo, true);
 		auto orbitComp = go->AddComponent<OrbitComponent>();
 		orbitComp->SetSpeed(8.4f);
 		orbitComp->SetRadius(150.f);
 	}
+
+	return pScene;
+
 }

@@ -3,7 +3,7 @@
 #include <memory>
 #include "Transform.h"
 
-namespace dae {
+namespace engine {
 	class UpdateContext;
 class OrbitComponent final : public BaseComponent
 {

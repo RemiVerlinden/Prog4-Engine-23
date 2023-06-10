@@ -49,6 +49,9 @@
     <ClCompile Include="WorldPhysics.cpp">
       <Filter>Core\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenuComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HealthComponent.h">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="WorldPhysics.h">
       <Filter>Core\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

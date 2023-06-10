@@ -6,7 +6,9 @@
 #include "../BurgerTime/MoveComponent.h"
 #include "SceneManager.h"
 #include "../BurgerTime/HealthComponent.h"
-namespace dae
+#include "../BurgerTime/MainMenuComponent.h"
+
+namespace engine
 {
 	class Command
 	{
@@ -131,5 +133,67 @@ namespace dae
 			GetGameObject()->Destroy();
 		};
 	private:
+	};
+
+	class StartSingleplayerCommand : public Command
+	{
+		virtual void Execute(Seconds) override
+		{
+			SceneManager& sceneManager = SceneManager::GetInstance();
+
+			sceneManager.SetActiveGameScene("stage1_singleplayer");
+		}
+	};
+
+	class StartMultiplayerCommand : public Command
+	{
+		virtual void Execute(Seconds) override
+		{
+			SceneManager& sceneManager = SceneManager::GetInstance();
+
+			sceneManager.SetActiveGameScene("stage1_multiplayer");
+		}
+	};
+
+	class StartVersusCommand : public Command
+	{
+		virtual void Execute(Seconds) override
+		{
+			SceneManager& sceneManager = SceneManager::GetInstance();
+
+			sceneManager.SetActiveGameScene("stage1_multiplayer");
+		}
+	};
+
+	class MainMenuSelectDown : public Command
+	{
+		virtual void Execute(Seconds) override
+		{
+			int totalstates = static_cast<int>(MainMenuComponent::MainMenuState::TOTALSTATES);
+			int currentstate = static_cast<int>(MainMenuComponent::GetMainMenuState());
+			int nextState = ++currentstate % totalstates;
+			MainMenuComponent::SetMainMenuState(static_cast<MainMenuComponent::MainMenuState>(nextState));
+		}
+	};
+
+	class MainMenuSelectUp : public Command
+	{
+		virtual void Execute(Seconds) override
+		{
+			int totalstates = static_cast<int>(MainMenuComponent::MainMenuState::TOTALSTATES);
+			int currentstate = static_cast<int>(MainMenuComponent::GetMainMenuState());
+			int nextState = --currentstate;
+			if(nextState < 0 ) nextState = totalstates - 1;
+
+			MainMenuComponent::SetMainMenuState(static_cast<MainMenuComponent::MainMenuState>(nextState));
+		}
+	};
+
+	class MainMenuStartGame : public Command
+	{
+		virtual void Execute(Seconds) override
+		{
+			MainMenuComponent::StartGame();
+		}
 	};
 }

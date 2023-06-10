@@ -3,17 +3,17 @@
 #include "EventManager.h"
 #include "TagComponent.h"
 
-void dae::HealthComponent::SetMaxHealth(int maxHealth)
+void engine::HealthComponent::SetMaxHealth(int maxHealth)
 {
 	m_Health.max = maxHealth;
 }
 
-void dae::HealthComponent::SetCurrentHealth(int health)
+void engine::HealthComponent::SetCurrentHealth(int health)
 {
 	m_Health.current = health;
 }
 
-void dae::HealthComponent::Damage(int damageAmount)
+void engine::HealthComponent::Damage(int damageAmount)
 {
 	auto& eventManager = EventManager::GetInstance();
 	TagComponent* tagComp = m_GameObject->GetComponent<TagComponent>();
@@ -31,7 +31,7 @@ void dae::HealthComponent::Damage(int damageAmount)
 	eventManager.SendEvent(OnDamageEvent{tagComp->m_Tag, m_Health.current, damageAmount});
 }
 
-void dae::HealthComponent::Heal(int healAmount)
+void engine::HealthComponent::Heal(int healAmount)
 {
 	m_Health.current += healAmount;
 	if (m_Health.current > m_Health.max)
@@ -40,7 +40,7 @@ void dae::HealthComponent::Heal(int healAmount)
 	}
 }
 
-void dae::HealthComponent::Clone(GameObject* clone)
+void engine::HealthComponent::Clone(GameObject* clone)
 {
 	if (CanBeCloned() == false) return;
 

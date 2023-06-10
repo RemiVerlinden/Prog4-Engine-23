@@ -2,12 +2,12 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-void dae::MoveComponent::Initialize()
+void engine::MoveComponent::Initialize()
 {
 	m_Transform = m_GameObject->m_Transform;
 }
 
-void dae::MoveComponent::Update(const UpdateContext& context)
+void engine::MoveComponent::Update(const UpdateContext& context)
 {
 
 	glm::vec2 moveVec = m_MoveDirection * m_Speed * context.GetDeltaTime().ToFloat();
@@ -16,7 +16,7 @@ void dae::MoveComponent::Update(const UpdateContext& context)
 	m_MoveDirection = glm::vec2{0,0};
 }
 
-void dae::MoveComponent::SetMoveDirection(glm::vec2 direction)
+void engine::MoveComponent::SetMoveDirection(glm::vec2 direction)
 {
 	m_MoveDirection += direction;
 
@@ -26,7 +26,7 @@ void dae::MoveComponent::SetMoveDirection(glm::vec2 direction)
 	}
 }
 
-void dae::MoveComponent::Clone(GameObject* clone)
+void engine::MoveComponent::Clone(GameObject* clone)
 {
 	if (CanBeCloned() == false) return;
 	auto componentClone = clone->AddComponent<MoveComponent>(GetComponentTag());

@@ -2,14 +2,14 @@
 #include "GameObject.h"
 #include "UpdateContext.h"
 
-using namespace dae;
+using namespace engine;
 
-void dae::OrbitComponent::Initialize()
+void engine::OrbitComponent::Initialize()
 {
 	m_CenterPos = m_GameObject->m_Transform->GetWorldPosition();
 }
 
-void dae::OrbitComponent::Update(const UpdateContext& /*context*/)
+void engine::OrbitComponent::Update(const UpdateContext& /*context*/)
 {
 	float time = EngineClock::GetTimeInSeconds();
 
@@ -20,7 +20,7 @@ void dae::OrbitComponent::Update(const UpdateContext& /*context*/)
 	m_GameObject->m_Transform->SetLocalPosition(orbitPos);
 }
 
-void dae::OrbitComponent::Clone(GameObject* clone)
+void engine::OrbitComponent::Clone(GameObject* clone)
 {
 	if (CanBeCloned() == false) return;
 	auto componentClone = clone->AddComponent<OrbitComponent>(GetComponentTag());

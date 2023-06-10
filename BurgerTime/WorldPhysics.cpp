@@ -4,7 +4,7 @@
 #include "Locator.h"
 #include "DebugRenderer.h"
 
-void dae::WorldPhysics::SolveWorldCollision(CirclePhysicsComponent* circlePhysicsComp)
+void engine::WorldPhysics::SolveWorldCollision(CirclePhysicsComponent* circlePhysicsComp)
 {
 	GameObject* pOwmer = circlePhysicsComp->GetGameObject();
 	WorldDataComponent* pWorldData = static_cast<WorldDataComponent*>(pOwmer->GetScene()->GetWorldData());
@@ -32,7 +32,7 @@ void dae::WorldPhysics::SolveWorldCollision(CirclePhysicsComponent* circlePhysic
 	}
 }
 
-void dae::WorldPhysics::Draw() const
+void engine::WorldPhysics::Draw() const
 {
 	for (const Tile* tile : m_DrawTiles)
 	{

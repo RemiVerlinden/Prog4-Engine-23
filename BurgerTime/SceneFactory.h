@@ -6,19 +6,24 @@
 // well well, I will be using the Scene factory file to create my Scenes
 // which means I will be initializing all the SceneFactorys in here 
 // hence the "Factory" part.
-namespace dae
+namespace engine
 {
+	class Scene;
 	namespace SceneFactory
 	{
 		void CreateScenes();
 
 		void InitSceneKeybinds();
 
-		void InitBurgerTimeScene();
-		void InitSteamTestScene();
-		void InitDefaultScene();
-		void InitFpsDemoScene();
-		void InitBonusScene();
+		Scene* InitBurgerTimeScene();
+		Scene* InitMainMenu1();
+		Scene* InitMainMenu2();
+		Scene* InitMainMenu3();
+		Scene* InitMainMenu();
+		Scene* InitSteamTestScene();
+		Scene* InitDefaultScene();
+		Scene* InitFpsDemoScene();
+		Scene* InitBonusScene();
 	}
 }
 
