@@ -16,9 +16,7 @@ namespace engine
 		void InitSceneKeybinds();
 
 		Scene* InitBurgerTimeScene();
-		Scene* InitMainMenu1();
-		Scene* InitMainMenu2();
-		Scene* InitMainMenu3();
+
 		Scene* InitMainMenu();
 		Scene* InitSteamTestScene();
 		Scene* InitDefaultScene();

@@ -11,7 +11,7 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
-#include "Render2DComponent.h"
+#include "RenderComponent.h"
 
 using namespace engine;
 
@@ -34,7 +34,7 @@ void engine::WorldDataComponent::Initialize()
 
 	ParseWorldFromFile("stage1");
 
-	m_TileRenderer = m_GameObject->AddComponent<Render2DComponent>();
+	m_TileRenderer = m_GameObject->AddComponent<RenderComponent>();
 	if (std::filesystem::exists("../Data/Textures/stage1_tileset.tga"))
 	{
 		m_TileRenderer->SetTexture("../Data/Textures/stage1_tileset.tga");
@@ -43,7 +43,7 @@ void engine::WorldDataComponent::Initialize()
 	{
 		std::cerr << "Texture not found!\n";
 	}
-	m_TileRenderer->SetDrawStyle(Render2DComponent::DrawStyle::spritesheet);
+	m_TileRenderer->SetDrawStyle(RenderComponent::DrawStyle::spritesheet);
 	m_TileRenderer->SetResolution(static_cast<int>(m_WorldData.tileSize), static_cast<int>(m_WorldData.tileSize));
 }
 

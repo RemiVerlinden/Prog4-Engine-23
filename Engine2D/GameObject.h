@@ -42,6 +42,10 @@ namespace engine
 		// Set the position of the game object.
 		void SetPosition(float x, float y);
 
+		void SetActive(bool active);
+
+		bool IsActive() const;
+
 		// Mark the game object for destruction.
 		void Destroy();
 
@@ -117,6 +121,7 @@ namespace engine
 		std::vector<GameObject*>						m_Children;
 		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 		bool											m_MarkedForDestroy;
+		bool											m_IsActive;
 
 		inline static uint64_t m_GameObjectCount = 0;
 	};

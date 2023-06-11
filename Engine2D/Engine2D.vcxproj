@@ -217,6 +217,7 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
+    <ClInclude Include="AnimatedSpriteComponent.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="DebugRenderer.h" />
@@ -268,7 +269,7 @@
     <ClInclude Include="InputStateKeyboard.h" />
     <ClInclude Include="InputStateMouse.h" />
     <ClInclude Include="Engine2D.h" />
-    <ClInclude Include="Render2DComponent.h" />
+    <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="DebugRenderer.cpp" />
@@ -317,7 +319,7 @@
     <ClCompile Include="Locator.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Engine2D.cpp" />
-    <ClCompile Include="Render2DComponent.cpp" />
+    <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />

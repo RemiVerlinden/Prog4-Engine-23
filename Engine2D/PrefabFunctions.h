@@ -6,7 +6,7 @@
 #include "Scene.h"
 #include "TextComponent.h"
 #include "FpsComponent.h"
-#include "Render2DComponent.h"
+#include "RenderComponent.h"
 #include "GameObject.h"
 #include "OrbitComponent.h"
 #include "InputSystem.h"

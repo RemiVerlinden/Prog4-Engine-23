@@ -108,7 +108,7 @@
     <ClInclude Include="FpsComponent.h">
       <Filter>Components\HUD</Filter>
     </ClInclude>
-    <ClInclude Include="Render2DComponent.h">
+    <ClInclude Include="RenderComponent.h">
       <Filter>Components\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">
@@ -321,6 +321,9 @@
     <ClInclude Include="Common.h">
       <Filter>General</Filter>
     </ClInclude>
+    <ClInclude Include="AnimatedSpriteComponent.h">
+      <Filter>Components\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -329,7 +332,7 @@
     <ClCompile Include="FpsComponent.cpp">
       <Filter>Components\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="Render2DComponent.cpp">
+    <ClCompile Include="RenderComponent.cpp">
       <Filter>Components\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="TextComponent.cpp">
@@ -466,6 +469,9 @@
     </ClCompile>
     <ClCompile Include="Common.cpp">
       <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatedSpriteComponent.cpp">
+      <Filter>Components\Animation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

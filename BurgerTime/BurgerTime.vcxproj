@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="IntroSequenceComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="OrbitComponent.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="IntroSequenceComponent.h" />
     <ClInclude Include="MainMenuComponent.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="OrbitComponent.h" />

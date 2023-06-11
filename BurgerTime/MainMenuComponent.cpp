@@ -1,6 +1,6 @@
 #include "MainMenuComponent.h"
 #include "GameObject.h"
-#include "Render2DComponent.h"
+#include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "Structs.h"
 #include "Locator.h"

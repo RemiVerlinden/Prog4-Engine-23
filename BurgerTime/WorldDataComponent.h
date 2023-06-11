@@ -8,7 +8,7 @@
 
 namespace engine
 {
-	class Render2DComponent;
+	class RenderComponent;
 	enum class SpriteType
 	{
 		ladderTopLeftAlt,
@@ -80,7 +80,7 @@ namespace engine
 		void ParseCollision(const std::filesystem::path& filePath);
 
 		WorldData m_WorldData;
-		Render2DComponent* m_TileRenderer;
+		RenderComponent* m_TileRenderer;
 		static std::unordered_map<Scene*, bool> m_IsComponentInScene;
 	};
 }

@@ -12,3 +12,9 @@ bool fileExists(const std::string& path)
         return false;
     }
 }
+
+std::string UniqueName()
+{
+	static int counter = 0;
+	return std::to_string(counter++);
+}

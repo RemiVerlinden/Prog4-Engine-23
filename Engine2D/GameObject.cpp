@@ -14,7 +14,11 @@ using namespace engine;
 engine::GameObject::GameObject(std::string name) : GameObject(nullptr, name){}
 
 
-engine::GameObject::GameObject(Scene* scene, std::string name) :m_Scene(scene), m_Parent{ nullptr }, m_MarkedForDestroy{ false }
+engine::GameObject::GameObject(Scene* scene, std::string name) 
+	:m_Scene(scene)
+	, m_Parent{ nullptr }
+	, m_MarkedForDestroy{ false }
+	, m_IsActive{ true }
 {
 	m_Transform = AddComponent<TransformComponent>();
 	auto tagComponent = AddComponent<TagComponent>();
@@ -32,6 +36,8 @@ engine::GameObject::~GameObject()
 
 void engine::GameObject::Update(const UpdateContext& context)
 {
+	if (!m_IsActive) return;
+
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootUpdate(context);
@@ -78,6 +84,8 @@ void engine::GameObject::RemoveChild(GameObject* go)
 
 void engine::GameObject::LateUpdate(const UpdateContext& context)
 {
+	if (!m_IsActive) return;
+
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootLateUpdate(context);
@@ -86,6 +94,8 @@ void engine::GameObject::LateUpdate(const UpdateContext& context)
 
 void engine::GameObject::FixedUpdate(const UpdateContext& context)
 {
+	if (!m_IsActive) return;
+
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootFixedUpdate(context);
@@ -95,6 +105,8 @@ void engine::GameObject::FixedUpdate(const UpdateContext& context)
 
 void engine::GameObject::Render() const
 {
+	if (!m_IsActive) return;
+
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootDraw();
@@ -103,6 +115,8 @@ void engine::GameObject::Render() const
 
 void engine::GameObject::RenderUI(UpdateContext& context) const
 {
+	if (!m_IsActive) return;
+
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootDrawUI(context);
@@ -111,6 +125,8 @@ void engine::GameObject::RenderUI(UpdateContext& context) const
 
 void engine::GameObject::OnSceneActivate()
 {
+	if (!m_IsActive) return;
+
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootOnSceneActivate();
@@ -119,6 +135,8 @@ void engine::GameObject::OnSceneActivate()
 
 void engine::GameObject::OnSceneDeactivate()
 {
+	if (!m_IsActive) return;
+
 	for (const std::unique_ptr<BaseComponent>& component : m_Components)
 	{
 		component->RootOnSceneDeactivate();
@@ -128,6 +146,16 @@ void engine::GameObject::OnSceneDeactivate()
 void engine::GameObject::SetPosition(float x, float y)
 {
 	m_Transform->SetLocalPosition(x, y, 0.0f);
+}
+
+void engine::GameObject::SetActive(bool active)
+{
+	m_IsActive = active;
+}
+
+bool engine::GameObject::IsActive() const
+{
+	return m_IsActive;
 }
 
 void engine::GameObject::Destroy()

@@ -52,6 +52,9 @@
     <ClCompile Include="MainMenuComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="IntroSequenceComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HealthComponent.h">
@@ -87,6 +90,9 @@
       <Filter>Core\Physics</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroSequenceComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

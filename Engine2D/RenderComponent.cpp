@@ -1,4 +1,4 @@
-#include "Render2DComponent.h"
+#include "RenderComponent.h"
 #include <stdexcept>
 #include <SDL_ttf.h>
 #include "Renderer.h"
@@ -11,7 +11,7 @@
 #include "Structs.h"
 
 
-engine::Render2DComponent::Render2DComponent()
+engine::RenderComponent::RenderComponent()
 	: m_Texture(nullptr)
 	, m_DrawStyle(DrawStyle::normal)
 	, m_SrcRect(0, 0, 1, 1)
@@ -20,13 +20,13 @@ engine::Render2DComponent::Render2DComponent()
 
 }
 
-void engine::Render2DComponent::Initialize()
+void engine::RenderComponent::Initialize()
 {
 	m_GameObject->m_Transform = m_GameObject->GetComponent<TransformComponent>();
 }
 
 
-void engine::Render2DComponent::Draw()
+void engine::RenderComponent::Draw()
 {
 	glm::vec2 pos = m_GameObject->m_Transform->GetWorldPosition() ;
 
@@ -40,15 +40,15 @@ void engine::Render2DComponent::Draw()
 	
 	switch (m_DrawStyle)
 	{
-		case engine::Render2DComponent::normal:
+		case engine::RenderComponent::normal:
 			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, flip);
 			break;
-		case engine::Render2DComponent::customResolution:
+		case engine::RenderComponent::customResolution:
 		{
 			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, (float)m_DstRect.z, (float)m_DstRect.w, flip);
 		}
 		break;
-		case engine::Render2DComponent::spritesheet:
+		case engine::RenderComponent::spritesheet:
 		{
 			SDL_Rect srcRect, dstRect;
 			srcRect.x = m_SrcRect.x;
@@ -64,7 +64,7 @@ void engine::Render2DComponent::Draw()
 			Renderer::GetInstance().RenderTexture(*m_Texture, srcRect, dstRect, flip);
 		}
 		break;
-		case engine::Render2DComponent::background:
+		case engine::RenderComponent::background:
 			Renderer::GetInstance().RenderTextureBackground(*m_Texture);
 			break;
 		default:
@@ -76,7 +76,7 @@ void engine::Render2DComponent::Draw()
 
 
 
-void engine::Render2DComponent::SetTexture(const std::string& filename)
+void engine::RenderComponent::SetTexture(const std::string& filename)
 {
 
 	m_TextureFileName = filename;
@@ -89,7 +89,7 @@ void engine::Render2DComponent::SetTexture(const std::string& filename)
 
 }
 
-void engine::Render2DComponent::SetPosition(const float x, const float y)
+void engine::RenderComponent::SetPosition(const float x, const float y)
 {
 	float scale = WindowSettings::scale;
 	m_DstRect.x = static_cast<int>(x * scale);
@@ -97,7 +97,7 @@ void engine::Render2DComponent::SetPosition(const float x, const float y)
 }
 
 
-void engine::Render2DComponent::SetResolution(const int width, const int height)
+void engine::RenderComponent::SetResolution(const int width, const int height)
 {
 	float scale = WindowSettings::scale;
 	m_DstRect.z = static_cast<int>(width * scale);
@@ -105,7 +105,7 @@ void engine::Render2DComponent::SetResolution(const int width, const int height)
 }
 
 
-void engine::Render2DComponent::SetSourceRect(const float x, const float y, const float width, const float height)
+void engine::RenderComponent::SetSourceRect(const float x, const float y, const float width, const float height)
 {
 	m_SrcRect.x = static_cast<int>(x);
 	m_SrcRect.y = static_cast<int>(y);
@@ -114,7 +114,7 @@ void engine::Render2DComponent::SetSourceRect(const float x, const float y, cons
 }
 
 
-void engine::Render2DComponent::SetDestinationRect(const float x, const float y, const float width, const float height)
+void engine::RenderComponent::SetDestinationRect(const float x, const float y, const float width, const float height)
 {
 	float scale = WindowSettings::scale;
 	m_DstRect.x = static_cast<int>(x * scale);

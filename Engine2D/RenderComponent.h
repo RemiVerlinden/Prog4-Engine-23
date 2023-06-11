@@ -7,7 +7,7 @@ namespace engine {
 
 	class UpdateContext;
 	class Texture2D;
-	class Render2DComponent final : public BaseComponent
+	class RenderComponent final : public BaseComponent
 	{
 	public:
 		enum DrawStyle : int
@@ -25,8 +25,8 @@ namespace engine {
 				SDL_FLIP_VERTICAL = 0x00000002     /**< flip vertically */
 		};
 
-		Render2DComponent();
-		~Render2DComponent() = default;
+		RenderComponent();
+		~RenderComponent() = default;
 
 		virtual void Initialize() override;
 		virtual void Draw();
@@ -38,10 +38,10 @@ namespace engine {
 		void SetDestinationRect(const float x, const float y, const float width, const float height );
 		void SetDrawStyle(DrawStyle drawStyle) { m_DrawStyle = drawStyle; };
 		void SetFlipTexture(FlipTexture flip) { m_FlipTexture = flip; };
-		Render2DComponent(const Render2DComponent& other) = delete;
-		Render2DComponent(Render2DComponent&& other) = delete;
-		Render2DComponent& operator=(const Render2DComponent& other) = delete;
-		Render2DComponent& operator=(Render2DComponent&& other) = delete;
+		RenderComponent(const RenderComponent& other) = delete;
+		RenderComponent(RenderComponent&& other) = delete;
+		RenderComponent& operator=(const RenderComponent& other) = delete;
+		RenderComponent& operator=(RenderComponent&& other) = delete;
 
 	private:
 		DrawStyle						m_DrawStyle;

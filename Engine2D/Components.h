@@ -5,7 +5,7 @@
 
 #include "TextComponent.h"
 #include "FpsComponent.h"
-#include "Render2DComponent.h"
+#include "RenderComponent.h"
 #include "BindInputCommandComponent.h"
 #include "TrashTheCacheComponent.h"
 #include "InputDebugImguiComponent.h"
@@ -18,3 +18,4 @@
 #include "../BurgerTime/PlayerComponent.h"
 #include "../BurgerTime/TestSoundComponent.h"
 #include "../BurgerTime/WorldDataComponent.h"
+#include "../BurgerTime/IntroSequenceComponent.h"

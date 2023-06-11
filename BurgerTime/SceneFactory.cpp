@@ -12,6 +12,7 @@
 #include "Structs.h"
 #include <fstream>
 #include <format>
+#include "Common.h"
 
 using namespace engine;
 
@@ -25,11 +26,8 @@ void engine::SceneFactory::CreateScenes()
 	Scene* activeScene;
 
 	InitSceneKeybinds();
-	activeScene = InitMainMenu1();
-	InitMainMenu2();
-	InitMainMenu3();
-	InitMainMenu();
-	activeScene = InitBurgerTimeScene();
+	activeScene = InitMainMenu();
+	InitBurgerTimeScene();
 
 	InitSteamTestScene();
 	InitDefaultScene();
@@ -87,310 +85,14 @@ Scene* engine::SceneFactory::InitBurgerTimeScene()
 	return pScene;
 }
 
-static void IntroRedTextPrefab(Scene* pScene)
-{
-
-	// text comp 1
-	{
-		GameObject* go;
-
-		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 9);
-		go = pScene->MakeGameObject();
-
-		auto textComponent = go->AddComponent<TextComponent>();
-		textComponent->SetText("BURGERTIME");
-		textComponent->SetFont(font);
-		textComponent->SetColor(255, 0, 0, 255);
-		textComponent->SetPosition(66, 36);
-	}
-
-	{
-		GameObject* go;
-
-		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 5);
-		go = pScene->MakeGameObject();
-
-		auto textComponent = go->AddComponent<TextComponent>();
-		textComponent->SetText("TM");
-		textComponent->SetFont(font);
-		textComponent->SetColor(255, 0, 0, 255);
-		textComponent->SetPosition(156, 40);
-	}
-
-	{
-		GameObject* go;
-
-		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 7);
-		go = pScene->MakeGameObject();
-
-		auto textComponent = go->AddComponent<TextComponent>();
-		textComponent->SetText("© COPR. 1982 DATA EAST INC");
-		textComponent->SetFont(font);
-		textComponent->SetColor(255, 0, 0, 255);
-		textComponent->SetPosition(8, 50);
-	}
-
-	{
-		GameObject* go;
-
-		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 7);
-		go = pScene->MakeGameObject();
-
-		auto textComponent = go->AddComponent<TextComponent>();
-		textComponent->SetText("MFGD BY REMI VERLINDEN MFG. CO.");
-		textComponent->SetFont(font);
-		textComponent->SetColor(255, 0, 0, 255);
-		textComponent->SetPosition(5, 58);
-	}
-}
-
-static std::pair<std::string, int> GetHighscoreFromFile()
-{
-	std::pair<std::string, int> score;
-	std::ifstream inputFile("../Data/highscore.txt");
-	if (inputFile)
-	{ // Make sure the file was opened successfully 
-		int highscore = 0;
-		while (inputFile >> highscore)
-		{ // Read in the scores from the file
-			score = std::make_pair(std::string("You"), highscore);
-		}
-	}
-	else
-	{
-		std::cout << "could not find highscore.txt" << std::endl;
-	}
-	return score;
-}
-
-Scene* engine::SceneFactory::InitMainMenu1()
-{
-	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu1");
-
-	IntroRedTextPrefab(pScene);
-
-	{
-		GameObject* go;
-
-		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
-		go = pScene->MakeGameObject();
-
-		auto textComponent = go->AddComponent<TextComponent>();
-		textComponent->SetText("BEST FIVE PLAYERS");
-		textComponent->SetFont(font);
-		textComponent->SetPosition(42, 85);
-	}
-
-	{
-		std::vector<std::pair<std::string, int>> scores;
-		scores.emplace_back(std::make_pair("KEN", 28000));
-		scores.emplace_back(std::make_pair("H,I", 10100));
-		scores.emplace_back(std::make_pair("GON", 9400));
-		scores.emplace_back(std::make_pair("H,K", 6550));
-		scores.emplace_back(std::make_pair("K.H", 4850));
-
-		scores.emplace_back(GetHighscoreFromFile());
-
-		std::sort(scores.begin(), scores.end(), [](auto const& a, auto const& b)
-			{
-				return a.second > b.second; // Sort by score in descending order
-			});
-
-		int rank = 1;
-		float drawY = 100;
-		for (auto& [name, score] : scores)
-		{
-			std::string displayText = std::format("{} {}{:>7} PTS", rank, name, score);
-
-			GameObject* go;
-
-			auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
-			go = pScene->MakeGameObject();
-
-			auto textComponent = go->AddComponent<TextComponent>();
-			textComponent->SetText(displayText);
-			textComponent->SetFont(font);
-			textComponent->SetPosition(41, drawY);
-
-			drawY += 15;
-			++rank;
-		}
-	}
-
-	return pScene;
-}
-
-
-
-
-Scene* engine::SceneFactory::InitMainMenu3()
-{
-	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu3");
-
-
-	IntroRedTextPrefab(pScene);
-
-	{
-		GameObject* go;
-
-		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
-		go = pScene->MakeGameObject();
-
-		auto textComponent = go->AddComponent<TextComponent>();
-		textComponent->SetText("-SCORE-");
-		textComponent->SetFont(font);
-		textComponent->SetPosition(80, 85);
-	}
-
-	{
-		GameObject* go;
-		float drawY = 175;
-
-		auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
-		go = pScene->MakeGameObject();
-
-		auto textComponent = go->AddComponent<TextComponent>();
-		textComponent->SetText("BONUS  FOR EVERY 10000 PTS");
-		textComponent->SetFont(font);
-		textComponent->SetPosition(8, drawY);
-
-
-		auto textureComponent = go->AddComponent<Render2DComponent>();
-		textureComponent->SetTexture("../data/sprites/burgertime-sprites.png");
-		textureComponent->SetDrawStyle(Render2DComponent::spritesheet);
-		textureComponent->SetSourceRect(16.f, 0.f, 16, 16);
-		textureComponent->SetPosition(50, drawY - 2);
-		textureComponent->SetResolution(11, 11);
-	}
-
-
-
-	return pScene;
-}
-
 Scene* engine::SceneFactory::InitMainMenu()
 {
-	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu");
+	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("IntroSequence");
 
-	IntroRedTextPrefab(pScene);
+	GameObject* go = pScene->MakeGameObject();
 
-	{
-		GameObject* go;
-
-		go = pScene->MakeGameObject();
-
-		auto mainMenu = go->AddComponent<MainMenuComponent>();
-		mainMenu;
-	}
-
-	{
-		engine::Input::InputSystem& inputSystem = engine::Input::InputSystem::GetInstance();
-		engine::Input::CommandHandler& commandHandler = inputSystem.GetCommandHandler();
-
-		using namespace engine::Input;
-
-		auto bindSelectGamemode = [&commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, bool menuSelectDown)
-		{
-
-			engine::Input::InputAction inputAction;
-			//inputAction.command = menuSelectDown ? std::make_unique<MainMenuSelectDown>() : std::make_unique<MainMenuSelectUp>(); this is not working for some reason
-			if (menuSelectDown)
-				inputAction.command = std::make_unique<MainMenuSelectDown>();
-			else
-				inputAction.command = std::make_unique<MainMenuSelectUp>();
-
-			inputAction.device = pDevice;
-			inputAction.pressType = pressType;
-
-			commandHandler.BindNewAction(button, inputAction);
-		};
-
-		// KEYBOARD
-		auto inputDeviceKeyboard = inputSystem.GetKeyboardDevice();
-		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_T, ButtonPressType::Release, false);
-		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_G, ButtonPressType::Release, true);
-
-		auto inputDeviceGamepad1 = inputSystem.GetGamepadDevice(0);
-		bindSelectGamemode(inputDeviceGamepad1, ControllerButton::DPAD_UP, ButtonPressType::Release, false);
-		bindSelectGamemode(inputDeviceGamepad1, ControllerButton::DPAD_DOWN, ButtonPressType::Release, true);
-
-
-		auto bindStartGame = [&commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType)
-		{
-
-			engine::Input::InputAction inputAction;
-			inputAction.command = std::make_unique<MainMenuStartGame>();
-			inputAction.device = pDevice;
-			inputAction.pressType = pressType;
-
-			commandHandler.BindNewAction(button, inputAction);
-		};
-
-		bindStartGame(inputDeviceKeyboard, KeyboardButton::KEY_L, ButtonPressType::Release);
-
-		bindStartGame(inputDeviceGamepad1, ControllerButton::BUTTON_A, ButtonPressType::Release);
-	}
-
-
-	return pScene;
-}
-
-Scene* engine::SceneFactory::InitMainMenu2()
-{
-
-
-	Scene* pScene = engine::SceneManager::GetInstance().AddGameScene("MainMenu2");
-
-	IntroRedTextPrefab(pScene);
-	{
-		std::vector<std::string> characters;
-		characters.emplace_back("PETER PEPPER");
-		characters.emplace_back("MR HOT DOG");
-		characters.emplace_back("MR PICKLE");
-		characters.emplace_back("MR EGG");
-
-		float drawY = 90;
-
-		for (std::string& name : characters)
-		{
-			static int sourceRectPos = -2; sourceRectPos += 2; // start at pos 0 and go up to 8 for each character in burgertime-sprites.png
-
-			GameObject* go;
-
-			auto font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 8);
-			go = pScene->MakeGameObject();
-
-			//first spawn character texture
-
-			auto textureComponent = go->AddComponent<Render2DComponent>();
-			textureComponent->SetTexture("../data/sprites/burgertime-sprites.png");
-			textureComponent->SetDrawStyle(Render2DComponent::spritesheet);
-			textureComponent->SetSourceRect(0.f, sourceRectPos * 16.f, 16, 16);
-			textureComponent->SetPosition(47, drawY - 5);
-			textureComponent->SetResolution(16, 16);
-
-			auto textComponent = go->AddComponent<TextComponent>();
-			textComponent->SetText(name);
-			textComponent->SetFont(font);
-			textComponent->SetPosition(75, drawY);
-
-			auto TM_font = engine::ResourceManager::GetInstance().LoadFont("fonts/burger-time.otf", 5);
-
-			// try to offset TM text to the bottom right of each name
-			static int currentCharacter = 0; ++currentCharacter; // I dont care what the number is, just that it's unique
-			auto TM_textComponent = go->AddComponent<TextComponent>(std::format("TM-Text {}", currentCharacter));
-			TM_textComponent->SetText("TM");
-			TM_textComponent->SetFont(TM_font);
-			TM_textComponent->SetPosition(75 + name.size() * 8.0f, drawY + 10);
-
-			static bool doOnce = true; // first name needs to be up a bit higher
-			drawY += (doOnce) ? 30 : 20;
-			doOnce = false;
-		}
-	}
-
-
-
+	go->AddComponent<IntroSequenceComponent>();
+	
 	return pScene;
 }
 
@@ -403,9 +105,9 @@ Scene* engine::SceneFactory::InitSteamTestScene()
 	// Background
 	{
 		GameObject* go = pScene->MakeGameObject();
-		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
+		RenderComponent* textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("demo/background.tga");
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::background);
+		textureComponent->SetDrawStyle(RenderComponent::DrawStyle::background);
 
 		go->AddComponent<engine::ScoreBoardComponent>();
 		go->AddComponent<engine::TestSoundComponent>();
@@ -476,16 +178,16 @@ Scene* engine::SceneFactory::InitDefaultScene()
 
 	// Background
 	{
-		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
+		RenderComponent* textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("demo/background.tga");
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::background);
+		textureComponent->SetDrawStyle(RenderComponent::DrawStyle::background);
 	}
 
 
 	// texure 1 LOGO
 	{
 		go = pScene->MakeGameObject();
-		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
+		RenderComponent* textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("demo/logo.tga");
 		textureComponent->SetPosition(216, 180);
 
@@ -563,11 +265,11 @@ Scene* engine::SceneFactory::InitDefaultScene()
 
 	{
 		go = pScene->MakeGameObject("Player1");
-		auto textureComponent = go->AddComponent<Render2DComponent>();
+		auto textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("cheff.png");
 		textureComponent->SetPosition(300, 300);
 		textureComponent->SetResolution(50, 50);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
+		textureComponent->SetDrawStyle(RenderComponent::DrawStyle::customResolution);
 
 
 		// ASSIGN INPUT
@@ -599,11 +301,11 @@ Scene* engine::SceneFactory::InitDefaultScene()
 	{
 		go = pScene->MakeGameObject("Player2");
 
-		auto textureComponent = go->AddComponent<Render2DComponent>();
+		auto textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("bean.png");
 		textureComponent->SetPosition(350, 350);
 		textureComponent->SetResolution(50, 50);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
+		textureComponent->SetDrawStyle(RenderComponent::DrawStyle::customResolution);
 
 		auto moveComponent = go->AddComponent<MoveComponent>();
 		moveComponent->SetMoveSpeed(300.f);
@@ -664,9 +366,9 @@ Scene* engine::SceneFactory::InitFpsDemoScene()
 	//fpsComponent->SetColor(200, 255, 255, 170);
 
 	GameObject* go = pScene->MakeGameObject();
-	Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
+	RenderComponent* textureComponent = go->AddComponent<RenderComponent>();
 	textureComponent->SetTexture("demo/colorbars.png");
-	textureComponent->SetDrawStyle(engine::Render2DComponent::DrawStyle::background);
+	textureComponent->SetDrawStyle(engine::RenderComponent::DrawStyle::background);
 
 
 	return pScene;
@@ -680,21 +382,21 @@ Scene* engine::SceneFactory::InitBonusScene()
 	GameObject* go;
 	{
 		go = pScene->MakeGameObject();
-		Render2DComponent* textureComponent = go->AddComponent<Render2DComponent>();
+		RenderComponent* textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("demo/backdrop_trees.png");
 		textureComponent->SetPosition(-80, 0);
 		textureComponent->SetResolution(800, 600);
-		textureComponent->SetDrawStyle(engine::Render2DComponent::DrawStyle::customResolution);
+		textureComponent->SetDrawStyle(engine::RenderComponent::DrawStyle::customResolution);
 		Renderer::GetInstance().SetBackgroundColor(SDL_Color{ 100,140,230,255 });
 	}
 	// orbiting texture 1
 	{
 		go = pScene->MakeGameObject();
-		auto textureComponent = go->AddComponent<Render2DComponent>();
+		auto textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("demo/fatalerror.png");
 		textureComponent->SetPosition(300, 200);
 		textureComponent->SetResolution(100, 100);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
+		textureComponent->SetDrawStyle(RenderComponent::DrawStyle::customResolution);
 
 		auto orbitComp = go->AddComponent<OrbitComponent>();
 		orbitComp->SetSpeed(2.6f);
@@ -706,11 +408,11 @@ Scene* engine::SceneFactory::InitBonusScene()
 		auto* parentGo = go; // previous go from RAII block above
 		go = pScene->MakeGameObject();
 
-		auto textureComponent = go->AddComponent<Render2DComponent>();
+		auto textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("demo/colorbars.png");
 		textureComponent->SetPosition(0, 0);
 		textureComponent->SetResolution(100, 100);
-		textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
+		textureComponent->SetDrawStyle(RenderComponent::DrawStyle::customResolution);
 
 		go->SetParent(parentGo, true);
 		auto orbitComp = go->AddComponent<OrbitComponent>();

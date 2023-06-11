@@ -6,13 +6,13 @@
 void engine::PlayerComponent::Initialize()
 {
 	GameObject* go = m_GameObject;
-	auto textureComponent = go->AddComponent<Render2DComponent>();
+	auto textureComponent = go->AddComponent<RenderComponent>();
 
 	textureComponent->SetTexture("cheff.png");
 
 	textureComponent->SetPosition(-WorldData::defaultTileSize, -WorldData::defaultTileSize);
 	textureComponent->SetResolution(static_cast<int>(WorldData::defaultTileSize * 2), static_cast<int>(WorldData::defaultTileSize *2));
-	textureComponent->SetDrawStyle(Render2DComponent::DrawStyle::customResolution);
+	textureComponent->SetDrawStyle(RenderComponent::DrawStyle::customResolution);
 
 	InitializeInputCommands();
 
