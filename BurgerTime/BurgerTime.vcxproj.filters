@@ -11,6 +11,57 @@
     <Filter Include="Core\Physics">
       <UniqueIdentifier>{e647056c-6f4d-401e-a070-3b69c98184b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{1e6275e2-afb3-4b22-a05e-2eecc0c630eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState">
+      <UniqueIdentifier>{d1bf14f7-4c1b-4904-92f3-f626c0a5bf1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Player">
+      <UniqueIdentifier>{23a6afad-4e3d-4307-a67a-bf0fc688021d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Enemy">
+      <UniqueIdentifier>{df8b1948-c5e9-4164-888e-67681f9d0b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Salt">
+      <UniqueIdentifier>{779c37be-24e5-4ad0-9212-4bd24f0b7756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\Walk">
+      <UniqueIdentifier>{2af2cc2a-3213-4f1d-92c8-5b23288fb7b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\WalkIdle">
+      <UniqueIdentifier>{d306cef7-484b-4475-8a16-60bce5b015dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\Stun">
+      <UniqueIdentifier>{66f94aa2-bbb1-417b-bd08-8732af208c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\Salt">
+      <UniqueIdentifier>{ee84f08a-23cd-481b-ad3b-11ec2133413c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\Dead">
+      <UniqueIdentifier>{7ac227f9-b644-427f-a85e-07735ef25109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\Player">
+      <UniqueIdentifier>{3c07dcf8-1bb6-4369-ab01-63ea6109c2ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\LadderUp">
+      <UniqueIdentifier>{a4987cdc-e529-4290-bc56-f9c77f0dc750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\LadderDown">
+      <UniqueIdentifier>{76876ff1-6bee-4f9c-b38c-28c79a004436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\LadderUpIdle">
+      <UniqueIdentifier>{66e2f665-3695-4457-a665-cde962ab6b64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\PlayerState\LadderDownIdle">
+      <UniqueIdentifier>{6954e96a-c0e5-4452-96fd-368e835281e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\HUD">
+      <UniqueIdentifier>{00ffea1c-abf3-40a8-9883-5821422ccf2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\garbage">
+      <UniqueIdentifier>{268fc0f6-1c65-4294-9d1c-36a0b362f75f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -18,21 +69,6 @@
     </ClCompile>
     <ClCompile Include="SceneFactory.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="OrbitComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreboardComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Core</Filter>
@@ -49,29 +85,71 @@
     <ClCompile Include="WorldPhysics.cpp">
       <Filter>Core\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenuComponent.cpp">
+    <ClCompile Include="IntroSequenceComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="IntroSequenceComponent.cpp">
+    <ClCompile Include="ApplicationEvent.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateManagerComponent.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="LadderUpState.cpp">
+      <Filter>FSM\PlayerState\LadderUp</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadState.cpp">
+      <Filter>FSM\PlayerState\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="LadderUpIdleState.cpp">
+      <Filter>FSM\PlayerState\LadderUpIdle</Filter>
+    </ClCompile>
+    <ClCompile Include="SaltState.cpp">
+      <Filter>FSM\PlayerState\Salt</Filter>
+    </ClCompile>
+    <ClCompile Include="StunnedState.cpp">
+      <Filter>FSM\PlayerState\Stun</Filter>
+    </ClCompile>
+    <ClCompile Include="WalkIdleState.cpp">
+      <Filter>FSM\PlayerState\WalkIdle</Filter>
+    </ClCompile>
+    <ClCompile Include="WalkState.cpp">
+      <Filter>FSM\PlayerState\Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>FSM\PlayerState\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="LadderDownState.cpp">
+      <Filter>FSM\PlayerState\LadderDown</Filter>
+    </ClCompile>
+    <ClCompile Include="LadderDownIdleState.cpp">
+      <Filter>FSM\PlayerState\LadderDownIdle</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreComponent.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuComponent.cpp">
+      <Filter>Components\garbage</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreboardComponent.cpp">
+      <Filter>Components\garbage</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitComponent.cpp">
+      <Filter>Components\garbage</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveComponent.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesComponent.cpp">
+      <Filter>Components\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="OrbitComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreboardComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -89,10 +167,82 @@
     <ClInclude Include="WorldPhysics.h">
       <Filter>Core\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenuComponent.h">
+    <ClInclude Include="IntroSequenceComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="IntroSequenceComponent.h">
+    <ClInclude Include="EnemyComponent.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SaltComponent.h">
+      <Filter>Components\Salt</Filter>
+    </ClInclude>
+    <ClInclude Include="AppComponents.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateManagerComponent.h">
+      <Filter>Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="LadderUpState.h">
+      <Filter>FSM\PlayerState\LadderUp</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadState.h">
+      <Filter>FSM\PlayerState\Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="LadderUpIdleState.h">
+      <Filter>FSM\PlayerState\LadderUpIdle</Filter>
+    </ClInclude>
+    <ClInclude Include="SaltState.h">
+      <Filter>FSM\PlayerState\Salt</Filter>
+    </ClInclude>
+    <ClInclude Include="StunnedState.h">
+      <Filter>FSM\PlayerState\Stun</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkIdleState.h">
+      <Filter>FSM\PlayerState\WalkIdle</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkState.h">
+      <Filter>FSM\PlayerState\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>FSM\PlayerState\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStatesInclude.h">
+      <Filter>FSM\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="LadderDownState.h">
+      <Filter>FSM\PlayerState\LadderDown</Filter>
+    </ClInclude>
+    <ClInclude Include="LadderDownIdleState.h">
+      <Filter>FSM\PlayerState\LadderDownIdle</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreComponent.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Gamemode.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuComponent.h">
+      <Filter>Components\garbage</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreboardComponent.h">
+      <Filter>Components\garbage</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitComponent.h">
+      <Filter>Components\garbage</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveComponent.h">
+      <Filter>Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesComponent.h">
+      <Filter>Components\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateEnum.h">
+      <Filter>FSM\PlayerState\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

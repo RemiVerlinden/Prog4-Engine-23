@@ -31,7 +31,7 @@ namespace engine
 
 		// Renders the components attached to this game object.
 		void Render() const;
-		
+
 		// Renders the ImGui of the components attached to this game object.
 		void RenderUI(UpdateContext& context) const;
 
@@ -63,7 +63,7 @@ namespace engine
 		// Get a all components from the game object.
 		template<typename ComponentType>
 		std::vector<ComponentType*> GetAllComponents();
-		
+
 		// Check if the game object has a specific component.
 		template<typename ComponentType>
 		bool HasComponent();
@@ -79,6 +79,10 @@ namespace engine
 		// Remove a component from the game object.
 		template<typename ComponentType>
 		void RemoveComponent();
+
+		// Remove a component with tag from the game object.
+		template<typename ComponentType>
+		void RemoveComponentWithTag(const std::string& componentTag);
 
 		// Set the parent of the game object.
 		void SetParent(GameObject* parent, bool keepWorldPosition);
@@ -116,8 +120,8 @@ namespace engine
 
 	private:
 		std::string										m_Tag;
-		Scene*											m_Scene;
-		GameObject*										m_Parent;
+		Scene* m_Scene;
+		GameObject* m_Parent;
 		std::vector<GameObject*>						m_Children;
 		std::vector<std::unique_ptr<BaseComponent>>		m_Components;
 		bool											m_MarkedForDestroy;
@@ -128,8 +132,8 @@ namespace engine
 
 
 
-	 
- 
+
+
 
 	//template<typename ComponentType, typename... Args>
 	template<typename ComponentType>
@@ -265,6 +269,34 @@ namespace engine
 			if (castedComponent != nullptr)
 			{
 				m_Components.erase(itr);
+				return;
+			}
+		}
+	};
+
+	template<typename ComponentType>
+	void GameObject::RemoveComponentWithTag(const std::string& tag)
+	{
+		static_assert(std::is_base_of<BaseComponent, ComponentType>(), "ComponentType has to be subclass from the BaseComponent");
+
+		if (!HasComponentWithTag<ComponentType>(tag))
+		{
+			ENGINE_ERROR("GameObject::RemoveComponentWithTag -> no component of this type with name {} found in GameObject.", tag);
+			assert(false);
+		}
+
+		for (auto itr = m_Components.begin(); itr != m_Components.end(); ++itr)
+		{
+			ComponentType* castedComponent = dynamic_cast<ComponentType*>(itr->get());
+			if (castedComponent != nullptr)
+			{
+				if (castedComponent->GetComponentTag() == tag)
+				{
+					m_Components.erase(itr);
+					return;
+				}
+
+
 			}
 		}
 	};

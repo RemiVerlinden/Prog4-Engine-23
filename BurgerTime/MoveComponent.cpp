@@ -9,7 +9,7 @@ void engine::MoveComponent::Initialize()
 
 void engine::MoveComponent::Update(const UpdateContext& context)
 {
-
+	
 	glm::vec2 moveVec = m_MoveDirection * m_Speed * context.GetDeltaTime().ToFloat();
 	*m_Transform += glm::vec3(moveVec.x, moveVec.y, 0);
 

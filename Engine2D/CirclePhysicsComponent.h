@@ -13,7 +13,7 @@ namespace engine
 
 		virtual void Update(const UpdateContext& pContext) override;
 		virtual void Draw() override;
-		Circle& GetCircleCollider() { return m_PhysicsCollider; }
+		physics::Circle& GetCircleCollider() { return m_PhysicsCollider; }
 		void CollisionOccured() { m_CollisionOccured = true; }
 	protected:
 	private:
@@ -21,7 +21,7 @@ namespace engine
 		void UpdateObjectPosition();
 		void ClampColliderPosToWindow();
 		bool m_CollisionOccured = false;
-		Circle m_PhysicsCollider;
+		physics::Circle m_PhysicsCollider;
 		bool m_CanLeaveWindow = false;
 	};
 }

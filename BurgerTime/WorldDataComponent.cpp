@@ -14,6 +14,7 @@
 #include "RenderComponent.h"
 
 using namespace engine;
+using namespace engine::physics;
 
 // WorldDataComponent.cpp
 std::unordered_map<engine::Scene*, bool> engine::WorldDataComponent::m_IsComponentInScene;
@@ -31,8 +32,10 @@ void engine::WorldDataComponent::Initialize()
 		pScene->SetWorldData(this);
 		componentAlreadyInScene = true;
 	}
-
-	ParseWorldFromFile("stage1");
+	static int stagenumber = 1;
+	const std::string& stageName = std::format("stage{}", stagenumber);
+	++stagenumber;
+	ParseWorldFromFile(stageName);
 
 	m_TileRenderer = m_GameObject->AddComponent<RenderComponent>();
 	if (std::filesystem::exists("../Data/Textures/stage1_tileset.tga"))
@@ -43,7 +46,7 @@ void engine::WorldDataComponent::Initialize()
 	{
 		std::cerr << "Texture not found!\n";
 	}
-	m_TileRenderer->SetDrawStyle(RenderComponent::DrawStyle::spritesheet);
+	m_TileRenderer->SetDrawStyle(engine::render::spritesheet);
 	m_TileRenderer->SetResolution(static_cast<int>(m_WorldData.tileSize), static_cast<int>(m_WorldData.tileSize));
 }
 

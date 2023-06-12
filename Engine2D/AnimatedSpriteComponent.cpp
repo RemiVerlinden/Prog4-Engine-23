@@ -4,103 +4,153 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include "Texture2D.h"
+#include "Common.h"
 
 using namespace engine;
+using namespace engine::physics;
 
 void AnimatedSpriteComponent::Initialize()
 {
-}
-
-void engine::AnimatedTextureComponent::SetSpritesPerSecond(int spritesPerSecond)
-{
-	m_SpritesPerSecond = 1.f / spritesPerSecond;
-}
-
-void engine::AnimatedTextureComponent::Play(int startSpriteId, int endSpriteId, bool playOnce, bool playBackAndForth)
-{
-	m_StartSpriteId = startSpriteId;
-	m_EndSpriteId = endSpriteId;
-	m_PlayOnce = playOnce;
-	m_PlayBackAndForth = playBackAndForth;
-
-	m_CurSpriteId = startSpriteId;
-	m_AnimationTimer = m_SpritesPerSecond;
-
-	m_Animate = true;
+	m_Frametime = 0.2f; // 5 fps
 }
 
 
-
-void AnimatedSpriteComponent::Update(const engine::UpdateContext& context)
+void engine::AnimatedSpriteComponent::Update(const engine::UpdateContext& context)
 {
-	if (m_Animate)
+	if (m_Pause) return;
+	if (!m_Initialized) return;
+	if (m_StartSpriteID == m_EndSpriteID) 
 	{
-		m_AnimationTimer -= deltaTime;
-		if (m_AnimationTimer <= 0)
-		{
-			if (m_PlayReverse)
-			{
-				if (--m_CurSpriteId < m_StartSpriteId)
-				{
-					if (m_PlayBackAndForth)
-					{
-						m_PlayReverse = !m_PlayReverse;
-						m_CurSpriteId = m_StartSpriteId + 1;
-					}
-					else if (m_PlayOnce)
-					{
-						m_CurSpriteId = m_StartSpriteId;
-						m_Animate = false;
-						return;
-					}
-					else
-					{
-						m_CurSpriteId = m_EndSpriteId;
-					}
-				}
-			}
-			else if (++m_CurSpriteId > m_EndSpriteId)
-			{
-				if (m_PlayBackAndForth)
-				{
-					m_PlayReverse = !m_PlayReverse;
-					m_CurSpriteId = m_EndSpriteId - 1;
-				}
-				else if (m_PlayOnce)
-				{
-					m_CurSpriteId = m_EndSpriteId;
-					m_Animate = false;
-					return;
-				}
-				else
-				{
-					m_CurSpriteId = m_StartSpriteId;
-				}
-			}
+		m_CurSpriteID = m_StartSpriteID;
+		return;
+	} 
 
-			m_AnimationTimer += m_SpritesPerSecond;
+	if (m_CyclicTimer.Update(context.GetDeltaTime()))
+	{
+		if (m_PlayReverse)
+		{
+			m_CurSpriteID--;
+			if (m_CurSpriteID < m_StartSpriteID)
+			{
+				m_CurSpriteID = m_EndSpriteID;
+			}
+		}
+		else
+		{
+			m_CurSpriteID++;
+			if (m_CurSpriteID > m_EndSpriteID)
+			{
+				m_CurSpriteID = m_StartSpriteID;
+			}
+		}
+	}
+
+
+	if (m_PlayOnce)
+	{
+		if ((m_PlayReverse && m_CurSpriteID == m_StartSpriteID) || (!m_PlayReverse && m_CurSpriteID == m_EndSpriteID))
+		{
+			m_Pause = true;
+			m_PlayOnce = false;
 		}
 	}
 }
 
 void AnimatedSpriteComponent::Draw()
 {
+	glm::vec2 pos = m_GameObject->m_Transform->GetWorldPosition();
 
-		glm::vec2 pos = m_GameObject->m_Transform->GetWorldPosition();
-		pos += m_DrawPosition;
+	SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(m_FlipTexture);
+	SDL_Rect srcRect = ToSDLRect(m_SrcRect);
 
-		SDL_Rect sourceRect, destinationRect;
-		sourceRect.x = m_SrcRect.pos.x;
-		sourceRect.y = m_SrcRect.pos.y;
-		sourceRect.w = m_SrcRect.size.x;
-		sourceRect.h = m_SrcRect.size.y;
+	int XspriteID = m_CurSpriteID % m_Cols;
+	int YspriteID = m_CurSpriteID / m_Cols;
 
-		destinationRect.x = static_cast<int>(pos.x);
-		destinationRect.y = static_cast<int>(pos.y);
-		destinationRect.w = static_cast<int>(pos.y);
-		destinationRect.h = static_cast<int>(pos.y);
+	srcRect.x = XspriteID * srcRect.w;
+	srcRect.y = YspriteID * srcRect.h;
 
-		//std::cout << "srcX = " << srcX << ", srcY = " << srcY << std::endl;
+	SDL_Rect dstRect = ToSDLRect(m_DstRect);
 
-		Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, , m_SpriteHeight, srcX * m_SpriteWidth, srcY * m_SpriteHeight);
+	dstRect.x += static_cast<int>(pos.x);
+	dstRect.y += static_cast<int>(pos.y);
+
+	dstRect.x *= WindowSettings::scale;
+	dstRect.y *= WindowSettings::scale;
+	dstRect.w *= WindowSettings::scale;
+	dstRect.h *= WindowSettings::scale;
+
+	Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, dstRect, flip);
+
+}
+
+void engine::AnimatedSpriteComponent::SetTexture(const std::string& filename)
+{
+	m_TextureFileName = filename;
+	m_pTexture = ResourceManager::GetInstance().LoadTexture(m_TextureFileName);
+
+	glm::ivec2 size = m_pTexture->GetSize();
+	m_Cols = static_cast<int>(size.x / m_SrcRect.size.x);
+	m_Rows = static_cast<int>(size.y / m_SrcRect.size.y);
+}
+
+
+
+void engine::AnimatedSpriteComponent::SetSourceRect(const Box& srcRect)
+{
+	m_SrcRect = srcRect;
+	if (m_pTexture)
+	{
+		glm::ivec2 size = m_pTexture->GetSize();
+		m_Cols = static_cast<int>(size.x / m_SrcRect.size.x);
+		m_Rows = static_cast<int>(size.y / m_SrcRect.size.y);
+	}
+}
+
+const physics::Box& engine::AnimatedSpriteComponent::GetSourceRect()
+{
+	return m_SrcRect;
+}
+
+void engine::AnimatedSpriteComponent::SetDestinationRect(const Box& dstRect)
+{
+	m_DstRect = dstRect;
+}
+
+const physics::Box& engine::AnimatedSpriteComponent::GetDestinationRect()
+{
+	return m_DstRect;
+}
+
+void engine::AnimatedSpriteComponent::SetFrameTime(float frametime)
+{
+	m_Frametime = frametime;
+	m_CyclicTimer.SetCycleTime(frametime);
+}
+
+void engine::AnimatedSpriteComponent::SetFrameRange(int startSpriteID, int endSpriteID)
+{
+	if (startSpriteID > endSpriteID)
+	{
+		ENGINE_ERROR("AnimatedSpriteComponent::SetFrameRange > startSpriteID must be smaller than endSpriteID");
+		return;
+	}
+	//int minSpriteID = 0;
+	//int maxSpriteID = m_Cols * m_Rows - 1;
+	//if (startSpriteID < minSpriteID || maxSpriteID < startSpriteID )
+	//{
+	//	ENGINE_ERROR("AnimatedSpriteComponent::SetFrameRange > startSpriteID must be between minSpriteID and maxSpriteID");
+	//	return;
+	//}
+	//if (endSpriteID < minSpriteID || maxSpriteID < endSpriteID)
+	//{
+	//	ENGINE_ERROR("AnimatedSpriteComponent::SetFrameRange > endSpriteID must be between minSpriteID and maxSpriteID");
+	//	return;
+	//}
+
+	m_Initialized = true;
+
+	m_StartSpriteID = startSpriteID;
+	m_CurSpriteID = startSpriteID;
+	m_EndSpriteID = endSpriteID;
 }

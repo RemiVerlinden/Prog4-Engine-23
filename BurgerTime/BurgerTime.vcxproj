@@ -19,34 +19,67 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ApplicationEvent.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="DeadState.cpp" />
+    <ClCompile Include="GameOverComponent.cpp" />
+    <ClCompile Include="LivesComponent.cpp" />
+    <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="IntroSequenceComponent.cpp" />
+    <ClCompile Include="LadderDownIdleState.cpp" />
+    <ClCompile Include="LadderDownState.cpp" />
+    <ClCompile Include="LadderUpIdleState.cpp" />
+    <ClCompile Include="LadderUpState.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="OrbitComponent.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
+    <ClCompile Include="PlayerStateManagerComponent.cpp" />
+    <ClCompile Include="SaltState.cpp" />
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="ScoreboardComponent.cpp" />
     <ClCompile Include="MainMenuComponent.cpp" />
+    <ClCompile Include="StunnedState.cpp" />
     <ClCompile Include="TestSoundComponent.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="WalkIdleState.cpp" />
+    <ClCompile Include="WalkState.cpp" />
     <ClCompile Include="WorldDataComponent.cpp" />
     <ClCompile Include="WorldPhysics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppComponents.h" />
     <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="DeadState.h" />
+    <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="Gamemode.h" />
+    <ClInclude Include="GameOverComponent.h" />
+    <ClInclude Include="LivesComponent.h" />
+    <ClInclude Include="PlayerStateEnum.h" />
+    <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="LadderDownIdleState.h" />
+    <ClInclude Include="LadderDownState.h" />
+    <ClInclude Include="PlayerStatesInclude.h" />
     <ClInclude Include="IntroSequenceComponent.h" />
+    <ClInclude Include="LadderUpIdleState.h" />
+    <ClInclude Include="LadderUpState.h" />
     <ClInclude Include="MainMenuComponent.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="OrbitComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="PlayerStateManagerComponent.h" />
+    <ClInclude Include="SaltComponent.h" />
+    <ClInclude Include="SaltState.h" />
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="ScoreboardComponent.h" />
+    <ClInclude Include="StunnedState.h" />
     <ClInclude Include="TestSoundComponent.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="WalkIdleState.h" />
+    <ClInclude Include="WalkState.h" />
     <ClInclude Include="WorldDataComponent.h" />
     <ClInclude Include="WorldPhysics.h" />
   </ItemGroup>

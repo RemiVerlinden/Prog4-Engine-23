@@ -21,7 +21,7 @@ public:
 	enum class MainMenuState
 	{
 		SINGLEPLAYER,
-		MULIPLAYER,
+		COOP,
 		VERSUS,
 		TOTALSTATES
 	};
@@ -34,6 +34,6 @@ private:
 	static inline MainMenuState m_MainMenuState;
 	static inline bool m_StateChanged = false;
 	static inline bool m_StartGame = false;
-	std::array<std::string,3> m_MainMenuOptions{ "SINGLEPLAYER","MULTIPLAYER","VERSUS" };
+	std::array<std::string,3> m_MainMenuOptions{ "SINGLEPLAYER","CO-OP","VERSUS" };
 	std::array<engine::TextComponent*, 3> m_MenuTextComponents{nullptr, nullptr, nullptr};
 };

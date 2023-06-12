@@ -4,6 +4,8 @@
 #include "Locator.h"
 #include "DebugRenderer.h"
 
+using namespace engine::physics;
+
 void engine::WorldPhysics::SolveWorldCollision(CirclePhysicsComponent* circlePhysicsComp)
 {
 	GameObject* pOwmer = circlePhysicsComp->GetGameObject();

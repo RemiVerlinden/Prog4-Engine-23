@@ -5,8 +5,9 @@
 #include <memory>
 #include "../BurgerTime/MoveComponent.h"
 #include "SceneManager.h"
-#include "../BurgerTime/HealthComponent.h"
 #include "../BurgerTime/MainMenuComponent.h"
+
+class PlayerComponent;
 
 namespace engine
 {
@@ -31,51 +32,20 @@ namespace engine
 	};
 
 
-	class MoveCommand final : public GameObjectCommand
+	class MoveCommand final : public Command
 	{
 	public:
-		MoveCommand(GameObject* gameObject, glm::vec2 movedir)
-			: GameObjectCommand(gameObject)
-			, m_MoveDir(movedir)
-			,m_MoveDirRef(nullptr)
-			,m_UseRef(false)
-		{
-			SetMoveComponent(gameObject);
-		}
+		MoveCommand(PlayerComponent* pPlayerComponent, glm::vec2 movedir);
+		virtual ~MoveCommand() = default;
 
-		MoveCommand(GameObject* gameObject, const glm::vec2* movedir)
-			: GameObjectCommand(gameObject)
-			, m_MoveDir(0,0)
-			, m_MoveDirRef(movedir)
-			,m_UseRef(true)
-		{
-			SetMoveComponent(gameObject);
-		}
+		virtual void Execute(Seconds) override;
 
-		void Execute(Seconds /*elapsedTime*/)
-		{
-			glm::vec2 moveVec = (m_UseRef) ? *m_MoveDirRef : m_MoveDir;
-			moveVec.y = -moveVec.y; // in this engine the Y is inverted 
-			m_MoveComponent->SetMoveDirection(moveVec);
-		}
 	private:
-		MoveComponent* m_MoveComponent;
-		
+		PlayerComponent* m_pPlayerComponent;
+
 		bool m_UseRef;
 		const glm::vec2* m_MoveDirRef;
 		glm::vec2 m_MoveDir;
-
-		void SetMoveComponent(GameObject* gameObject)
-		{
-			if (gameObject->HasComponent<MoveComponent>())
-			{
-				m_MoveComponent = gameObject->GetComponent<MoveComponent>();
-			}
-			else
-			{
-				m_MoveComponent = gameObject->AddComponent<MoveComponent>();
-			}
-		}
 	};
 
 	class ChangeSceneCommand final : public Command
@@ -94,38 +64,10 @@ namespace engine
 		bool m_NextScene;
 	};
 
-	class DamageCommand final : public GameObjectCommand
-	{
-	public:
-		DamageCommand(GameObject* object, int amount) :GameObjectCommand(object), m_DamageAmount(amount) 
-		{
-			SetHealthComponent(object);
-		};
-		virtual void Execute(Seconds /*elapsedTime*/)
-		{
-			m_HealthComponent->Damage(m_DamageAmount);
-		};
-	private:
-		HealthComponent* m_HealthComponent;
-		int m_DamageAmount;
-
-		void SetHealthComponent(GameObject* object)
-		{
-			if (object->HasComponent<HealthComponent>())
-			{
-				m_HealthComponent = object->GetComponent<HealthComponent>();
-			}
-			else
-			{
-				m_HealthComponent = object->AddComponent<HealthComponent>();
-			}
-		}
-	};
-
 	class KillCommand final : public GameObjectCommand
 	{
 	public:
-		KillCommand(GameObject* object) :GameObjectCommand(object){};
+		KillCommand(GameObject* object) :GameObjectCommand(object) {};
 		virtual void Execute(Seconds /*elapsedTime*/)
 		{
 			GetGameObject()->Destroy();
@@ -163,35 +105,56 @@ namespace engine
 		}
 	};
 
+	class StartGameCommand : public Command
+	{
+		virtual void Execute(Seconds) override;
+	};
+
 	class MainMenuSelectDown : public Command
 	{
+		public:
+			MainMenuSelectDown(Scene* pScene) : m_pScene(pScene) {}
+	private:
 		virtual void Execute(Seconds) override
 		{
+			Scene* currentScene = SceneManager::GetInstance().GetActiveGameScene();
+			if (m_pScene != currentScene) return;
+
 			int totalstates = static_cast<int>(MainMenuComponent::MainMenuState::TOTALSTATES);
 			int currentstate = static_cast<int>(MainMenuComponent::GetMainMenuState());
 			int nextState = ++currentstate % totalstates;
 			MainMenuComponent::SetMainMenuState(static_cast<MainMenuComponent::MainMenuState>(nextState));
 		}
+		Scene* m_pScene;
 	};
 
 	class MainMenuSelectUp : public Command
 	{
+	public:
+		MainMenuSelectUp(Scene* pScene) : m_pScene(pScene) {}
+	private:
 		virtual void Execute(Seconds) override
 		{
+			Scene* currentScene = SceneManager::GetInstance().GetActiveGameScene();
+			if (m_pScene != currentScene) return;
+
 			int totalstates = static_cast<int>(MainMenuComponent::MainMenuState::TOTALSTATES);
 			int currentstate = static_cast<int>(MainMenuComponent::GetMainMenuState());
 			int nextState = --currentstate;
-			if(nextState < 0 ) nextState = totalstates - 1;
+			if (nextState < 0) nextState = totalstates - 1;
 
 			MainMenuComponent::SetMainMenuState(static_cast<MainMenuComponent::MainMenuState>(nextState));
 		}
+		Scene* m_pScene;
 	};
 
 	class MainMenuStartGame : public Command
 	{
-		virtual void Execute(Seconds) override
-		{
-			MainMenuComponent::StartGame();
-		}
+	public:
+		MainMenuStartGame(Scene* pScene) : m_pScene( pScene ) {}
+	private:
+		virtual void Execute(Seconds) override;
+		Scene* m_pScene;
 	};
+
 }

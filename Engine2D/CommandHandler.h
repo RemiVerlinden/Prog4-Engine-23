@@ -43,6 +43,9 @@ namespace engine::Input
 		
 		using DeviceActionBinds = std::unordered_multimap<deviceButton, InputAction, deviceButtonHash>;
 		 std::unordered_map<int, DeviceActionBinds> m_ActionBindPerDevice;
+
+		 // This map will hold the bindings for each scene
+	std::unordered_map<Scene*, std::unordered_map<int, DeviceActionBinds>> m_SceneBindings;
 	};
 }
 

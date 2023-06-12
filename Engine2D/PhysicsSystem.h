@@ -9,8 +9,8 @@ namespace engine
 		PhysicsSystem() = default;
 		virtual ~PhysicsSystem() = default;
 
-		virtual bool CheckCollisionAABB(const Box& a, const Box& b) const;
-		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Circle& c, const Box& b) const;
-		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Box& b, const Circle& c) const;
+		virtual bool CheckCollisionAABB(const physics::Box& a, const physics::Box& b) const;
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const physics::Circle& c, const physics::Box& b) const;
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const physics::Box& b, const physics::Circle& c) const;
 	};
 }

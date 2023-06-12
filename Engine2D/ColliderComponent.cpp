@@ -2,6 +2,9 @@
 #include "ColliderComponent.h"
 #include "Locator.h"
 #include "GameObject.h"
+
+using namespace engine::physics;
+
 void engine::ColliderComponent::Initialize()
 {
 	Scene* pScene = GetGameObject()->GetScene();
@@ -21,7 +24,7 @@ void engine::ColliderComponent::SetCollider(const Shape& collider)
 	m_Collider = collider;
 }
 
-const engine::Shape& engine::ColliderComponent::GetCollider() const
+const Shape& engine::ColliderComponent::GetCollider() const
 {
 	if(!m_IsInitialized) ENGINE_WARN("ColliderComponent::GetCollider() > ColliderComponent not initialized");
 	return m_Collider;

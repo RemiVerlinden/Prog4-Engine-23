@@ -296,7 +296,7 @@ namespace engine
     inline Seconds::Seconds( Milliseconds time ) : m_value( time.m_value / 1000 ) {}
     inline Seconds& Seconds::operator= ( Microseconds time ) { m_value = time.m_value / 1000000; return *this; }
     inline Seconds& Seconds::operator= ( Milliseconds time ) { m_value = time.m_value / 1000; return *this; }
-    inline Seconds::operator Nanoseconds() const { return Nanoseconds( uint64_t( double(m_value) / 1e+9 ) ); }
+    inline Seconds::operator Nanoseconds() const { return Nanoseconds( uint64_t( double(m_value) * 1e+9 ) ); }
     inline Seconds::operator Microseconds() const { return Microseconds( m_value * 1000000 ); }
     inline Seconds::operator Milliseconds() const { return Milliseconds( m_value * 1000 ); }
     inline Nanoseconds Seconds::ToNanoseconds() const { return operator Nanoseconds(); }

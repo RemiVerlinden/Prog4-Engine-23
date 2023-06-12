@@ -3,6 +3,7 @@
 
 #include <cassert>
 
+using namespace engine::physics;
 //bool engine::PhysicsSystem::CheckLevelCollision(GameObject* pObject) const
 //{
 //    assert(pObject && "GameObject pointer is null!");
@@ -111,17 +112,6 @@ bool engine::PhysicsSystem::CheckCollisionAABB(const Box& a, const Box& b) const
     return true;
 }
 
-struct Box
-{
-    glm::vec2 pos;
-    glm::vec2 size;
-};
-
-struct Circle
-{
-    glm::vec2 pos;
-    float radius;
-};
 std::pair<bool, glm::vec2> engine::PhysicsSystem::CheckCollisionCircleVsBox(const Circle& c, const Box& b) const
 {
     // Calculate the nearest point on the rectangle to the circle

@@ -5,7 +5,7 @@
 engine::BaseComponent::BaseComponent(const std::string& name) 
 	:m_ComponentTag(name)
 {
-
+	++m_ComponentCount;
 }
 
 void engine::BaseComponent::RootInitialize(GameObject* go)

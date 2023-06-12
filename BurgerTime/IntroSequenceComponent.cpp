@@ -226,7 +226,7 @@ void IntroSequenceComponent::InitSequence2()
 
 			auto textureComponent = go->AddComponent<RenderComponent>(UniqueName());
 			textureComponent->SetTexture("../data/sprites/burgertime-sprites.png");
-			textureComponent->SetDrawStyle(RenderComponent::spritesheet);
+			textureComponent->SetDrawStyle(engine::render::spritesheet);
 			textureComponent->SetSourceRect(0.f, sourceRectPos * 16.f, 16, 16);
 			textureComponent->SetPosition(47, drawY - 5);
 			textureComponent->SetResolution(16, 16);
@@ -284,7 +284,7 @@ void IntroSequenceComponent::InitSequence3()
 
 		auto textureComponent = go->AddComponent<RenderComponent>();
 		textureComponent->SetTexture("../data/sprites/burgertime-sprites.png");
-		textureComponent->SetDrawStyle(RenderComponent::spritesheet);
+		textureComponent->SetDrawStyle(engine::render::spritesheet);
 		textureComponent->SetSourceRect(16.f, 0.f, 16, 16);
 		textureComponent->SetPosition(50, drawY - 2);
 		textureComponent->SetResolution(11, 11);
@@ -314,15 +314,15 @@ void IntroSequenceComponent::InitMainMenuFinal()
 
 		using namespace engine::Input;
 
-		auto bindSelectGamemode = [&commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, bool menuSelectDown)
+		auto bindSelectGamemode = [&commandHandler, &pScene](InputDevice* pDevice, deviceButton button, ButtonPressType pressType, bool menuSelectDown)
 		{
 
 			engine::Input::InputAction inputAction;
 			//inputAction.command = menuSelectDown ? std::make_unique<MainMenuSelectDown>() : std::make_unique<MainMenuSelectUp>(); this is not working for some reason
 			if (menuSelectDown)
-				inputAction.command = std::make_unique<MainMenuSelectDown>();
+				inputAction.command = std::make_unique<MainMenuSelectDown>(pScene);
 			else
-				inputAction.command = std::make_unique<MainMenuSelectUp>();
+				inputAction.command = std::make_unique<MainMenuSelectUp>(pScene);
 
 			inputAction.device = pDevice;
 			inputAction.pressType = pressType;
@@ -332,28 +332,34 @@ void IntroSequenceComponent::InitMainMenuFinal()
 
 		// KEYBOARD
 		auto inputDeviceKeyboard = inputSystem.GetKeyboardDevice();
-		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_T, ButtonPressType::Release, false);
-		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_G, ButtonPressType::Release, true);
+		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_W, ButtonPressType::Release, false);
+		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_S, ButtonPressType::Release, true);
+		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_UP, ButtonPressType::Release, false);
+		bindSelectGamemode(inputDeviceKeyboard, KeyboardButton::KEY_DOWN, ButtonPressType::Release, true);
 
 		auto inputDeviceGamepad1 = inputSystem.GetGamepadDevice(0);
 		bindSelectGamemode(inputDeviceGamepad1, ControllerButton::DPAD_UP, ButtonPressType::Release, false);
 		bindSelectGamemode(inputDeviceGamepad1, ControllerButton::DPAD_DOWN, ButtonPressType::Release, true);
 
+		auto inputDeviceGamepad2 = inputSystem.GetGamepadDevice(1);
+		bindSelectGamemode(inputDeviceGamepad2, ControllerButton::DPAD_UP, ButtonPressType::Release, false);
+		bindSelectGamemode(inputDeviceGamepad2, ControllerButton::DPAD_DOWN, ButtonPressType::Release, true);
 
-		auto bindStartGame = [&commandHandler](InputDevice* pDevice, deviceButton button, ButtonPressType pressType)
+
+		auto bindStartGame = [&commandHandler, &pScene](InputDevice* pDevice, deviceButton button, ButtonPressType pressType)
 		{
 
 			engine::Input::InputAction inputAction;
-			inputAction.command = std::make_unique<MainMenuStartGame>();
+			inputAction.command = std::make_unique<MainMenuStartGame>(pScene);
 			inputAction.device = pDevice;
 			inputAction.pressType = pressType;
 
 			commandHandler.BindNewAction(button, inputAction);
 		};
 
-		bindStartGame(inputDeviceKeyboard, KeyboardButton::KEY_L, ButtonPressType::Release);
 
 		bindStartGame(inputDeviceGamepad1, ControllerButton::BUTTON_A, ButtonPressType::Release);
+		bindStartGame(inputDeviceGamepad2, ControllerButton::BUTTON_A, ButtonPressType::Release);
 	}
 }
 

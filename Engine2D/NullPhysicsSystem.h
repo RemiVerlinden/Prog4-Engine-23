@@ -10,8 +10,8 @@ namespace engine
 		NullPhysicsSystem() = default;
 		virtual ~NullPhysicsSystem() = default;
 
-		virtual bool CheckCollisionAABB(const Box&, const Box&) const { return false; };
-		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Circle&, const Box&) const { return { false,{} }; };
-		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const Box&, const Circle&) const { return { false,{} }; };
+		virtual bool CheckCollisionAABB(const engine::physics::Box&, const engine::physics::Box&) const { return false; };
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const engine::physics::Circle&, const engine::physics::Box&) const { return { false,{} }; };
+		virtual std::pair<bool, glm::vec2> CheckCollisionCircleVsBox(const engine::physics::Box&, const engine::physics::Circle&) const { return { false,{} }; };
 	};	
 }

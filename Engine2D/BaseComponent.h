@@ -35,7 +35,7 @@ namespace engine {
 
 		GameObject*						m_GameObject;
 	private:
-		static uint64_t					m_ComponentCount;
+		static inline uint64_t			m_ComponentCount = 0;
 		std::string						m_ComponentTag;
 		friend GameObject;
 

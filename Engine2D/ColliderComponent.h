@@ -10,8 +10,8 @@ namespace engine
 	public:
 		void Initialize();
 		virtual ~ColliderComponent();
-		void SetCollider(const Shape& collider);
-		const Shape& GetCollider() const;
+		void SetCollider(const physics::Shape& collider);
+		const physics::Shape& GetCollider() const;
 		void SetPosition(glm::vec2 position);
 
 		ColliderComponent(const ColliderComponent& other) = delete;
@@ -19,7 +19,7 @@ namespace engine
 		ColliderComponent& operator=(const ColliderComponent& other) = delete;
 		ColliderComponent& operator=(ColliderComponent&& other) = delete;
 	private:
-		Shape m_Collider;
+		physics::Shape m_Collider;
 		
 		bool m_IsInitialized = false;
 	};

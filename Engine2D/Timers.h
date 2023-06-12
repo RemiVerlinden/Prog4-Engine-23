@@ -102,7 +102,38 @@ namespace engine
 		Nanoseconds		m_CycleTime;
 		Nanoseconds		m_overflowAmount = 0;
 	};
+	//-------------------------------------------------------------------------
 
+	class ManualCyclicTimer
+	{
+	public:
+		ManualCyclicTimer() :m_CycleTime(UINT64_MAX) {}; // UINT64_MAX -> if left uninitialized, the cylcetime will be like 10 trilion billion big if you know what I mean
+		ManualCyclicTimer(Milliseconds cycleTime) :m_CycleTime(cycleTime.ToNanoseconds()) {};
+
+		// Update the timer. Returns true when the countdown is complete
+		inline bool Update(Seconds deltaTime)
+		{
+			m_ElapsedTime += deltaTime.ToNanoseconds();
+			if (m_ElapsedTime > m_CycleTime)
+			{
+				m_ElapsedTime -= m_CycleTime;
+				return true;
+			}
+			return false;
+		}
+
+		inline void SetCycleTime(Seconds cycleTime) { m_CycleTime = cycleTime.ToNanoseconds(); }
+
+		inline Seconds GetRemainingTime() const
+		{
+			return glm::max(0.0f, (float)(m_CycleTime - m_ElapsedTime).ToSeconds());
+		}
+
+	private:
+
+		Nanoseconds		m_CycleTime;
+		Nanoseconds		m_ElapsedTime = 0;
+	};
 	//-------------------------------------------------------------------------
 
 	// Countdown Timer

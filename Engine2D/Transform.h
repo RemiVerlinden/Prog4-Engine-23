@@ -15,6 +15,7 @@ namespace engine
 
 
 		void SetLocalPosition(float x, float y, float z);
+		void SetLocalPosition(const glm::vec2& pos);
 		void SetLocalPosition(const glm::vec3& pos);
 		void TranslatePosition(float x, float y, float z);
 		void TranslatePosition(const glm::vec3& pos);

@@ -8,7 +8,6 @@
 void engine::ScoreBoardComponent::Initialize()
 {
 	EventSubscribe(OnDeath);
-	EventSubscribe(OnDamage);
 
 	m_Font = engine::ResourceManager::GetInstance().LoadFont("fonts/lowres.ttf", 20);
 
@@ -72,19 +71,7 @@ void engine::ScoreBoardComponent::OnEvent(const Event& sent)
 			}
 			break;
 		}
-		case OnDamage:
-		{
-			const OnDamageEvent& event = reinterpret_cast<const OnDamageEvent&>(sent);
-			if (event.GetObjectName() == "Player1-Clone")
-			{
-				PlayerDamaged(0, event.GetCurrentHealth());
-			}
-			else if (event.GetObjectName() == "Player2-Clone")
-			{
-				PlayerDamaged(1, event.GetCurrentHealth());
-			}
-			break;
-		}
+
 	}
 }
 

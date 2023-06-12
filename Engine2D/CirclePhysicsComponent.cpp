@@ -7,6 +7,8 @@
 #include "../BurgerTime/WorldPhysics.h"
 #include "Structs.h"
 
+using namespace engine::physics;
+
 void engine::CirclePhysicsComponent::Initialize()
 {
 	glm::vec3 objectPos = m_GameObject->m_Transform->GetWorldPosition();
@@ -29,13 +31,13 @@ void engine::CirclePhysicsComponent::Update(const UpdateContext& /*pContext*/)
 
 void engine::CirclePhysicsComponent::Draw() 
 {
-	glm::vec2 pos = m_PhysicsCollider.pos;
-	float radius = m_PhysicsCollider.radius;
-	DebugRenderer::GetInstance().RenderCircle((int)pos.x,(int)pos.y, (int)radius);
+	//glm::vec2 pos = m_PhysicsCollider.pos;
+	//float radius = m_PhysicsCollider.radius;
+	//DebugRenderer::GetInstance().RenderCircle((int)pos.x,(int)pos.y, (int)radius);
 
-	Scene* pScene = m_GameObject->GetScene();
-	WorldPhysics* worldPhysics = static_cast<WorldPhysics*>(&pScene->GetPhysicsWorld());
-	worldPhysics->Draw();
+	//Scene* pScene = m_GameObject->GetScene();
+	//WorldPhysics* worldPhysics = static_cast<WorldPhysics*>(&pScene->GetPhysicsWorld());
+	//worldPhysics->Draw();
 }
 
 void engine::CirclePhysicsComponent::UpdateColliderPosition() 

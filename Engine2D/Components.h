@@ -12,10 +12,4 @@
 #include "SpawnerComponent.h"
 #include "ColliderComponent.h"
 #include "CirclePhysicsComponent.h"
-
-#include "../BurgerTime/OrbitComponent.h"
-#include "../BurgerTime/ScoreboardComponent.h"
-#include "../BurgerTime/PlayerComponent.h"
-#include "../BurgerTime/TestSoundComponent.h"
-#include "../BurgerTime/WorldDataComponent.h"
-#include "../BurgerTime/IntroSequenceComponent.h"
+#include "AnimatedSpriteComponent.h"

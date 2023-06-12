@@ -5,6 +5,7 @@
 #include "Structs.h"
 #include "Locator.h"
 #include "Common.h"
+#include "Gamemode.h"
 
 void MainMenuComponent::OnEvent(const engine::Event& /*sent*/)
 {
@@ -68,6 +69,25 @@ void MainMenuComponent::OnSceneDeactivate()
 	using namespace engine;
 	std::string soundPath = "menu_select.wav";
 	Locator::GetSoundSystem().Play(soundPath, 1.f, true);
+
+	std::string musicPath = "main.wav";
+	Locator::GetSoundSystem().Play(musicPath, 1.f, false);
+
+	Gamemode::GameType gamemode = Gamemode::GameType::SinglePlayer;
+	switch (m_MainMenuState)
+	{
+		case MainMenuComponent::MainMenuState::SINGLEPLAYER:
+			gamemode = Gamemode::GameType::SinglePlayer;
+			break;
+		case MainMenuComponent::MainMenuState::COOP:
+			gamemode = Gamemode::GameType::Coop;
+			break;
+		case MainMenuComponent::MainMenuState::VERSUS:
+			gamemode = Gamemode::GameType::Versus;
+			break;
+	}
+
+	Gamemode::GetInstance().SetGamemode(gamemode);
 }
 
 void MainMenuComponent::SetMainMenuState(MainMenuState state)

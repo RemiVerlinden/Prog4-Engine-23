@@ -10,23 +10,24 @@
 #include "GameObject.h"
 #include "Structs.h"
 
+using namespace engine;
 
-engine::RenderComponent::RenderComponent()
+::RenderComponent::RenderComponent()
 	: m_Texture(nullptr)
-	, m_DrawStyle(DrawStyle::normal)
+	, m_DrawStyle(render::DrawStyle::normal)
 	, m_SrcRect(0, 0, 1, 1)
-	,m_FlipTexture(SDL_FLIP_NONE)
+	,m_FlipTexture(::render::SDL_FLIP_NONE)
 {
 
 }
 
-void engine::RenderComponent::Initialize()
+void ::RenderComponent::Initialize()
 {
 	m_GameObject->m_Transform = m_GameObject->GetComponent<TransformComponent>();
 }
 
 
-void engine::RenderComponent::Draw()
+void ::RenderComponent::Draw()
 {
 	glm::vec2 pos = m_GameObject->m_Transform->GetWorldPosition() ;
 
@@ -40,15 +41,15 @@ void engine::RenderComponent::Draw()
 	
 	switch (m_DrawStyle)
 	{
-		case engine::RenderComponent::normal:
+		case render::normal:
 			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, flip);
 			break;
-		case engine::RenderComponent::customResolution:
+		case render::customResolution:
 		{
 			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, (float)m_DstRect.z, (float)m_DstRect.w, flip);
 		}
 		break;
-		case engine::RenderComponent::spritesheet:
+		case render::spritesheet:
 		{
 			SDL_Rect srcRect, dstRect;
 			srcRect.x = m_SrcRect.x;
@@ -64,7 +65,7 @@ void engine::RenderComponent::Draw()
 			Renderer::GetInstance().RenderTexture(*m_Texture, srcRect, dstRect, flip);
 		}
 		break;
-		case engine::RenderComponent::background:
+		case render::background:
 			Renderer::GetInstance().RenderTextureBackground(*m_Texture);
 			break;
 		default:
@@ -76,7 +77,7 @@ void engine::RenderComponent::Draw()
 
 
 
-void engine::RenderComponent::SetTexture(const std::string& filename)
+void ::RenderComponent::SetTexture(const std::string& filename)
 {
 
 	m_TextureFileName = filename;
@@ -86,10 +87,9 @@ void engine::RenderComponent::SetTexture(const std::string& filename)
 	{
 		m_TextureResolution = m_Texture->GetSize();
 	}
-
 }
 
-void engine::RenderComponent::SetPosition(const float x, const float y)
+void ::RenderComponent::SetPosition(const float x, const float y)
 {
 	float scale = WindowSettings::scale;
 	m_DstRect.x = static_cast<int>(x * scale);
@@ -97,7 +97,7 @@ void engine::RenderComponent::SetPosition(const float x, const float y)
 }
 
 
-void engine::RenderComponent::SetResolution(const int width, const int height)
+void ::RenderComponent::SetResolution(const int width, const int height)
 {
 	float scale = WindowSettings::scale;
 	m_DstRect.z = static_cast<int>(width * scale);
@@ -105,16 +105,18 @@ void engine::RenderComponent::SetResolution(const int width, const int height)
 }
 
 
-void engine::RenderComponent::SetSourceRect(const float x, const float y, const float width, const float height)
+void ::RenderComponent::SetSourceRect(const float x, const float y, const float width, const float height)
 {
 	m_SrcRect.x = static_cast<int>(x);
 	m_SrcRect.y = static_cast<int>(y);
 	m_SrcRect.z = static_cast<int>(width);
 	m_SrcRect.w = static_cast<int>(height);
+
+	m_DrawStyle = render::DrawStyle::spritesheet;
 }
 
 
-void engine::RenderComponent::SetDestinationRect(const float x, const float y, const float width, const float height)
+void ::RenderComponent::SetDestinationRect(const float x, const float y, const float width, const float height)
 {
 	float scale = WindowSettings::scale;
 	m_DstRect.x = static_cast<int>(x * scale);

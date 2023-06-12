@@ -3,8 +3,8 @@
 #include <vector>
 #include <filesystem>
 
-#include "../Engine2D/IPhysicsSystem.hpp"
 #include <unordered_map>
+#include "Structs.h"
 
 namespace engine
 {
@@ -39,7 +39,7 @@ namespace engine
 
 	struct Tile
 	{
-		Box collider;
+		engine::physics::Box collider;
 		int x;
 		int y;
 		SpriteType spriteType;
